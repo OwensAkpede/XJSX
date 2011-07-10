@@ -134,6 +134,7 @@
         addEventListener("load", function () {
           !core.resolved &&
             (obs.disconnect(), core.XJSXLastProcessCallback());
+          removeEventListener('load', arguments.callee);
         });
 
       }) ||
@@ -145,6 +146,7 @@
         var doc = this.document;
         addEventListener("load", function () {
           __core__.XJSXCompiler(doc);
+          removeEventListener('load', arguments.callee);
         });
       },
     animation: {},
@@ -267,7 +269,8 @@
       };
     },
     domParser: function () {
-      var d = __core__.domParser_node || document.createElement("span");
+      var d = __core__.domParser_node
+      d = d && d.cloneNode(true) || document.createElement("span");
       d.innerHTML = arguments[0];
       return d;
     },
@@ -393,6 +396,7 @@
       },*/
     modules: {},
     moduleType: [KEYWORD, METHOD, FUNCTION],
+    customTemplates: {},
     signedKeywords: {},
     moduleLength: 0,
     hasOnboardProcess: function () {
@@ -1281,7 +1285,8 @@
           }*/
       var _n = node && (node.nextSibling || node.parentNode);
 
-
+      // console.log(_n);
+      // var o=Math.random()
 
       while (node) {
         if (node === last) {
@@ -1294,9 +1299,13 @@
         if (node.parentNode) {
           node = core.getNextNode(node);
           _n = core.getNextNode(node);
+          // console.log("_n",o,_n);
         } else {
           node = _n;
-          _n = node.nextSibling;
+          // node&&
+          // console.log(node.parentNode,o);
+          _n = node.nextSibling || (node.parentNode && node.parentNode.nextSibling);
+          // o=2
         }
         /*
        (node === last)&&!(core.stage(node),node=void 0)||(
@@ -1571,29 +1580,18 @@
 
         try {
           (tmp = exec("[" + e + "]")), (snapshot = tmp[1]), (tmp = tmp[0]);
+          if (("string" === typeof tmp) && (tmp in __core__.customTemplates)) {
+            console.warn("alpha implementation ");
+            tmp = __core__.customTemplates[tmp];
+            tmp instanceof HTMLTemplateElement && (tmp = tmp.content || tmp) ||
+              !(tmp instanceof Node) && (tmp = document.createTextNode(tmp + ""));
 
-          if (tmp instanceof Node) {
-            tmp instanceof HTMLTemplateElement && (tmp = tmp.content);
+          } else if (tmp instanceof Node) {
+            tmp instanceof HTMLTemplateElement && (tmp = tmp.content || tmp);
           } else {
-            tmp = document.querySelector('template[id="' + tmp + '"]') || tmp;
-            if (tmp instanceof Node) {
-              tmp = tmp.content;
-            } else {
-              console.warn("alpha implementation ");
-              tmp = XJSX.customTemplates[tmp];
-              /*** promise **/
-              tmp instanceof HTMLTemplateElement && (tmp = tmp.content);
-              /* 
-              if (tmp instanceof Node) {
-               if (tmp instanceof HTMLTemplateElement) {
-                 tmp = tmp.content;
-               }
-              }else{
-                XJSX.customTemplates[tmp]=document.createElement("template")
-                XJSX.customTemplates[tmp].innerHTML=tmp
-                tmp=XJSX.customTemplates[tmp]=XJSX.customTemplates[tmp]. content 
-             console.log("use-template", e);
-              }*/
+            tmp = document.querySelector('template[id="' + tmp + '"]');
+            if (tmp) {
+              tmp = tmp.content || tmp;
             }
           }
 
@@ -2056,6 +2054,7 @@
       callback: function (a) {
         try {
           var e = __core__.parseParameter(a, this.eval);
+          // console.log(e);
           var param = e.parameter[0];
           e.parameter = void 0;
           if (!param) {
@@ -2107,11 +2106,58 @@
     KEYWORD: 0,
     createAnimation: __core__.createAnimation,
     parseXJSXParameter: __core__.parseParameter,
-    customTemplates: {},
+    createTemplate: function (name, val) {
+      var cust = __core__.customTemplates
+      return new Promise(function (res, rej) {
+        function check() {
+          _i++
+          // console.log(_i, i);
+          if (done && _i >= i) {
+            res()
+          }
+        }
+        var obj = {};
+        if ("object" === typeof name) {
+          obj = name
+        } else {
+          obj[name] = val;
+        }
+        var i = 0
+        var _i = 0;
+        var done
+        for (var key in obj) {
+          i++
+          val = obj[key]
+          delete obj[key]
+          if (val instanceof Promise) {
+            (function (key) {
+              val.then(function (e) {
+                cust[key] = e;
+                check()
+              })
+              val.catch(function () {
+                cust[key] = "";
+                check()
+              })
+            })(key)
+          } else {
+            cust[key] = val;
+            _i++;
+          }
+        }
+        done = true
+        i++
+        check()
+      })
+    },
+    customTemplates: __core__.customTemplates,
     eval: __core__._eval(exec),
     event: {
       emit: __core__.dispatchEvent,
       on: __core__.addEventListener,
+      emitData: function (name, data) {
+        __core__.dispatchEvent('data/' + name, data)
+      },
     },
     parseElement: function (node, exec) {
       (node instanceof Node &&
