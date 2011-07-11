@@ -5,7 +5,8 @@
   var KEYWORD = 0xC;
   var FUNCTION = 0xD;
   var FKEYWORD = 0xE;
-  
+  var MKEYWORD = 0xF;
+
   /** use-effect √ **/
   __core__.createModule([
     {
@@ -730,4 +731,68 @@
     },
   ]);
   
+  /** var √ **/
+  __core__.createModule([
+    {
+      keyword: "var",
+      callback: function (param, currentProcess, core) {
+        var exec = currentProcess && currentProcess.eval || core.eval
+        param = __core__.parseParameter(param).parameter[0].trim();
+        param = param.split(/(^[a-zA-Z ]+\=)/);
+        param.shift()
+        if (param[0]) {
+          try {
+            exec("var " + param[0] + "(" + param[1] + ")")
+          } catch (err) {
+            console.error("var:", param.join(""), err + "");
+          }
+        }
+        param = void 0;
+      },
+      type: MKEYWORD,
+    },
+  ]);
+
+  /** function √ **/
+  __core__.createModule([
+    {
+      keyword: "function",
+      callback: function (e, node, exec) {
+        var param = __core__.parseParameter(e).parameter[0];
+        try {
+
+          var name = "";
+          for (var i = 0; i < param.length; i++) {
+            if (param[i] === ",") {
+              break
+            }
+            name += param[i]
+          }
+
+          param = param.substring(i + 1)
+          name = exec(name)
+          param = exec("[" + param + "]")
+          var foo = window[name]
+
+          name = ""
+          if (typeof foo === "function") {
+            for (var i = 0; i < param.length; i++) {
+              name += "param[" + i + "]";
+              !(i + 1 === param.length) && (name += ", ")
+            }
+            name = eval("foo(exec, " + name + ")")
+          }
+          if (name) {
+            node.putChild(name)
+          }
+          name = void 0;
+        } catch (err) {
+          console.error("function:", e, err + "");
+        }
+        e = void 0;
+        param = void 0;
+      },
+      type: METHOD,
+    },
+  ]);
 })()
