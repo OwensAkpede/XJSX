@@ -21,7 +21,7 @@ B:
 
 Due to the HTML standards we recommend example B,
 since both examples
-are rendered as comments in the HTML runtime😫.
+are rendered as comments in the HTML runtime.
 
 ## install
 
@@ -52,7 +52,7 @@ keywords coming soon:
 
 ```html
 <!--?? event-listener:load ??-->
-<h1>triggered if called</h1>
+    <h1>triggered if called</h1>
 <!--?? end ??-->
 ```
 
@@ -72,8 +72,7 @@ keywords coming soon:
 
 ```html
 <h1>
-  Hello
-  <!--?? print:"app" ??-->
+  Hello <!--?? print:"App" ??-->
 </h1>
 ```
 
@@ -83,7 +82,7 @@ keywords coming soon:
 <script>
   var jsonString = '{"name":"XJSX"}';
 </script>
-<!--?? parse-json:jsonString ??-->
+ <!--?? parse-json:jsonString ??-->
 <h1>
   <!--?? print:jsonString.name ??-->
 </h1>
@@ -103,7 +102,7 @@ keywords coming soon:
 
 ```html
 <!--?? if:true ??-->
-<h1>Hurray!!.</h1>
+   <h1>Hurray!!.</h1>
 <!--?? end ??-->
 ```
 
@@ -111,9 +110,9 @@ keywords coming soon:
 
 ```html
 <!--?? if:false ??-->
-<h1>If!!.</h1>
+   <h1>If!!.</h1>
 <!--?? else ??-->
-<h1>Else!!.</h1>
+   <h1>Else!!.</h1>
 <!--?? end ??-->
 ```
 
@@ -121,11 +120,11 @@ keywords coming soon:
 
 ```html
 <!--?? if:false ??-->
-<h1>If!!.</h1>
+   <h1>If!!.</h1>
 <!--?? else-if:true ??-->
-<h1>Else If (1)!!.</h1>
+   <h1>Else If (1)!!.</h1>
 <!--?? else-if:false ??-->
-<h1>Else If (2)!!.</h1>
+   <h1>Else If (2)!!.</h1>
 <!--?? end ??-->
 ```
 
@@ -133,13 +132,13 @@ keywords coming soon:
 
 ```html
 <!--?? if:false ??-->
-<h1>If!!.</h1>
+   <h1>If!!.</h1>
 <!--?? else-if:false ??-->
-<h1>Else If (1)!!.</h1>
+   <h1>Else If (1)!!.</h1>
 <!--?? else-if:false ??-->
-<h1>Else If (2)!!.</h1>
+   <h1>Else If (2)!!.</h1>
 <!--?? else??-->
-<h1>Else!!.</h1>
+   <h1>Else!!.</h1>
 <!--?? end ??-->
 ```
 
@@ -147,10 +146,9 @@ keywords coming soon:
 
 ```html
 <!--?? fetch:"data.txt" ??-->
-<h1>Fetching...</h1>
+   <h1>Fetching...</h1>
 <!--?? then:response ??-->
-Hello
-<!--?? print:response.response ??-->
+   Hello <!--?? print:response.response ??-->
 <!--?? end ??-->
 ```
 
@@ -158,12 +156,11 @@ Hello
 
 ```html
 <!--?? fetch:"data.txt" ??-->
-<h1>Fetching...</h1>
+   <h1>Fetching...</h1>
 <!--?? then:response ??-->
-Hello
-<!--?? print:response.response ??-->
+   Hello <!--?? print:response.response ??-->
 <!--?? catch:response ??-->
-<h1>Error.</h1>
+   <h1>Error.</h1>
 <!--?? end ??-->
 ```
 
@@ -171,7 +168,6 @@ Hello
 
 ```html
 <!--?? for-each:[1,2,3,4]; value, prop ??-->
-Hello
-<!--?? print:value ??-->
+   Hello <!--?? print:value ??-->
 <!--?? end ??-->
 ```
