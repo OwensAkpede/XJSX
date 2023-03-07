@@ -1,14 +1,7 @@
-/***
- * @onprogress
- * @parentProcess
- * @core.execCallback
- * check XJSXNodeList>append>if>!e.parentNode  at about line 535
- */
-//console.log("xjsx");
+
 
 (function (eval) {
-  //console.log(_eval);
-  //_eval=_eval();
+ 
   var KEYWORD = "keyword",
     MKEYWORD = "micro-keyword",
     METHOD = "method",
