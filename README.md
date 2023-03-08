@@ -54,6 +54,9 @@ To use these keywords in your XJSX-enabled HTML, simply incorporate them using t
 ```
 ## XJSX in HTML
 Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
+ 
+__Notice about XJSX's Mutable Observer API Usage:__
+`At present, XJSX relies on the mutable observer API to observe and parse HTML elements before they are rendered on the UI. However, in the future, XJSX will make the use of this API optional. Instead, a new method will be introduced, such as XJSX.parseElement(document.body), to allow for greater flexibility in how developers choose to work with XJSX.`
 
 
 - **Print:** Use the `print` keyword to output dynamic content in your HTML. For example:
