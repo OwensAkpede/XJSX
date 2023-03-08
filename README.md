@@ -138,6 +138,27 @@ This will render as:
 <p>Value: 3, Index: 2</p>
 ```
 
+## Proper Syntax for XJSX Usage
+When using XJSX, it's crucial to ensure that you correctly incorporate it into an HTML tag.
+
+Bad usage example 
+```html
+ <!--?? if: x > 0 ??-->
+   <h1>Hello
+ <!--?? else ??-->
+    World</h1>
+ <!--?? end ??-->
+```
+
+Good usage example 
+```html
+ <!--?? if: x > 0 ??-->
+   <h1>Hello</h1>
+ <!--?? else ??-->
+    <h1>World</h1>
+ <!--?? end ??-->
+```
+
 ## Conclusion
 XJSX is a lightweight JavaScript framework that enables developers to write HTML templates using JavaScript syntax. It provides a set of keywords that allow developers to write conditional statements, loops, and interact with the DOM API. XJSX helps to simplify HTML code and makes it more expressive, especially when dealing with dynamic data.
 
