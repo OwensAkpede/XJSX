@@ -2,12 +2,16 @@
 
 Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
 
+## Why Choose XJSX?
+XJSX offers a unique approach to web development that allows developers to write code that resembles JavaScript directly within HTML. This approach results in cleaner, more maintainable code and reduces the need for constantly switching between HTML and JavaScript, developers can focus on writing efficient code that is easier to understand, modify, and maintain. 
+
+## XJSX syntax
 XJSX is based on two simple syntax patterns. You can use either of these options to incorporate JavaScript functionality into your HTML:
 
 A:
 
 ```
-<?? keyword:parameter ??>
+<?? keyword:parameter ??> 
 ```
 
 B:
