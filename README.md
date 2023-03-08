@@ -1,32 +1,25 @@
-# XJSX (Expressed JavaScript XHTML)
+# XJSX: Expressed JavaScript XHTML
 
-**Motto:** `bringing James Bond to HTML`😎.
+Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
 
-**note**
-`by default this framework uses the DOM MutationObserver api to parse through elements🤫`
-
-## syntax
+XJSX is based on two simple syntax patterns. You can use either of these options to incorporate JavaScript functionality into your HTML:
 
 A:
 
-```html
+```
 <?? keyword:parameter ??>
 ```
 
 B:
 
-```html
+```
 <!--?? keyword:parameter ??-->
 ```
 
-Due to the HTML standards we recommend example B,
-since both examples
-are rendered as comments in the HTML runtime.
+Option B is recommended, as both patterns are treated as comments by HTML rendering engines.
 
-## install
-
-get the XJSX source file/url
-
+## Installation
+To start using XJSX, simply include the source file or URL in your HTML head:
 ```html
 <html>
   <head>
@@ -37,36 +30,27 @@ get the XJSX source file/url
 
 ## XJSX Keywords
 
-here are the list of keywords or methods currently available:
+XJSX includes a range of powerful keywords that enable you to take your web development to the next level. These currently include:
 
-- `if` - `else-if` - `else` - `end` just like the JavaScript if statement
-- `fetch` - `then` - `catch` - `end` just like the JavaScript fetch api
-- `for-each` - `end` just like the JavaScript forEach method
-- `use-template` ...
-- `parse-json` just like the JavaScript JSON.parse method
-- `print` just like the JavaScript document.writeln method, but better
+- `if`, `else-if`, `else`, and `end` – create conditional statements like those in JavaScript
+- `fetch`, `then`, `catch`, and `end` – access and manipulate data using the Fetch API
+- `for-each` and `end` – loop through elements as in JavaScript's forEach() method
+- `use-template` – easily import and use HTML templates
+- `parse-json` – quickly parse JSON data
+- `print` – render dynamic content to the page
 
-keywords coming soon:
+Additional keywords coming soon include:
 
-- `event-listener` just like the addEventListener
+- `event-listener` – create event listeners similar to addEventListener()
+- `console-log` – log messages to the console
 
-```html
-<!--?? event-listener:load ??-->
-    <h1>triggered if called</h1>
-<!--?? end ??-->
+To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
 ```
-
-- `console-log` just like console.log
-
-```html
-<!--?? console-log:"hello app" ??-->
+<!--?? keyword:parameter ??-->
 ```
+## XJSX in HTML
+Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
 
-**note** in the future the above keywords may change `"in the future!!"`.
-
-## XJSX In HTML
-
-**reminder** XJSX stands for Expressed JavaScript XHTML.
 
 - **print**
 
