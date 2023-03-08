@@ -52,106 +52,81 @@ To use these keywords in your XJSX-enabled HTML, simply incorporate them using t
 Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
 
 
-- **print**
+- **Print:** Use the `print` keyword to output dynamic content in your HTML. For example:
 
 ```html
 <h1>
-  Hello <!--?? print:"App" ??-->
+  Hello <!--?? print:"World" ??-->
+</h1>
+```
+This will render as:
+```html
+<h1>
+  Hello World
 </h1>
 ```
 
-- **parse-json**
-
+- **Parse JSON:** Use the `parse-json` keyword to parse a JSON string into an object that can be accessed in your HTML. For example:
 ```html
 <script>
   var jsonString = '{"name":"XJSX"}';
 </script>
- <!--?? parse-json:jsonString ??-->
+<!--?? parse-json:jsonString ??-->
 <h1>
-  <!--?? print:jsonString.name ??-->
+  Welcome to <!--?? print:jsonString.name ??-->
+</h1>
+```
+This will render as:
+```html
+<h1>
+  Welcome to XJSX
 </h1>
 ```
 
-- **use-template**
-
+- **Use Template:** Use the `use-template` keyword to insert a template element into your HTML. For example:
 ```html
-<template id="app">
-  <h1>Hello App!!</h1>
+<template id="greeting">
+  <h1>Hello World!!</h1>
 </template>
-
-<!--?? use-template:app ??-->
+<!--?? use-template:greeting ??-->
+```
+This will render as:
+```html
+<h1>Hello World!!</h1>
 ```
 
-- **if**
+- **If/Else statements:** Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML based on JavaScript expressions. For example:
 
 ```html
-<!--?? if:true ??-->
-   <h1>Hurray!!.</h1>
-<!--?? end ??-->
-```
-
-- **if**,**else**
-
-```html
-<!--?? if:false ??-->
-   <h1>If!!.</h1>
+<!--?? if: x > 0 ??-->
+   <h1>X is greater than 0</h1>
+<!--?? else-if: x === 0 ??-->
+   <h1>X is equal to 0</h1>
 <!--?? else ??-->
-   <h1>Else!!.</h1>
+   <h1>X is less than 0</h1>
 <!--?? end ??-->
 ```
 
-- **if**,**else-if**
-
+- **Fetch API:** Use the `fetch`, `then`, `catch`, and `end` keywords to make API requests and handle responses. For example:
 ```html
-<!--?? if:false ??-->
-   <h1>If!!.</h1>
-<!--?? else-if:true ??-->
-   <h1>Else If (1)!!.</h1>
-<!--?? else-if:false ??-->
-   <h1>Else If (2)!!.</h1>
-<!--?? end ??-->
-```
-
-- **if**,**else-if**,**else**
-
-```html
-<!--?? if:false ??-->
-   <h1>If!!.</h1>
-<!--?? else-if:false ??-->
-   <h1>Else If (1)!!.</h1>
-<!--?? else-if:false ??-->
-   <h1>Else If (2)!!.</h1>
-<!--?? else??-->
-   <h1>Else!!.</h1>
-<!--?? end ??-->
-```
-
-- **fetch**,**then**
-
-```html
-<!--?? fetch:"data.txt" ??-->
-   <h1>Fetching...</h1>
+<!--?? fetch:"https://jsonplaceholder.typicode.com/todos/1" ??-->
+   <h1>Loading...</h1>
 <!--?? then:response ??-->
-   Hello <!--?? print:response.response ??-->
-<!--?? end ??-->
-```
-
-- **fetch**,**then**,**catch**
-
-```html
-<!--?? fetch:"data.txt" ??-->
-   <h1>Fetching...</h1>
-<!--?? then:response ??-->
-   Hello <!--?? print:response.response ??-->
+   <h1><!--?? print:response.response ??--></h1>
 <!--?? catch:response ??-->
-   <h1>Error.</h1>
+   <h1>Error loading data</h1>
 <!--?? end ??-->
 ```
 
-- **for-Each**
-
+- **For Each Loop:** Use the `for-each` and `end` keywords to loop over arrays and output HTML for each element. For example:
 ```html
-<!--?? for-each:[1,2,3,4]; value, prop ??-->
-   Hello <!--?? print:value ??-->
+<!--?? for-each:[1, 2, 3] ; value, index ??-->
+   <p>Value: <!--?? print:value ??-->, Index: <!--?? print:index ??--></p>
 <!--?? end ??-->
+```
+This will render as:
+```html
+<p>Value: 1, Index: 0</p>
+<p>Value: 2, Index: 1</p>
+<p>Value: 3, Index: 2</p>
 ```
