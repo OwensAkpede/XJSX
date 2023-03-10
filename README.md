@@ -77,7 +77,7 @@ This will render as:
 - **Parse JSON:** Use the `parse-json` keyword to parse a JSON string into an object that can be accessed in your HTML. For example:
 ```html
 <script>
-  var jsonString = '{"name":"XJSX"}';
+  var jsonString = '{"name":"XJSX"}'; 
 </script>
 <!--?? parse-json:jsonString ??-->
 <h1>
@@ -170,7 +170,12 @@ The framework is easy to install and use. With a simple HTML script tag, you can
 
 Overall, XJSX is a powerful tool that can help you write cleaner, more expressive, and efficient code for your web applications.
 
-## Some XJSX jokes
+## Some XJSX jokes 
 - Why did the developer use XJSX for their project?
-
 Because they wanted to write JavaScript without all the drama!
+- Why did the developer switch to XJSX? 
+Because they were tired of constantly switching between HTML and JavaScript!
+
+
+
+
