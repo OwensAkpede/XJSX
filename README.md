@@ -143,7 +143,7 @@ This will render as:
 ## Proper Syntax for XJSX Usage
 When using XJSX, it's crucial to ensure that you correctly incorporate it into an HTML tag.
 
-Bad usage example 
+Wrong:
 ```html
  <!--?? if: x > 0 ??-->
    <h1>Hello
@@ -152,7 +152,7 @@ Bad usage example
  <!--?? end ??-->
 ```
 
-Good usage example 
+Correct:
 ```html
  <!--?? if: x > 0 ??-->
    <h1>Hello</h1>
