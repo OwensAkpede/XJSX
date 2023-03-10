@@ -170,3 +170,7 @@ The framework is easy to install and use. With a simple HTML script tag, you can
 
 Overall, XJSX is a powerful tool that can help you write cleaner, more expressive, and efficient code for your web applications.
 
+## Some XJSX jokes
+- Why did the developer use XJSX for their project?
+
+Because they wanted to write JavaScript without all the drama!
