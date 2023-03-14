@@ -1,5 +1,7 @@
 
 # XJSX: Expressed JavaScript XHTML
+
+
 ```xml
 
 
@@ -15,7 +17,12 @@
 
 
 ```
+
 Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
+
+#### Release History
+
+See [HISTORY.md](HISTORY.md) for a list of changes and releases.
 
 ## Why Choose XJSX?
 XJSX offers a unique approach to web development that allows developers to write code that resembles JavaScript directly within HTML. This approach results in cleaner, more maintainable code and reduces the need for constantly switching between HTML and JavaScript, developers can focus on writing efficient code that is easier to understand, modify, and maintain. 
@@ -190,6 +197,9 @@ Because they wanted to write JavaScript without all the drama!
 - Why did the developer switch to XJSX? 
 Because they were tired of constantly switching between HTML and JavaScript!
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
 
 
 
