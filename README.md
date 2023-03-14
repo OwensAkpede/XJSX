@@ -12,13 +12,13 @@ XJSX is based on two simple syntax patterns. You can use either of these options
 A:
 
 ```
-<?? keyword:parameter ??> 
+<?keyword: parameter?> 
 ```
 
 B:
 
 ```
-<!--?? keyword:parameter ??-->
+<!--?keyword: parameter?-->
 ```
 
 Option B is recommended, as both patterns are treated as comments by HTML rendering engines.
@@ -51,7 +51,7 @@ Additional keywords coming soon include:
 
 To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
 ```
-<!--?? keyword:parameter ??-->
+<!--?keyword: parameter?-->
 ```
 ## XJSX in HTML
 Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
@@ -64,7 +64,7 @@ __Notice about XJSX's Mutable Observer API Usage:__
 
 ```html
 <h1>
-  Hello <!--?? print:"World" ??-->
+  Hello <!--?print: "World"?-->
 </h1>
 ```
 This will render as:
@@ -79,9 +79,9 @@ This will render as:
 <script>
   var jsonString = '{"name":"XJSX"}'; 
 </script>
-<!--?? parse-json:jsonString ??-->
+<!--?parse-json: jsonString?-->
 <h1>
-  Welcome to <!--?? print:jsonString.name ??-->
+  Welcome to <!--?print: jsonString.name?-->
 </h1>
 ```
 This will render as:
@@ -96,7 +96,7 @@ This will render as:
 <template id="greeting">
   <h1>Hello World!!</h1>
 </template>
-<!--?? use-template:greeting ??-->
+<!--?use-template: greeting?-->
 ```
 This will render as:
 ```html
@@ -106,30 +106,30 @@ This will render as:
 - **If/Else statements:** Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML based on JavaScript expressions. For example:
 
 ```html
-<!--?? if: x > 0 ??-->
+<!--?if: x > 0 ?-->
    <h1>X is greater than 0</h1>
-<!--?? else-if: x === 0 ??-->
+<!--?else-if: x === 0 ?-->
    <h1>X is equal to 0</h1>
-<!--?? else ??-->
+<!--?else?-->
    <h1>X is less than 0</h1>
-<!--?? end ??-->
+<!--?end?-->
 ```
 
 - **Fetch API:** Use the `fetch`, `then`, `catch`, and `end` keywords to make API requests and handle responses. For example:
 ```html
-<!--?? fetch:"https://jsonplaceholder.typicode.com/todos/1" ??-->
+<!--?fetch: "https://jsonplaceholder.typicode.com/todos/1" ?-->
    <h1>Loading...</h1>
-<!--?? then:response ??-->
-   <h1><!--?? print:response.response ??--></h1>
-<!--?? catch:response ??-->
+<!--?then: response?-->
+   <h1><!--?print: response.response?--></h1>
+<!--?catch?-->
    <h1>Error loading data</h1>
-<!--?? end ??-->
+<!--?end?-->
 ```
 
 - **For Each Loop:** Use the `for-each` and `end` keywords to loop over arrays and output HTML for each element. For example:
 ```html
-<!--?? for-each:[1, 2, 3] ; value, index ??-->
-   <p>Value: <!--?? print:value ??-->, Index: <!--?? print:index ??--></p>
+<!--?for-each: [1, 2, 3]; value, index?-->
+   <p>Value: <!--?print: value?-->, Index: <!--?print: index?--></p>
 <!--?? end ??-->
 ```
 This will render as:
@@ -144,20 +144,20 @@ When using XJSX, it's crucial to ensure that you correctly incorporate it into a
 
 Wrong:
 ```html
- <!--?? if: x > 0 ??-->
+ <!--?if: x > 0 ?-->
    <h1>Hello
- <!--?? else ??-->
+ <!--?else?-->
     World</h1>
- <!--?? end ??-->
+ <!--?end?-->
 ```
 
 Correct:
 ```html
- <!--?? if: x > 0 ??-->
+ <!--?if: x > 0 ?-->
    <h1>Hello</h1>
- <!--?? else ??-->
+ <!--?else?-->
     <h1>World</h1>
- <!--?? end ??-->
+ <!--?end?-->
 ```
 
 ## XJSX vs. React JSX
