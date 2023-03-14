@@ -1,6 +1,20 @@
 
 # XJSX: Expressed JavaScript XHTML
+```xml
 
+
+
+  <?if: x > y ?>
+    <p>X is greater</p>
+  <?else-if: x === y ?>
+    <p>X and Y are equal</p>
+  <?else?>
+    <p>Y is greater</p>
+  <?end?>
+
+
+
+```
 Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
 
 ## Why Choose XJSX?
