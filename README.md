@@ -172,7 +172,7 @@ Wrong:
  <!--?end?-->
 ```
 
-Correct:
+Right:
 ```html
  <!--?if: x > 0 ?-->
    <h1>Hello</h1>
