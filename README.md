@@ -117,7 +117,7 @@ This will render as:
 <template id="greeting">
   <h1>Hello World!!</h1>
 </template>
-<!--?use-template: greeting?-->
+<!--?use-template: "greeting"?-->
 ```
 This will render as:
 ```html
