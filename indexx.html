@@ -1,0 +1,49 @@
+<!DOCTYPE xjsx>
+<html>
+  <head>
+    <template id="page">
+      <h1>start</h1>
+      <?fetch: "sp/data.txt"?>
+         <h1>Fetching data...</h1>
+      <?then: data?>
+         <?if: data?>
+      <?parse-json: data.response?>
+      <?eval: data=data.response?>
+      <?for-Each: data; data, prop?>
+      >
+      <?print: prop?>:
+      <?print: data?><br />
+      <?end?>
+      <?else?>
+      oops nothing
+      <?end?>
+      <?catch: data?>
+      <h1>Error</h1>
+      <p>error while getting source.</p>
+      <mark
+        >status:
+        <?print: data.status?>
+      </mark>
+      <?end?>
+    </template>
+    <script src="sp/error.js" type="text/javascript" charset="utf-8"></script>
+    <script src="script.js" type="text/javascript" charset="utf-8"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title></title>
+  </head>
+  <body>
+    <noscript>javascript is required!</noscript>
+    <script type="text/javascript" charset="utf-8">
+      var arr = Array(100);
+    </script>
+
+    <?for-Each: arr; val, i?>
+    <h1>
+      hello word:
+      <?print: i?>
+    </h1>
+    <?end?>
+
+    <?parse-html: "hello"?>
+  </body>
+</html>
