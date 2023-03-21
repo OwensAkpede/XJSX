@@ -2,8 +2,14 @@
 0.0.3 / 2023-03-19
 ==================
 
-  * New keywords added `on:`, `console-log:`, `data:`
-  * Added new methods to the XJSX object `parseElement`, `parseXJSXParameter`, `event`, `createModule`
+  * New keywords added 
+    `on:`, `console-log:`, `data:`, `eval:`
+     
+     Read more about it [here](README.md#XJSX%20Keywords)
+  * Added new methods to the XJSX object 
+   `parseElement`, `parseXJSXParameter`, `event`, `createModule`
+    
+    Read more about it [here](module/XJSX.md)
   * Added new Demo files to repo
   * Fixed existing bugs
   * Performance update
