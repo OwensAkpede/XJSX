@@ -24,7 +24,7 @@
       cn,
       core = this,
       n,
-      lc,
+      lc, 
       obs = new window.MutationObserver(function (e) {
         if (!lastDoc) {
           if ((lc = document.body)) {
