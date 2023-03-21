@@ -286,7 +286,11 @@ XJSX.parseElement(node);
 console.log(node.innerText); //Hello World
 ```
 
-- **createModule** This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **FUNCTION**, **METHOD**, **KEYWORD**, or **MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
+- **createModule** 
+This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **FUNCTION**, **METHOD**, **KEYWORD**, or **MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
+
+[see examples here](modules.js)
+
 ```javascript
 
 // Create a new function module
