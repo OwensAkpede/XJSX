@@ -61,14 +61,17 @@ XJSX includes a range of powerful keywords that enable you to take your web deve
 - `if`, `else-if`, `else`, and `end` – create conditional statements like those in JavaScript
 - `fetch`, `then`, `catch`, and `end` – access and manipulate data using the Fetch API
 - `for-each` and `end` – loop through elements as in JavaScript's forEach() method
+- `on` and `end` - Bind event listeners to the XJSX document
 - `use-template` – easily import and use HTML templates
+- `console-log` - Output messages to the console for debugging and troubleshooting purposes
 - `parse-json` – quickly parse JSON data
 - `print` – render dynamic content to the page
+- `eval` - Evaluate a string of code at runtime and execute it within the current XJSX script
+- `data` - Rerender the XJSX document in response to a specified event
 
 Additional keywords coming soon include:
 
-- `event-listener` – create event listeners similar to addEventListener()
-- `console-log` – log messages to the console
+- `animate` – This feature will allow you to incorporate transition animations between rendering points
 
 To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
 ```
@@ -77,10 +80,6 @@ To use these keywords in your XJSX-enabled HTML, simply incorporate them using t
 ## XJSX in HTML
 Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
  
-__Notice about XJSX's Mutable Observer API Usage:__
-`At present, XJSX relies on the mutable observer API to observe and parse HTML elements before they are rendered on the UI. However, in the future, XJSX will make the use of this API optional. Instead, a new method will be introduced, such as XJSX.parseElement(document.body), to allow for greater flexibility in how developers choose to work with XJSX.`
-
-
 - **Print:** Use the `print` keyword to output dynamic content in your HTML. For example:
 
 ```html
