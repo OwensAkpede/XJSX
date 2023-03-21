@@ -1133,39 +1133,6 @@ cause: XJSXCompiler at ON:
   },
   ]);
 
-  /** animate **/
-  __core__.createModule([{
-    keyword: "animate",
-    callback:  function (node) {
-      try {
-        if (node) {
-                var put=node.putChild
-                var doc;
-      node.putChild=function(n){
-           if (doc) {
-             doc.setAttribute("class","anm out")
-           }
-           doc=document.createElement("div")
-             doc.setAttribute("class","anm in")
-        
-        doc.appendChild(n)
-        var r=node.x_addChild(doc)
-        setTimeout(function() {
-          doc.classList.remove("anm")
-          r()
-          
-        }, 700);
-      }
-        } else {
-          throw "Unexpected token 'animate'";
-        }
-      } catch (err) {
-        console.error("animate:", err+"");
-      }
-    },
-    type: MICRO
-  }]);
-  
 
   /** if **/
   __core__.createModule([{
