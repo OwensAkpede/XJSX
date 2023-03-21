@@ -53,7 +53,7 @@ To start using XJSX, simply include the [source file or URL](https://owens94819.
   </head>
 </html>
 ```
- **Download XJSX [here](https://owens94819.github.io/XJSX/xjsx.js)**
+ `Download XJSX [here](https://owens94819.github.io/XJSX/xjsx.js)`
 
 ## XJSX Keywords
 
