@@ -6,47 +6,21 @@
 
 
 
-  <?if: x > y ?>
+  <!--?if: x > y ?-->
     <p>X is greater</p>
-  <?else-if: x === y ?>
+  <!--?else-if: x === y ?-->
     <p>X and Y are equal</p>
-  <?else?>
+  <!--?else?-->
     <p>Y is greater</p>
-  <?end?>
+  <!--?end?-->
 
 
 
 ```
-
-Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
-
-#### Release History
-
-See [HISTORY.md](HISTORY.md) for a list of changes and releases.
-
-## Why Choose XJSX?
-XJSX offers a unique approach to web development that allows developers to write code that resembles JavaScript directly within HTML. This approach results in cleaner, more maintainable code and reduces the need for constantly switching between HTML and JavaScript, developers can focus on writing efficient code that is easier to understand, modify, and maintain. 
-
-## XJSX syntax
-XJSX is based on two simple syntax patterns. You can use either of these options to incorporate JavaScript functionality into your HTML:
-
-A:
-
-```
-<?keyword: parameter?> 
-```
-
-B:
-
-```
-<!--?keyword: parameter?-->
-```
-
-[Option B](README.B.md) is recommended, as both patterns are treated as comments by HTML rendering engines.
 
 ## Installation
 To start using XJSX, simply include the source file or URL in your HTML head:
-```xml
+```html
 <html>
   <head>
     <script src="xjsx.js"></script>
@@ -75,7 +49,7 @@ Additional keywords coming soon include:
 
 To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
 ```
-<?keyword: parameter?>
+<!--?keyword: parameter?-->
 ```
 ## XJSX in HTML
 Ready to see XJSX in action? Here are a few examples of how you can use XJSX to create dynamic, responsive HTML pages:
@@ -83,13 +57,13 @@ Ready to see XJSX in action? Here are a few examples of how you can use XJSX to 
 ### **Print:** 
 Use the `print` keyword to output dynamic content in your HTML. For example:
 
-```xml
+```html
 <h1>
-  Hello <?print: "World"?>
+  Hello <!--?print: "World"?-->
 </h1>
 ```
   This will render as:
-```xml
+```html
 <h1>
   Hello World
 </h1>
@@ -97,17 +71,17 @@ Use the `print` keyword to output dynamic content in your HTML. For example:
 
 ### **Parse JSON:** 
 Use the `parse-json` keyword to parse a JSON string into an object that can be accessed in your HTML. For example:
-```xml
+```html
 <script>
   var jsonString = '{"name":"XJSX"}'; 
 </script>
-<?parse-json: jsonString?>
+<!--?parse-json: jsonString?-->
 <h1>
-  Welcome to <?print: jsonString.name?>
+  Welcome to <!--?print: jsonString.name?-->
 </h1>
 ```
   This will render as:
-```xml
+```html
 <h1>
   Welcome to XJSX
 </h1>
@@ -115,57 +89,57 @@ Use the `parse-json` keyword to parse a JSON string into an object that can be a
 
 ### **Console Log:** 
 The `console-log` keyword is similar to the `console.log` function in JavaScript. It allows you to log messages to the console. For example:
-```xml
-   <?console-log: "hello world!"?>
+```html
+   <!--?console-log: "hello world!"?-->
 ```
 
 ### **Use Template:** 
 Use the `use-template` keyword to insert a template element into your HTML. For example:
-```xml
+```html
 <template id="greeting">
   <h1>Hello World!!</h1>
 </template>
-<?use-template: "greeting"?>
+<!--?use-template: "greeting"?-->
 ```
   This will render as:
-```xml
+```html
 <h1>Hello World!!</h1>
 ```
 
 ### **If/Else statements:** 
 Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML based on JavaScript expressions. For example:
 
-```xml
-<?if: x > 0 ?>
+```html
+<!--?if: x > 0 ?-->
    <h1>X is greater than 0</h1>
-<?else-if: x === 0 ?>
+<!--?else-if: x === 0 ?-->
    <h1>X is equal to 0</h1>
-<?else?>
+<!--?else?-->
    <h1>X is less than 0</h1>
-<?end?>
+<!--?end?-->
 ```
 
 ### **Fetch API:** 
 Use the `fetch`, `then`, `catch`, and `end` keywords to make API requests and handle responses. For example:
-```xml
-<?fetch: "https://jsonplaceholder.typicode.com/todos/1" ?>
+```html
+<!--?fetch: "https://jsonplaceholder.typicode.com/todos/1" ?-->
    <h1>Loading...</h1>
-<?then: response?>
-   <h1><?print: response.response?></h1>
-<?catch?>
+<!--?then: response?-->
+   <h1><!--?print: response.response?--></h1>
+<!--?catch?-->
    <h1>Error loading data</h1>
-<?end?>
+<!--?end?-->
 ```
 
 ### **For Each Loop:** 
 Use the `for-each` and `end` keywords to loop over arrays and output HTML for each element. For example:
-```xml
-<?for-each: [1, 2, 3]; value, index?>
-   <p>Value: <?print: value?>, Index: <?print: index?></p>
-<?? end ??>
+```html
+<!--?for-each: [1, 2, 3]; value, index?-->
+   <p>Value: <!--?print: value?-->, Index: <!--?print: index?--></p>
+<!--?? end ??-->
 ```
   This will render as:
-```xml
+```html
 <p>Value: 1, Index: 0</p>
 <p>Value: 2, Index: 1</p>
 <p>Value: 3, Index: 2</p>
@@ -173,26 +147,26 @@ Use the `for-each` and `end` keywords to loop over arrays and output HTML for ea
 
 ### **Event Listener:** 
 The `on` and `end` keyword is used to add event listeners to the document. Here's an example:
-```xml
-<?on: "load"?>
+```html
+<!--?on: "load"?-->
    <p>Page loaded!</p>
-<?end?>
+<!--?end?-->
 ```
   In the above example, we're using the `on` keyword to add an event listener for the "load" event of the document. When the page is loaded, the XJSX element containing the "Page loaded!" message will be rendered
 
 ### **Data:** 
 The `data` keyword is used to listen for events and update the XJSX element when the event is emitted. Here's an example:
-```xml
+```html
  <script>
    var emit = XJSX.event.emit;
    emit("data/name", "Elon Musk");
  </script>
 
-   <h1> <?data: "name"?> </h1>
+   <h1> <!--?data: "name"?--> </h1>
 
 ```
   This will render as:
-```xml
+```html
    
    <h1> Elon Musk  </h1>
 
@@ -202,8 +176,8 @@ The `data` keyword is used to listen for events and update the XJSX element when
 
 ### **Eval:** 
 The `eval` keyword is used to evaluate JavaScript code in an XJSX document, similar to the `eval()` function in JavaScript. Here's an example:
-```xml
-   <?eval: "var x=10;"?>
+```html
+   <!--?eval: "var x=10;"?-->
 ```
   In the above example, we're using the `eval` keyword to create a variable x with the value of 10.
 
@@ -211,21 +185,21 @@ The `eval` keyword is used to evaluate JavaScript code in an XJSX document, simi
 When using XJSX, it's crucial to ensure that you correctly incorporate it into an HTML tag.
 
 Wrong:
-```xml
- <?if: x > 0 ?>
+```html
+ <!--?if: x > 0 ?-->
    <h1>Hello
- <?else?>
+ <!--?else?-->
     World</h1>
- <?end?>
+ <!--?end?-->
 ```
 
 Right:
-```xml
- <?if: x > 0 ?>
+```html
+ <!--?if: x > 0 ?-->
    <h1>Hello</h1>
- <?else?>
+ <!--?else?-->
     <h1>World</h1>
- <?end?>
+ <!--?end?-->
 ```
 
 ## window.XJSX object
