@@ -119,15 +119,16 @@ var myMethodModule = window.XJSX.createModule("myMethodModule", window.XJSX.METH
 ```
 
 you can then use in your html:
-```html
+```xml
 
-<!--?myFunctionModule: "something"?-->
-  Hello function
-<!--?end?-->
+<?myFunctionModule: "something"?>
+  <b>Hello function</b>
+<?end?>
 
-<!--?myKeywordModule: "something"?-->
-  Hello keyword
-<!--?end?-->
+<?myKeywordModule: "something"?>
+  <b>Hello keyword</b>
+<?end?>
 
-<!--?myMethodModule: "something"?-->
+<?myMethodModule: "something"?>
+
 ```

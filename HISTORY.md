@@ -5,7 +5,7 @@
   * New keywords added 
     `on:`, `console-log:`, `data:`, `eval:`
      
-     Read more about it [here](#XJSX-Keywords)
+     Read more about it [here](#xjsx-Keywords)
   * Added new methods to the XJSX object 
    `parseElement`, `parseXJSXParameter`, `event`, `createModule`
     
