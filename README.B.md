@@ -1,6 +1,7 @@
 
 # XJSX: Expressed JavaScript XHTML
 
+***note:*** While this documentation might be updated, you may want to check [here](README.md)
 
 ```xml
 
@@ -136,7 +137,7 @@ Use the `for-each` and `end` keywords to loop over arrays and output HTML for ea
 ```html
 <!--?for-each: [1, 2, 3]; value, index?-->
    <p>Value: <!--?print: value?-->, Index: <!--?print: index?--></p>
-<!--?? end ??-->
+<!--?end?-->
 ```
   This will render as:
 ```html

@@ -162,7 +162,7 @@ Use the `for-each` and `end` keywords to loop over arrays and output HTML for ea
 ```xml
 <?for-each: [1, 2, 3]; value, index?>
    <p>Value: <?print: value?>, Index: <?print: index?></p>
-<?? end ??>
+<?end?>
 ```
   This will render as:
 ```xml
