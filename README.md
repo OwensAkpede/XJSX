@@ -45,7 +45,7 @@ B:
 [Option B](README.B.md) is recommended, as both patterns are treated as comments by HTML rendering engines.
 
 ## Installation
-To start using XJSX, simply include the [source file or URL](https://raw.githubusercontent.com/owens94819/XJSX/main/xjsx.js) in your HTML head:
+To start using XJSX, simply include the [source file or URL](https://owens94819.github.io/XJSX/xjsx.js) in your HTML head:
 ```xml
 <html>
   <head>
@@ -53,6 +53,7 @@ To start using XJSX, simply include the [source file or URL](https://raw.githubu
   </head>
 </html>
 ```
+### Download XJSX [here](https://owens94819.github.io/XJSX/xjsx.js)
 
 ## XJSX Keywords
 
