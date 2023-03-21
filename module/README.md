@@ -35,7 +35,7 @@ FUNCTION: Number
 This is a method that parses an XJSX parameter string (e.g. "arg1;arg2,arg3") and returns an object with the arguments and parameter values. This method is used internally by XJSX to parse parameters, but you can also use it if you need to parse a parameter string manually.
 ```html
 
-  <!--?keyword: arg1; arg2, arg3?-->
+  <?keyword: arg1; arg2, arg3?>
 
 ```
 ```javascript
@@ -61,7 +61,7 @@ window.XJSX.event.emit("myEvent");
 This is a method that takes a DOM node and an optional eval function as arguments, and compiles any XJSX expressions inside the node. The method returns true if any expressions were compiled, and false otherwise.
 ```html
 <div id="node">
-<h1><!--?print: "Hello World"?--></h1>
+<h1><?print: "Hello World"?></h1>
 </div>
 ```
 ```javascript
@@ -72,7 +72,7 @@ console.log(node.innerText); //Hello World
 ## **createModule** 
 This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **FUNCTION**, **METHOD**, **KEYWORD**, or **MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
 
-[see more examples here](../modules)
+[see more examples here](../module)
 
 ```javascript
 
