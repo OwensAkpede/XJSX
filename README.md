@@ -32,13 +32,13 @@ XJSX is based on two simple syntax patterns. You can use either of these options
 
 A:
 
-```
+```xml
 <?keyword: parameter?> 
 ```
 
 B:
 
-```
+```txt
 <!--?keyword: parameter?-->
 ```
 
@@ -74,7 +74,7 @@ Additional keywords coming soon include:
 - `animate` – This feature will allow you to incorporate transition animations between rendering points
 
 To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
-```
+```xml
 <?keyword: parameter?>
 ```
 ## XJSX in HTML

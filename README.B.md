@@ -49,7 +49,7 @@ Additional keywords coming soon include:
 - `animate` – This feature will allow you to incorporate transition animations between rendering points
 
 To use these keywords in your XJSX-enabled HTML, simply incorporate them using the pattern shown below:
-```
+```txt
 <!--?keyword: parameter?-->
 ```
 ## XJSX in HTML
