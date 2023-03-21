@@ -9,6 +9,7 @@
 
 (function (exec) {
   var KEYWORD = "keyword",
+  MICRO = "micro",
   MKEYWORD = "micro-keyword",
   METHOD = "method",
   FUNCTION = "function";
@@ -71,6 +72,9 @@
               n.parentNode._removed
             ) {
               continue;
+            }else if (n.parentNode.fromXJSXCore) {
+             n.fromXJSXCore=true;
+             continue;
             }
             core.stage(n);
           }
@@ -381,7 +385,8 @@
       //var p=performance.now()
       var o = this.CALLBACK_PROTOTYPE(crt, opt, node)
       o.f = foo
-      o.f(crt.params[1], o.f = void 0);
+      o.f(crt.params[1], o.f = void 0,opt==="callback"&&crt.micro_callback&&crt.micro_callback(o));
+      
       //  console.log(performance.now()-p);
       crt.closed = true;
     },
@@ -502,6 +507,7 @@
             pp = pp.me();
 
             for (var i = 0; i < child.length; i++) {
+              child[i].fromXJSXCore=true
               pp.parentNode.insertBefore(child[i], pp);
             }
 
@@ -509,6 +515,7 @@
           } else if (child instanceof DocumentFragment) {
             // var t=performance.now()
             for (var i = 0; i < child.childNodes.length; i++) {
+              child.childNodes[i].fromXJSXCore=true 
               pp.push(child.childNodes[i]);
             }
             // console.log(performance.now()-t);
@@ -516,8 +523,45 @@
             pp.push(child);
           }
           pp = pp.me();
+          child.fromXJSXCore=true 
           pp.parentNode.insertBefore(child, pp);
         };
+      
+       if (process.micro_callback) {
+        _this.x_addChild = function (child) {
+          var pp = process;
+          while (pp.parentProcess) {
+            pp = pp.parentProcess;
+          }
+          pp = pp.nodes;
+      var n=pp.cut();
+          if (child instanceof Array) {
+            pp.push(child);
+            pp = pp.me();
+
+            for (var i = 0; i < child.length; i++) {
+              child[i].fromXJSXCore=true 
+              pp.parentNode.insertBefore(child[i], pp);
+            }
+
+            return;
+          } else if (child instanceof DocumentFragment) {
+            // var t=performance.now()
+            for (var i = 0; i < child.childNodes.length; i++) {
+              child.childNodes[i].fromXJSXCore=true
+              pp.push(child.childNodes[i]);
+            }
+            // console.log(performance.now()-t);
+          } else {
+            pp.push(child);
+          }
+          pp = pp.me();
+          child.fromXJSXCore=true
+          pp.parentNode.insertBefore(child, pp);
+          return n
+        };
+       }
+        
         _this.putChild = function (child) {
           var pp = process;
           while (pp.parentProcess) {
@@ -532,12 +576,14 @@
             pp = pp.me();
 
             for (var i = 0; i < child.length; i++) {
+              child[i].fromXJSXCore=true 
               pp.parentNode.insertBefore(child[i], pp);
             }
           } else {
             if (child instanceof DocumentFragment) {
               pp.flush();
               for (var i = 0; i < child.childNodes.length; i++) {
+               child.childNodes[i].fromXJSXCore=true 
                 pp.push(child.childNodes[i]);
               }
             } else {
@@ -545,6 +591,7 @@
               pp.push(child);
             }
             pp = pp.me();
+            child.fromXJSXCore=true
             pp.parentNode.insertBefore(child, pp);
           }
         };
@@ -640,6 +687,30 @@
         flush: function (a) {
           nodes = [];
         },
+        cut: function() {
+          var n=nodes;
+          nodes=[]
+          return function() {
+           for (var i = 0; i < n.length; i++)
+           {
+             var a=n[i]
+            if (a instanceof Array) {
+              for (var _i = 0; _i < a.length; _i++) {
+                a[_i].remove();
+              }
+              return;
+            } else if (a instanceof NodeList) {
+              while (a.length > 0) {
+                a[a.length - 1].remove();
+              }
+              return;
+            }
+
+            a.remove();
+          }
+          n = [];
+          }
+        },
         push: function (e) {
           nodes.push(e);
         },
@@ -681,17 +752,22 @@
           if ("function" !== typeof foo) {
             return console.error("parameter should be a function ");
           }
-          nodes.forEach(forEach);
+          for (var i = 0; i < nodes.length; i++) {
+            forEach(nodes[i])
+          }
+        //  nodes.forEach(forEach);
         },
         remove: function () {
           if (process.closed) {
             return console.error("process has ended ");
           }
           process.removed = self.removed = true;
-          nodes.forEach(function (a) {
+        for (var i = 0; i < nodes.length; i++)
+           {
+             var a=nodes[i]
             if (a instanceof Array) {
-              for (var i = 0; i < a.length; i++) {
-                a[i].remove();
+              for (var _i = 0; _i < a.length; _i++) {
+                a[_i].remove();
               }
               return;
             } else if (a instanceof NodeList) {
@@ -702,7 +778,7 @@
             }
 
             a.remove();
-          });
+          }
           nodes = [];
         },
         pop: function () {
@@ -731,14 +807,18 @@
           //    console.log(process);
           if (node instanceof DocumentFragment) {
             for (var i = 0; i < node.childNodes.length; i++) {
+              node.childNodes[i].fromXJSXCore=true
               process.push(node.childNodes[i]);
             }
           } else if (node instanceof Node) {
             node.parentNode && (node = node.cloneNode(true));
+            //node.fromXJSXCore=true
             process.push(node);
           } else {
             process.push(node = document.createTextNode(node));
+           // node.fromXJSXCore=true
           }
+          node.fromXJSXCore=true
           e.parentNode.insertBefore(node, e);
         },
       };
@@ -770,8 +850,17 @@
 
       if (module) {
         type = module.operations[0].type;
-        isNewProcess = type === MKEYWORD ? false: true;
+        isNewProcess = type === MKEYWORD || type === MICRO ? false: true;
       }
+
+if (type===MICRO&&currentProcess) {
+         currentProcess.micro_parameter=params[1];
+         currentProcess.micro_callback=module.operations[0].callback;
+          e.remove();
+        // module && module(params[1], currentProcess, this);
+  return 
+}
+
 
       if (!isNewProcess && currentProcess) {
         currentProcess.isDeadProcess = currentProcess._isDeadProcess;
@@ -846,6 +935,7 @@
           this.terminateCurrentProcess();
         }
       }
+
 
       if (e.parentNode) {
         if (shouldProcess) {
@@ -1043,24 +1133,29 @@ cause: XJSXCompiler at ON:
   },
   ]);
 
-  /** animate 
+  /** animate **/
   __core__.createModule([{
     keyword: "animate",
-    callback:
-    //function (e, process, core, shouldProcess) {
-    function (e, process) {
-    //  var process=null;
-      console.log(process);
+    callback:  function (node) {
       try {
-        if (process) {
-        //  if (process.type !== "function") {
-          //  throw "this module is not animatable"
-        //  }
-        //  console.log(shouldProcess);
-          //console.log(core,process);
-          //   throw 55
-          //   var doc=document.createElement("div")
-          // doc.className="f"
+        if (node) {
+                var put=node.putChild
+                var doc;
+      node.putChild=function(n){
+           if (doc) {
+             doc.setAttribute("class","anm out")
+           }
+           doc=document.createElement("div")
+             doc.setAttribute("class","anm in")
+        
+        doc.appendChild(n)
+        var r=node.x_addChild(doc)
+        setTimeout(function() {
+          doc.classList.remove("anm")
+          r()
+          
+        }, 700);
+      }
         } else {
           throw "Unexpected token 'animate'";
         }
@@ -1068,9 +1163,9 @@ cause: XJSXCompiler at ON:
         console.error("animate:", err+"");
       }
     },
-    type: METHOD
+    type: MICRO
   }]);
-  **/
+  
 
   /** if **/
   __core__.createModule([{

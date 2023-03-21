@@ -5,11 +5,11 @@
   * New keywords added 
     `on:`, `console-log:`, `data:`, `eval:`
      
-     Read more about it [here](README.md#XJSX Keywords)
+     Read more about it [here](#XJSX Keywords)
   * Added new methods to the XJSX object 
    `parseElement`, `parseXJSXParameter`, `event`, `createModule`
     
-    Read more about it [here](module/XJSX.md)
+    Read more about it [here](module)
   * Added new Demo files to repo
   * Fixed existing bugs
   * Performance update

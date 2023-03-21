@@ -225,7 +225,7 @@ The XJSX global object is a JavaScript object that has been added to the XJSX li
   console.log(window.XJSX);
 
 ```
-Read more about it [here](module/XJSX.md)
+Read more about it [here](module)
 
 
 ## XJSX vs. React JSX
