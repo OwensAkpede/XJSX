@@ -87,7 +87,7 @@ Ready to see XJSX in action? Here are a few examples of how you can use XJSX to 
   Hello <!--?print: "World"?-->
 </h1>
 ```
-This will render as:
+  This will render as:
 ```html
 <h1>
   Hello World
@@ -104,11 +104,16 @@ This will render as:
   Welcome to <!--?print: jsonString.name?-->
 </h1>
 ```
-This will render as:
+  This will render as:
 ```html
 <h1>
   Welcome to XJSX
 </h1>
+```
+
+- **Console Log:** The `console-log` keyword is similar to the `console.log` function in JavaScript. It allows you to log messages to the console. For example:
+```html
+   <!--?console-log: "hello world!"?-->
 ```
 
 - **Use Template:** Use the `use-template` keyword to insert a template element into your HTML. For example:
@@ -118,7 +123,7 @@ This will render as:
 </template>
 <!--?use-template: "greeting"?-->
 ```
-This will render as:
+  This will render as:
 ```html
 <h1>Hello World!!</h1>
 ```
@@ -152,12 +157,45 @@ This will render as:
    <p>Value: <!--?print: value?-->, Index: <!--?print: index?--></p>
 <!--?? end ??-->
 ```
-This will render as:
+  This will render as:
 ```html
 <p>Value: 1, Index: 0</p>
 <p>Value: 2, Index: 1</p>
 <p>Value: 3, Index: 2</p>
 ```
+
+- **Event Listener:** The `on` and `end` keyword is used to add event listeners to the document. Here's an example:
+```html
+<!--?on: "load"?-->
+   <p>Page loaded!</p>
+<!--?end?-->
+```
+  In the above example, we're using the `on` keyword to add an event listener for the "load" event of the document. When the page is loaded, the XJSX element containing the "Page loaded!" message will be rendered
+
+- **Data:** The `data` keyword is used to listen for events and update the XJSX element when the event is emitted. Here's an example:
+```html
+ <script>
+   var emit = XJSX.event.emit;
+   emit("data/name", "Elon Musk");
+ </script>
+
+   <h1> <!--?data: "name"?--> </h1>
+
+```
+  This will render as:
+```html
+   
+   <h1> Elon Musk  </h1>
+
+```
+  In this example, the XJSX element will rerender every time the "data/name" event is emitted
+
+
+- **Eval:** The `eval` keyword is used to evaluate JavaScript code in an XJSX document, similar to the `eval()` function in JavaScript. Here's an example:
+```html
+   <!--?eval: "var x=10;"?-->
+```
+  In the above example, we're using the `eval` keyword to create a variable x with the value of 10.
 
 ## Proper Syntax for XJSX Usage
 When using XJSX, it's crucial to ensure that you correctly incorporate it into an HTML tag.
