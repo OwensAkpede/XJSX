@@ -9,7 +9,7 @@
   * Added new methods to the XJSX object 
    `parseElement`, `parseXJSXParameter`, `event`, `createModule`
     
-    Read more about it [here](module/README.md)
+    Read more about it [here](module/README.md#windowxjsx)
   * Added new Demo files to repo
   * Fixed existing bugs
   * Performance update
