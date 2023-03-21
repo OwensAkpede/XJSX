@@ -33,7 +33,7 @@ FUNCTION: Number
 
 ## **parseXJSXParameter** 
 This is a method that parses an XJSX parameter string (e.g. "arg1;arg2,arg3") and returns an object with the arguments and parameter values. This method is used internally by XJSX to parse parameters, but you can also use it if you need to parse a parameter string manually.
-```html
+```xml
 
   <?keyword: arg1; arg2, arg3?>
 
@@ -59,7 +59,7 @@ window.XJSX.event.emit("myEvent");
 
 ## **parseElement** 
 This is a method that takes a DOM node and an optional eval function as arguments, and compiles any XJSX expressions inside the node. The method returns true if any expressions were compiled, and false otherwise.
-```html
+```xml
 <div id="node">
 <h1><?print: "Hello World"?></h1>
 </div>
