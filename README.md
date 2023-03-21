@@ -238,13 +238,17 @@ METHOD: <Integer>,
 FUNCTION: <Integer>
 }
 ```
-### FUNCTION 
+
+**FUNCTION**
  Used for regular functions (enclosed with the `end` keyword). Examples are `fetch`, `for-each` and `on`
-### METHOD
+
+**METHOD**
  Used for outputting data (not enclosed with the `end` keyword). Examples are `print`, `parse-jsom`, `console-log`, `eval`, `use-template` and `data`
-### KEYWORD
+
+**KEYWORD**
  Used for standalone operations (enclosed with the `end` keyword). Examples are `if`
-### MKEYWORD
+
+**MKEYWORD**
  Used for micro operations (not enclosed with the `end` keyword). Examples are `end`
 
 - **parseXJSXParameter** This is a method that parses an XJSX parameter string (e.g. "arg1;arg2,arg3") and returns an object with the arguments and parameter values. This method is used internally by XJSX to parse parameters, but you can also use it if you need to parse a parameter string manually.
@@ -284,44 +288,61 @@ console.log(node.innerText); //Hello World
 
 - **createModule** This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **FUNCTION**, **METHOD**, **KEYWORD**, or **MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
 ```javascript
+
 // Create a new function module
 var myFuncModule = window.XJSX.createModule("myFuncModule", window.XJSX.FUNCTION, {
-  onload: function() {
+  onload: function(parameter) {
     console.log(this);
     console.log("myFuncModule loaded");
   },
-  onprogress: function() {
-  
+  onprogress: function(parameter) {
     console.log(this);
-
-
-  }
-  callback: function() {
+  },
+  callback: function(parameter) {
     console.log(this);
     console.log("myFuncModule callback called");
   }
-});
+}).end();
+
 
 // Create a new keyword module
 var myKeywordModule = window.XJSX.createModule("myKeywordModule", window.XJSX.KEYWORD, {
-  onload: function() {
+  onload: function(parameter) {
+    console.log(this);
     console.log("myKeywordModule loaded");
   },
-  callback: function() {
+  onprogress: function(parameter) {
+    console.log(this);
+  },
+  callback: function(parameter) {
+    console.log(this)
     console.log("myKeywordModule callback called");
   }
-});
+}).end();
+
 
 // Create a new method module
 var myMethodModule = window.XJSX.createModule("myMethodModule", window.XJSX.METHOD, {
-  onload: function() {
-    console.log("myMethodModule loaded");
-  },
-  callback: function() {
+  callback: function(parameter, node, eval) {
     console.log("myMethodModule callback called");
   }
 });
+//not necessarily to call the end method here
 
+```
+
+you can then use in your html:
+```html
+
+<!--?myFunctionModule: "something"?-->
+  Hello function
+<!--?end?-->
+
+<!--?myKeywordModule: "something"?-->
+  Hello keyword
+<!--?end?-->
+
+<!--?myMethodModule: "something"?-->
 ```
 
 ## XJSX vs. React JSX
