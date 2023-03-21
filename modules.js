@@ -94,6 +94,9 @@
     },
   ]);
 
+
+
+
   /** print **/
   XJSX.createModule([{
     keyword: "print",
@@ -113,6 +116,10 @@
   },
   ]);
 
+
+
+
+
   /** parse-json **/
   XJSX.createModule([{
     keyword: "parse-json",
@@ -130,6 +137,9 @@
     type: METHOD,
   },
   ]);
+
+
+
 
   /** use-template **/
   XJSX.createModule([{
@@ -167,6 +177,11 @@
     type: METHOD,
   },
   ]);
+  
+  
+  
+  
+  
 
   /** eval **/
   XJSX.createModule([{
@@ -184,6 +199,10 @@
   },
   ]);
   
+  
+  
+
+
   /** console-log **/
   XJSX.createModule([{
     keyword: "console-log",
@@ -203,6 +222,11 @@
     type: METHOD,
   },
   ]);
+  
+
+
+
+
 
   /** data **/
   XJSX.createModule([{
@@ -224,6 +248,11 @@
     type: METHOD,
   },
   ]);
+
+
+
+
+
 
   /** fetch **/
   XJSX.createModule([{
@@ -322,6 +351,11 @@
       },
     },
   ]);
+  
+
+
+
+
 
   /** for-each **/
   XJSX.createModule([{
@@ -401,6 +435,10 @@
     },
   },
   ]);
+
+
+
+
 
   /** on **/
   XJSX.createModule([{
