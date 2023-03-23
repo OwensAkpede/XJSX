@@ -1,3 +1,10 @@
+0.0.4 / 2023-03-24
+==================
+
+  * Add new keyword to the "for-each" keyword. see [here](advance/FOR-EACH.README.md)
+  * Fixed existing bugs
+  * Performance update
+
 0.0.3 / 2023-03-23
 ================== 
 
