@@ -1,4 +1,12 @@
+0.0.3 / 2023-03-23
+================== 
 
+  * Updated [README.md](README.md)
+  * Made a documentation on how to create your own XJSX functionality. 
+     see it [here](module/README.md#windowxjsx)
+  
+  
+  
 0.0.3 / 2023-03-19
 ==================
 
@@ -6,7 +14,7 @@
     `on:`, `console-log:`, `data:`, `eval:`
      
      Read more about it [here](README.md#xjsx-Keywords)
-  * Added new methods to the XJSX object 
+  * Added new methods to the XJSX global object 
    `parseElement`, `parseXJSXParameter`, `event`, `createModule`
     
     Read more about it [here](module/README.md#windowxjsx)
