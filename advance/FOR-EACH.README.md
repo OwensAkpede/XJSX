@@ -48,15 +48,17 @@
 ```
 # **for-each, break and continue**
 ```xml
-<div list>
-  
-  <div a>
+<div>
+
+  <h2>Odd Numbers:</h2>
+  <div>
     <?for-each: [1, 2, 3, 4]; value, index?>
        <?if: value%2 === 1?><?print: value?><?end?> <br/>
     <?break?>
   </div>
  
-  <div b>
+  <h2>Even Numbers:</h2>
+  <div>
     <?continue?>
        <?if: value%2 === 0?><?print: value?><?end?> <br/>
     <?break?>
@@ -67,14 +69,16 @@
 ```
   This will render as:
 ```xml
-<div list>
+<div>
   
-  <div a>
+  <h2>Odd Numbers:</h2>
+  <div>
     1 <br/>
     3 <br/>
   </div>
- 
-  <div b>
+  
+  <h2>Even Numbers:</h2>
+  <div>
     2 <br/>
     4 <br/>
   </div>
