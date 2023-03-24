@@ -5,7 +5,6 @@
 
 ```xml
 
-
   <!--?if: x > y ?-->
     <p>X is greater</p>
   <!--?else-if: x === y ?-->
@@ -13,7 +12,6 @@
   <!--?else?-->
     <p>Y is greater</p>
   <!--?end?-->
-
 
 ```
 
