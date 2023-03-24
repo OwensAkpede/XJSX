@@ -171,7 +171,7 @@ Use the `for-each` and `end` keywords to loop over arrays and output HTML for ea
 <p>Value: 2, Index: 1</p>
 <p>Value: 3, Index: 2</p>
 ```
- see [`here`](advance/FOR-EACH.README.md) for more.
+ refer [`here`](advance/FOR-EACH.README.md) for the complete doc.
 ### **Event Listener:** 
 The `on` and `end` keyword is used to add event listeners to the document. Here's an example:
 ```xml
