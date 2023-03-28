@@ -1,7 +1,7 @@
 
 # XJSX: Expressed JavaScript XHTML
 
-***for the most recent and precise information, please refer to [here](README.md)***
+***for the most recent and precise information, please refer to [here](../README.md)***
 
 ```xml
 
