@@ -42,7 +42,7 @@ B:
 <!--?keyword: parameter?-->
 ```
 
-[Option B](advance/README.B.md) is recommended, as both patterns are treated as comments by HTML rendering engines.
+[Option B](advance/README.B.md) is also recommended, as both patterns are treated as comments by HTML rendering engines.
 
 ## Installation
 To start using XJSX, simply include the [source file or URL](https://owens94819.github.io/XJSX/xjsx.js) in your HTML head:
