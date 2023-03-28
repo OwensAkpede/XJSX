@@ -42,7 +42,7 @@ B:
 <!--?keyword: parameter?-->
 ```
 
-[Option B](README.B.md) is recommended, as both patterns are treated as comments by HTML rendering engines.
+[Option B](advance/README.B.md) is recommended, as both patterns are treated as comments by HTML rendering engines.
 
 ## Installation
 To start using XJSX, simply include the [source file or URL](https://owens94819.github.io/XJSX/xjsx.js) in your HTML head:
@@ -170,7 +170,7 @@ Use the `for-each` and `end` keywords to loop over arrays and output HTML for ea
 <p>Value: 1, Index: 0</p>
 <p>Value: 2, Index: 1</p>
 <p>Value: 3, Index: 2</p>
-```
+``` 
  refer [`here`](advance/FOR-EACH.README.md) for the complete doc.
 ### **Event Listener:** 
 The `on` and `end` keyword is used to add event listeners to the document. Here's an example:
