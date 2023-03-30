@@ -1,3 +1,11 @@
+0.0.7 / 2023-03-30
+==================
+
+  * New keywords added `animation:`. 
+  see this [example](https://Owens94819.github.io/XJSX-DEMO/animation)
+  and [source](https://github.com/Owens94819/XJSX-DEMO/animation)
+  * Performance update
+
 0.0.5 / 2023-03-28
 ==================
 
