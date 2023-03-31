@@ -244,7 +244,7 @@ Read more about it [here](module/README.md#windowxjsx)
 Xjsx is a framework that allows you to write JavaScript-like code in your HTML files. It's a reverse version of JSX, which lets you write HTML-like code in your JavaScript files. Xjsx can help simplify your code and make it more readable by keeping all the logic in one place.
 
 ## Demo
-[https://github.com/Owens94819/XJSX-DEMO](https://github.com/Owens94819/XJSX-DEMO)
+refer the following repo [https://github.com/Owens94819/XJSX-DEMO](https://github.com/Owens94819/XJSX-DEMO)
 
 ## Conclusion
 XJSX is a lightweight JavaScript framework that enables developers to write HTML templates using JavaScript syntax. It provides a set of keywords that allow developers to write conditional statements, loops, and interact with the DOM API. XJSX helps to simplify HTML code and makes it more expressive, especially when dealing with dynamic data.
