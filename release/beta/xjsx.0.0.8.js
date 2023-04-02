@@ -1,5 +1,6 @@
 /***
  * @use-template fragment tmp.performance
+ * @aviod element.innerHTML+=<value>
  */
 
 (function (exec) {
@@ -483,62 +484,65 @@
 
             pp = pp.nodes;
 
-            if (child instanceof Array) {
-              pp.push(child);
-              pp = pp.me();
-
-              for (var i = 0; i < child.length; i++) {
-                child[i].fromXJSXCore = true;
-                pp.parentNode.insertBefore(child[i], pp);
+            if (child instanceof NodeList) {
+              var _p = pp.me();
+              while(child.length){
+                  child[0].fromXJSXCore = true;
+                  pp.push(child[0]);
+                 _p.parentNode.insertBefore(child[0], _p);
               }
-
-              return;
-            } else if (child instanceof DocumentFragment) {
+              return 
+            }  else if (child instanceof DocumentFragment) {
               for (var i = 0; i < child.childNodes.length; i++) {
                 child.childNodes[i].fromXJSXCore = true;
                 pp.push(child.childNodes[i]);
               }
-            } else {
+            }else if (child instanceof Node) {
+           //  node.parentNode && (node = node.cloneNode(true));
               pp.push(child);
-            }
+            } else {
+              pp.push((child = document.createTextNode(child)));
+            } 
             pp = pp.me();
             child.fromXJSXCore = true;
             pp.parentNode.insertBefore(child, pp);
           },
-          _this.putChild = function (child, sub) {
+          
+         /*put*/ _this.putChild = function (child, sub) {
             var pp = process;
             if (!sub) {
               while (pp.parentProcess) {
                 pp = pp.parentProcess;
               }
             }
+         //  console.log(pp,pp.removed);
             pp = pp.nodes;
+
             pp.remove();
             // console.log(child);
-            if (child instanceof Array) {
               pp.flush();
-              pp.push(child);
-              pp = pp.me();
-
-              for (var i = 0; i < child.length; i++) {
-                child[i].fromXJSXCore = true;
-                pp.parentNode.insertBefore(child[i], pp);
+            if (child instanceof NodeList) {
+              var _p = pp.me();
+              while(child.length){
+                  child[0].fromXJSXCore = true;
+                  pp.push(child[0]);
+                 _p.parentNode.insertBefore(child[0], _p);
               }
-            } else {
-              if (child instanceof DocumentFragment) {
-                pp.flush();
+              return 
+            } else if (child instanceof DocumentFragment) {
                 for (var i = 0; i < child.childNodes.length; i++) {
                   child.childNodes[i].fromXJSXCore = true;
                   pp.push(child.childNodes[i]);
                 }
-              } else {
-                pp.flush();
-                pp.push(child);
-              }
+            }else if (child instanceof Node) {
+           //  node.parentNode && (node = node.cloneNode(true));
+              pp.push(child);
+            } else {
+              pp.push((child = document.createTextNode(child)));
+            } 
               pp = pp.me();
               child.fromXJSXCore = true;
               pp.parentNode.insertBefore(child, pp);
-            }
           },
           _this.terminate = function () {
             !process.closed&&
@@ -558,24 +562,25 @@
               }
               pp = pp.nodes;
               var n = pp.cut();
-              if (child instanceof Array) {
-                pp.push(child);
-                pp = pp.me();
-
-                for (var i = 0; i < child.length; i++) {
-                  child[i].fromXJSXCore = true;
-                  pp.parentNode.insertBefore(child[i], pp);
-                }
-
-                return;
-              } else if (child instanceof DocumentFragment) {
+           if (child instanceof NodeList) {
+              var _p = pp.me();
+              while(child.length){
+                  child[0].fromXJSXCore = true;
+                  pp.push(child[0]);
+                 _p.parentNode.insertBefore(child[0], _p);
+              }
+              return 
+            } else if (child instanceof DocumentFragment) {
                 for (var i = 0; i < child.childNodes.length; i++) {
                   child.childNodes[i].fromXJSXCore = true;
                   pp.push(child.childNodes[i]);
                 }
-              } else {
-                pp.push(child);
-              }
+          } else if (child instanceof Node) {
+           //  node.parentNode && (node = node.cloneNode(true));
+              pp.push(child);
+            } else {
+              pp.push((child = document.createTextNode(child)));
+            } 
               pp = pp.me();
               child.fromXJSXCore = true;
               pp.parentNode.insertBefore(child, pp);
@@ -788,32 +793,22 @@
         return {
           remove: e.remove,
           isVisible: process.isVisible,
-          putChild: function (node) {
+        /*put*/  putChild: function (node) {
             process.remove();
-            if (node instanceof NodeList) {
-              var len = node.length;
-              for (var i = 0; i < len; i++) {
-                len !== node.length && ((i = 0), (len = node.length));
-                // (a[i]);
-                !node[i].fromXJSXCore && (node[i].fromXJSXCore = true);
-                //  node[i].fromXJSXCore = true;
-                e.parentNode.insertBefore(node[i], e);
+           if (node instanceof NodeList) {
+              while(node.length){
+                  node[0].fromXJSXCore = true;
+                  process.push(node[0]);
+                 e.parentNode.insertBefore(node[0], e);
               }
-              return;
-            }else if (node instanceof Array) {
-              for (var i = 0; i < node.length; i++) {
-                !node[i].fromXJSXCore && (node[i].fromXJSXCore = true);
-                process.push(node[i]);
-                e.parentNode.insertBefore(node[i], e);
-              }
-              return;
+              return 
             } else if (node instanceof DocumentFragment) {
               for (var i = 0; i < node.childNodes.length; i++) {
                 node.childNodes[i].fromXJSXCore = true;
                 process.push(node.childNodes[i]);
               }
             } else if (node instanceof Node) {
-             node.parentNode && (node = node.cloneNode(true));
+           //  node.parentNode && (node = node.cloneNode(true));
               process.push(node);
             } else {
               process.push((node = document.createTextNode(node)));
@@ -843,18 +838,47 @@
         var isNewProcess;
         var type;
         var isChildProcess;
-        var module =
-          !currentProcess && this.getModule(params[0]) ||
+        var module;
+                  
+        
+        currentProcess&&currentProcess.module.keywords[params[0]]&&
+        !(module=false)
+        ||
+        (module=this.getModule(params[0]));
+        
+        
+     /*     var module=
+        currentProcess &&
+        currentProcess.module.keywords[params[0]]&&
+        false||
+        this.getModule(params[0]);
+        
+        
+        if (currentProcess &&
+        currentProcess.module.keywords[params[0]]) {
+          var module=false;
+        }else{
+          var module=this.getModule(params[0]);
+        }*/
+       /* var module =
+        currentProcess &&
+        currentProcess.module.keywords[params[0]]
+          ?  false
+          : this.getModule(params[0]);*/
+       /* var module =
+          !currentProcess && (this.getModule(params[0]),true) ||
           !currentProcess.module.keywords[params[0]]&&
              this.getModule(params[0])
               ||
              false;
-             
+             */
 
         module&&
         (
           type = module.operations[0].type,
-          isNewProcess = type === MKEYWORD || type === MICRO ? false : true
+        //  isNewProcess = type === MKEYWORD || type === MICRO ? false : true
+         isNewProcess = !(type === MKEYWORD || type === MICRO)
+         // isNewProcess = type !== MKEYWORD || type !== MICRO && true ||  false;
         )
 
         if (type === MICRO ) {
@@ -915,34 +939,46 @@
           isChildProcess = true;
           var nextInLineProcess;
           var currentInLineProcess;
+          
           module = currentProcess.module;
-          type = module.operations[0].type;
+          type = currentProcess.type;
+          /*
           var previousKeyword = currentProcess.name;
          // console.log(previousKeyword === module.name);
           if (previousKeyword === module.name) {
           previousKeyword =0
           }else{
           previousKeyword =module.keywords[previousKeyword]
-          }
+          }*/
           /*
           previousKeyword =
             previousKeyword === module.name
               && 0
               || module.keywords[previousKeyword];*/
 //console.log(module.keywords,previousKeyword);
-          nextInLineProcess = previousKeyword;
+         
+          currentProcess.name===module.name&&!(
+            nextInLineProcess=0
+            )||(
+              nextInLineProcess=module.keywords[currentProcess.name]
+              )
+          
+        //  nextInLineProcess = previousKeyword;
+          
           currentInLineProcess = module.keywords[params[0]];
 
           var err_msg =
             "Unexpected token '" +
             params[0] +
             "'.\n" +
-            (nextInLineProcess === 1
-              ? ""
-              : "( " + currentProcess.parentParams.join(":") + " )...") +
+            (nextInLineProcess >= 1
+              && "( " + currentProcess.parentParams.join(":") + " )..."
+              || ""
+              ) +
             "( " +
             currentProcess.params.join(":") +
-            " )..." +
+            " )..." 
+            +
             "( " +
             params.join(":") +
             " ) " +
@@ -961,8 +997,8 @@
 
           this.execCallback(currentProcess);
           if (currentProcess.isterminated) {
-            /*** check **/
             this.terminateCurrentProcess();
+            /*** check **/
             return console.error(err_msg);
           } else {
             this.terminateCurrentProcess();
@@ -985,6 +1021,7 @@
           var newNode = this.createElement(true);
           e.parentNode.insertBefore(newNode, e);
           e.remove();
+        //  console.log(e);
           e = newNode;
         } else {
           //   e.process = {nodes:{append:currentProcess.nodes.append}};
@@ -1112,7 +1149,7 @@
 
         //  console.log(element.childElementCount, element);
         // return element
-
+   /*   if(element.childElementCount>0){*/
         var node = document
           .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function (n) {
             return __core__._XJSXSyntax(n.data) && true;
@@ -1124,6 +1161,11 @@
             return __core__._XJSXSyntax(n.data) && true;
           })
           .lastChild();
+        /*  }else{
+           // console.log(element);
+          var node=element.firstChild;
+          var last;
+          }*/
         var _n = node && (node.nextSibling||node.parentNode);
 
            // console.log(node, element);
@@ -1195,20 +1237,16 @@
     {
       keyword: "end",
       callback: function (e, currentProcess, core) {
-        if (currentProcess) {
-          core.execCallback(currentProcess);
-          if (currentProcess.module.operations[0].onend) {
-            currentProcess.callback.callback =
-              currentProcess.module.operations[0].onend;
-            core.execCallback(currentProcess);
-          }
-
-          if (!currentProcess.isterminated) {
-            core.terminateCurrentProcess();
-          }
-        } else {
+        currentProcess&&(
+          core.execCallback(currentProcess),
+         currentProcess.module.operations[0].onend&&(
+            currentProcess.callback.callback =currentProcess.module.operations[0].onend,
+            core.execCallback(currentProcess,0,"onend")
+          ),
+          !currentProcess.isterminated &&
+            !core.terminateCurrentProcess()
+        )||
           console.error("Unexpected token 'end'");
-        }
       },
       type: MKEYWORD,
     },
@@ -1220,15 +1258,22 @@
       keyword: "animate",
       callback: function (arg,node) {
         try {
-          var param = this.eval("[" + arg + "][0]");
+          arg = this.eval("[" + arg + "]");
+          var param =arg[0];
           if (node) {
             var put = node.putChild;
             var doc;
             node.putChild = function (n) {
               doc = document.createElement("x-fragment");
-              doc.appendChild(n);
+              if (n instanceof NodeList) {
+                while (n[0]) {
+                doc.appendChild(n[0]);
+                }
+              } else {
+                doc.appendChild(n);
+              }
               var r = node.x_addChild(doc);
-              __core__.animation[param]&& (__core__.animation[param])(doc,r, param);
+              __core__.animation[param]&& (__core__.animation[param])(doc,r, arg);
             };
           } else {
             throw "Unexpected token 'animate'";
@@ -1334,7 +1379,7 @@
           try {
             var tmp=__core__.tmp||(__core__.tmp=document.createElement("template"));
             tmp.innerHTML=eval(e);
-            __core__.XJSXCompiler(tmp.content)
+          //  __core__.XJSXCompiler(tmp.content)
             node.putChild(tmp.content)
           } catch (err) {
             console.error("print-html:", e, err + "");
@@ -1506,6 +1551,8 @@
       onload: function (arg) {
         var opt;
         var url;
+        var http = new XMLHttpRequest();
+        this.global.http = http;
         try {
           arg= this.eval("[" + arg + "]");
           url=arg[0];
@@ -1513,13 +1560,12 @@
             opt=arg[1]
           }
         } catch (e) {
+          
           return console.error("fetch", arg, e);
         }
-        var http = new XMLHttpRequest();
         opt&&opt.type&&(http.responseType=opt.type)
         http.open(opt&&opt.method||"get", url);
         http.send();
-        this.global.http = http;
       },
       type: FUNCTION,
     },
@@ -1539,17 +1585,15 @@
 
         http.onload = function () {
           p = p.split(",");
-          var argument = [
-            {
+          var argument = [new String (http.response)];
+          Object.assign(argument[0],{
               responseURL: http.responseURL,
               status: http.status,
               statusText: http.statusText,
               responseType: http.responseType,
-              response: http.response,
               opened: (http.abort(), (http = delete self.global.http)),
-            },
-          ];
-
+            })
+            
           try {
             /* code */
             for (var i = 0; i < p.length; i++) {
@@ -1560,6 +1604,10 @@
           }
           self.putChild(__core__.XJSXCompiler(doc, self.eval));
         };
+
+          
+          
+        
       },
     },
     {
@@ -1577,7 +1625,7 @@
         this.appendAllTo(doc);
 
         http.onerror = function () {
-          console.error(arguments[0]);
+       //   console.error(arguments[0]);
           p = p.split(",");
 
           try {
@@ -1590,6 +1638,68 @@
           http = delete self.global.http;
 
           self.putChild(__core__.XJSXCompiler(doc, self.eval));
+        };
+                !http.readyState &&
+          http.onerror()||(http.onerror=void 0)
+      },
+    },
+  ]);
+  
+  /** include**/
+  __core__.createModule([
+    {
+      keyword: "include",
+      callback: function (url) {
+        var url;
+        try {
+          if(!(url= this.eval("[" + url + "][0]"))){
+            throw "'"+url+"'"+" is not a valid argument"
+          }
+
+        var self=this;
+        var http = new XMLHttpRequest();
+        self.global.http = http;
+        
+        http.onload=function() {
+          if (!http.response) {
+            http.onerror&&http.onerror();
+            throw url+"\npath could not be included"+"\nmake sure the provided url is a valid html file";
+          }
+         var r=http.response.body
+         
+         self.putChild(__core__.XJSXCompiler(http.response.body,self.eval).childNodes)
+         http.abort()
+        }
+        http.responseType="document"
+        http.open("get", url);
+        http.send();
+        } catch (e) {
+          console.error("include:", url, e);
+        }
+      },
+      type: FUNCTION,
+    },
+    {
+      keyword: "catch",
+      onload: function () {
+        this.killProcess();
+      },
+      onprogress: function () {
+        this.disable();
+      },
+      callback: function () {
+        var self = this;
+        var doc = document.createDocumentFragment();
+        this.appendAllTo(doc);
+        if (!self.global.http) {
+         self.putChild(__core__.XJSXCompiler(doc, self.eval));
+      return 
+        }
+        self.global.http.onerror = function () {
+      //    console.error(arguments[0]);
+         self.putChild(__core__.XJSXCompiler(doc, self.eval));
+          self.global.http.abort();
+         delete self.global.http;
         };
       },
     },
@@ -1612,6 +1722,7 @@
       },
       onend: function () {
         try {
+        //  console.log(this);
           var self = this;
           var p = this.global.p;
           var data = p.parameter[0];
@@ -1621,7 +1732,10 @@
               self.eval(arguments[i], p.arguments[i]);
             }
             for (var i = 0; i < self.global.callback.length; i++) {
-              self.global.callback[i]();
+             self.global.callback[i].addChild(
+             __core__.XJSXCompiler(self.global.callback[i].d.cloneNode(true), self.eval),
+             true)
+             /**self.global.callback[i]();**/
             }
           };
 
@@ -1651,18 +1765,21 @@
       },
       callback: function () {
         var self = this;
-        p = this.global.p;
-        var doc = document.createDocumentFragment();
-        this.appendAllTo(doc);
-        if (1 > doc.childNodes.length) {
+     //   p = this.global.p;
+        this.appendAllTo(
+        self.d = document.createDocumentFragment()
+        );
+      /*  if (1 > self.d.childNodes.length) {
           return;
-        }
+        }*/
+        self.global.callback.push(self);
+     /*   return 
         self.global.callback.push(function () {
           self.addChild(
-            __core__.XJSXCompiler(doc.cloneNode(true), self.eval()),
+            __core__.XJSXCompiler(doc.cloneNode(true), self.eval),
             true
           );
-        });
+        });*/
       },
     },
     {
@@ -1678,14 +1795,17 @@
       },
       callback: function () {
         var self = this;
-        var doc = document.createDocumentFragment();
-        this.appendAllTo(doc);
+        this.appendAllTo(
+        self.d = document.createDocumentFragment()
+        );
+        self.global.callback.push(self);
+     /*   return 
         self.global.callback.push(function () {
           self.addChild(
-            __core__.XJSXCompiler(doc.cloneNode(true), self.eval()),
+            __core__.XJSXCompiler(doc.cloneNode(true), self.eval),
             true
           );
-        });
+        });*/
       },
     },
   ]);

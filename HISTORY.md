@@ -1,3 +1,13 @@
+
+0.0.8 / 2023-04-02
+==================
+
+  * New keywords added `include:`. 
+  see this [example](https://Owens94819.github.io/XJSX-DEMO/include)
+  and [source](https://github.com/Owens94819/XJSX-DEMO/include)
+  * Performance update
+
+
 0.0.7 / 2023-03-30
 ==================
 

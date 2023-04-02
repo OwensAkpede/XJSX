@@ -12,10 +12,10 @@ Here's an overview of some of the properties and methods available on the XJSX g
 These are integer values used as identifiers for different types of modules. FUNCTION is used for regular functions, METHOD is used for object methods, KEYWORD is used for standalone keywords, and MKEYWORD is used for keywords that require a method call. You can use these constants with the createModule method to specify the type of module that you want to create.
 ```javascript
 {
-KEYWORD: Number,
-MKEYWORD: Number,
-METHOD: Number,
-FUNCTION: Number 
+KEYWORD: <number>,
+MKEYWORD: <number>,
+METHOD: <number>,
+FUNCTION: <number>
 }
 ```
 
@@ -70,7 +70,7 @@ console.log(node.innerText); //Hello World
 ```
 
 ## **createModule** 
-This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **FUNCTION**, **METHOD**, **KEYWORD**, or **MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
+This function is used to create new XJSX modules (keyword), and takes three arguments: `name`, `type`, and `object`. `name` is a string that defines the name of the module, `type` is an integer that specifies the module type (using the **XJSX.FUNCTION**, **XJSX.METHOD**, **XJSX.KEYWORD**, or **XJSX.MKEYWORD** constants), and `object` is an object that contains the module's `onload`, `onprogress`, and `callback` functions. The createModule function returns an object with two functions, `append` and `end`. `append` is used to add additional modules to the current one, and `end` is used to finalize the module and create it.
 
 [see more examples here](../module)
 
