@@ -153,7 +153,7 @@ Use the `fetch`, `then`, `catch`, and `end` keywords to make API requests and ha
 <?fetch: "https://jsonplaceholder.typicode.com/todos/1" ?>
    <h1>Loading...</h1>
 <?then: response?>
-   <h1><?print: response.response?></h1>
+   <h1><?print: response?></h1>
 <?catch?>
    <h1>Error loading data</h1>
 <?end?>
