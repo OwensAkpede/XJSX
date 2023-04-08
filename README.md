@@ -11,7 +11,7 @@
   <?else-if: x === 2 ?>
     <p>X equal to 2</p>
   <?else?>
-    <p>Neither conditions where true</p>
+    <p>Neither condition was true</p>
   <?end?>
 
 
@@ -143,7 +143,7 @@ Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML
 <?else-if: x === 0 ?>
    <h1>X is equal to 0</h1>
 <?else?>
-   <h1>Neither conditions where true</h1>
+   <h1>Neither condition was true</h1>
 <?end?>
 ```
 
