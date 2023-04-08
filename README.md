@@ -138,12 +138,12 @@ Use the `use-template` keyword to insert a template element into your HTML. For 
 Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML based on JavaScript expressions. For example:
 
 ```xml
-<?if: x > 0 ?>
-   <h1>X is greater than 0</h1>
+<?if: x < 0 ?>
+   <h1>X is lesser than 0</h1>
 <?else-if: x === 0 ?>
    <h1>X is equal to 0</h1>
 <?else?>
-   <h1>X is less than 0</h1>
+   <h1>X is greater than 0</h1>
 <?end?>
 ```
 
