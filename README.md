@@ -143,7 +143,7 @@ Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML
 <?else-if: x === 0 ?>
    <h1>X is equal to 0</h1>
 <?else?>
-   <h1>X is greater than 0</h1>
+   <h1>Neither conditions where true</h1>
 <?end?>
 ```
 
