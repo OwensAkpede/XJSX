@@ -6,12 +6,12 @@
 
 
 
-  <?if: x > y ?>
-    <p>X is greater</p>
-  <?else-if: x === y ?>
-    <p>X and Y are equal</p>
+  <?if: x === 1 ?>
+    <p>X is equal to 1</p>
+  <?else-if: x === 2 ?>
+    <p>X equal to 2</p>
   <?else?>
-    <p>Y is greater</p>
+    <p>Neither conditions where true</p>
   <?end?>
 
 
