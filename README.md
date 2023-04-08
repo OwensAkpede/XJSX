@@ -6,10 +6,10 @@
 
 
 
-  <?if: x === 1 ?>
-    <p>X is equal to 1</p>
-  <?else-if: x === 2 ?>
-    <p>X equal to 2</p>
+  <?if: x%2 === 0 ?>
+    <p>X is an Even number</p>
+  <?else-if: x%2 === 1 ?>
+    <p>X is an Odd number</p>
   <?else?>
     <p>Neither condition was true</p>
   <?end?>
