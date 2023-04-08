@@ -6,9 +6,9 @@
 
 
 
-  <?if: x%2 === 0 ?>
+  <?if: x % 2 === 0 ?>
     <p>X is an Even number</p>
-  <?else-if: x%2 === 1 ?>
+  <?else-if: x % 2 === 1 ?>
     <p>X is an Odd number</p>
   <?else?>
     <p>Neither condition was true</p>
