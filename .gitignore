@@ -4,6 +4,7 @@ sp
 index.x.html
 script.js
 __modules__.js
+.*
 
 # Logs
 
