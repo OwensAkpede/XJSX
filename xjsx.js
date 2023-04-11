@@ -14,7 +14,7 @@
    var time = 0;
    var __core__ = {
       _observer:
-       (window.MutationObserver &&
+       window.MutationObserver &&
           function () {
             var lastChild;
              var lastDoc;
@@ -83,7 +83,7 @@
                (obs.disconnect(),core.XJSXLastProcessCallback());
             });
           //  return (elm = void 0), obs;
-          }) ||
+          } ||
         function () {
           console.warn("MutationObserver unavailable in this browser...");
           console.warn(
@@ -173,18 +173,18 @@
       },
       isKeyWord: function (e) {
         return "string" === typeof e &&
-          e.trim() &&
-          e.length > 1 &&
+     //    e.trim() &&
+        //  e.length > 1 &&
           e.match(/^[a-z0-9]+([^]+[a-z0-9])?$/)
         ;
       },
-      isVariable: function (e) {
+     /* isVariable: function (e) {
         return "string" === typeof e &&
           e.trim() &&
           e.length > 0 &&
           e.match(/^[a-z_$]*([a-z_$])?$/i)
         ;
-      },
+      },*/
       parseKeyWord: function (e) {
         e = e.trim();
         while (e[0] === "?") {
@@ -203,9 +203,9 @@
         }
        e[0] === ":"&& (e = e.substring(1));
         
-        return [keyword.trim().toLowerCase(), e];
+        return [keyword.trim()/*.toLowerCase()*/, e];
       },
-      parseParameter: function (_e, eval) {
+      parseParameter: function (_e, exec) {
         _e = _e.split(";");
         2 > _e.length&&
           _e.push([])
@@ -214,11 +214,11 @@
         
         return {
           arguments: _e.pop(),
-          parameter: eval && eval("[" + _e + "]") || _e,
+          parameter: exec && exec("[" + _e + "]") || _e,
         };
       },
       domParser: function() {
-        var d=__core__.domParser_node||document.createElement("div");
+        var d=__core__.domParser_node||document.createElement("span");
         d.innerHTML=arguments[0];
         return d;
       },
@@ -232,26 +232,34 @@
       mode: ["embedded", "defined"],
       createModule: function (module) {
         if (module instanceof Array && 1 > module.length) {
-          return console.error(this.error_meassages.IMC, module);
+          return console.error(
+            "createModule",
+            "module could not be created",
+            //this.error_meassages.IMC, 
+            module);
         }
 
         if (!this.isKeyWord(module[0].keyword)) {
           return console.error(
-            this.error_meassages.IMC,
+            "createModule",
+           // this.error_meassages.IMC,
             "invalid keyword",
+            module[0].keyword,
             module
           );
         }
 
-        module[0].keyword = module[0].keyword.toLowerCase();
+        /*module[0].keyword = module[0].keyword.toLowerCase();*/
 
         if (
           this.modules[module[0].keyword] ||
           this.signedKeywords[module[0].keyword]
         ) {
           return console.error(
-            this.error_meassages.IMC,
+            "createElement",
+           // this.error_meassages.IMC,
             "keyword already taken",
+            module[0].keyword,
             module
           );
         }
@@ -262,29 +270,29 @@
           name: module[0].keyword,
         };
 
-         // this.signedKeywords[module[0].keyword] = module[0].keyword;
+         /*this.signedKeywords[module[0].keyword] = module[0].keyword;*/
       
         for (var i = 1; i < module.length; i++) {
           if (!this.isKeyWord(module[i].keyword)) {
             delete this.modules[module[0].keyword];
-            return console.error(this.error_meassages.IMC, module[i].keyword);
+            return console.error("createModule","invalid module name",module[i].keyword);
           }
-          module[i].keyword = module[i].keyword.toLowerCase();
+         /* module[i].keyword = module[i].keyword.toLowerCase();*/
           this.modules[module[0].keyword].keywords[module[i].keyword] = i;
           this.signedKeywords[module[i].keyword] = module[0].keyword;
         }
       },
-      getModule: function (key) {
+    /*  getModule: function (key) {
         return this.modules[key];
-      },
-      _eval: function (__eval__) {
+      },*/
+      _eval: function (exec) {
         /***
          * use strict inside eval to avoid "arguments"
          */
         return function () {
-          var r = __eval__(arguments[0], arguments[1]);
-          __eval__ = r[1];
-          return arguments.length === 0&&__core__._eval(__eval__)||
+          var r = exec(arguments[0], arguments[1]);
+          exec = r[1];
+          return arguments.length === 0&&__core__._eval(exec)||
           arguments.length === 1 && "string" === typeof arguments[0]&&r[0];
         };
       },
@@ -314,7 +322,7 @@
           this.onboardProcesses.pop());
       },
       onboardProcesses: [],
-      getPreviousNode: function (node) {
+    /* getPreviousNode: function (node) {
         if (!node) {
           return;
         } else if (node.previousSibling) {
@@ -323,7 +331,7 @@
           return node.parentNode;
         }
         return;
-      },
+      },*/
       getNextNode: function (node) {
         return node&&(
         node.firstChild||
@@ -354,6 +362,7 @@
           name._remove = name.remove,
           name.remove = function () {
             name.process.nodes.remove();
+            
             name._remove();
           });
         
@@ -482,6 +491,7 @@
               process.nodes.flush();
           },
           _this.remove = process.remove,
+          //_this.removeHolder = process.rh,
           _this.removeAllNode = process.nodes.remove,
           _this._removeAllNode = function (foo) {
             process.nodes.forEach(function (node) {
@@ -648,10 +658,10 @@
       },
       XJSXNodeList: function (node) {
         var process = node.process;
-
+  
         var nodes = [];
          var currentNodeParent;
-          var foo;
+          var foo;/**this would be a bug in the future**/
           var core = this;
           var forEach = function (a) {
             if (a instanceof Array) {
@@ -844,7 +854,7 @@
       },
       XJSXLastProcessCallback: function () {
         this.resolved = true;
-
+       /** here should be a loop that loops through all onboardProcesses - really convenient*/
         this.onboardProcesses.length&&
           /***check end**/
           this.modules.end.operations[0].callback(
@@ -867,7 +877,7 @@
         currentProcess&&currentProcess.module.keywords[params[0]]&&
         !(module=false)
         ||
-        (module=this.getModule(params[0]));
+        (module= this.modules[params[0]]/*getModule(params[0])*/);
         
         
      /*     var module=
@@ -1174,13 +1184,13 @@
         this.onboardProcesses.push(e.process);
       },
     /**  XJSXCompilerCS: function () {},**/
-      XJSXCompiler: function (element, _eval) {
+      XJSXCompiler: function (element, _exec) {
         var core = {
           // id: true,
           //   timeStamp:performance.now(),
           document: element,
           onboardProcesses: [],
-          eval: "function" === typeof _eval && _eval || __core__._eval(exec),
+          eval: "function" === typeof _exec && _exec || __core__._eval(exec),
           __proto__: __core__,
         };
 
@@ -1263,9 +1273,9 @@
         core.XJSXLastProcessCallback();
         return element;
       },
-      error_meassages: {
+     /* error_meassages: {
         IMC: "invalid module case",
-      },
+      },*/
     };
 
 
@@ -1346,6 +1356,8 @@
         if (this.global.q) {
           this.global.done = true;
         }
+        //this.remove();
+      //  console.log(this);
       },
     },
     {
@@ -1397,9 +1409,9 @@
     {
       keyword: "print",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         try {
-          node.putChild(eval("[" + e + "][0]"));
+          node.putChild(exec("[" + e + "][0]"));
         } catch (err) {
           console.error("print:", e, err + "");
           e = "";
@@ -1414,13 +1426,13 @@
     {
       keyword: "print-html",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         if (e != 0) {
           try {
-            var tmp=__core__.tmp||(__core__.tmp=document.createElement("template"));
-            tmp.innerHTML=eval(e);
+            var tmp=__core__.tmp||(__core__.tmp=document.createElement("span"));
+            tmp.innerHTML=exec(e);
           //  __core__.XJSXCompiler(tmp.content)
-            node.putChild(tmp.content)
+            node.putChild(tmp.childNodes)
           } catch (err) {
             console.error("print-html:", e, err + "");
           }
@@ -1435,10 +1447,10 @@
     {
       keyword: "parse-json",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         if (e != 0) {
           try {
-            eval("(" + e + ")=JSON.parse(" + e + ")", "");
+            exec("(" + e + ")=JSON.parse(" + e + ")", "");
           } catch (err) {
             console.error("parse-json:", e, err + "");
           }
@@ -1454,12 +1466,12 @@
     {
       keyword: "use-template",
       _trusted: true,
-      callback: function (tmp, node, eval) {
+      callback: function (tmp, node, exec) {
         var e = tmp;
         var snapshot;
 
         try {
-          (tmp= eval("[" + e + "]")), (snapshot = tmp[1]), (tmp = tmp[0]);
+          (tmp= exec("[" + e + "]")), (snapshot = tmp[1]), (tmp = tmp[0]);
 
           if (tmp instanceof Node) {
             tmp instanceof HTMLTemplateElement&&(tmp = tmp.content)
@@ -1468,6 +1480,7 @@
             if (tmp instanceof Node) {
               tmp = tmp.content;
             } else {
+              console.warn("alpha implementation ")
               tmp=XJSX.customTemplates[tmp]
               /*** promise **/
             tmp instanceof HTMLTemplateElement&&(tmp = tmp.content)
@@ -1491,7 +1504,7 @@
           
           if (snapshot||snapshot===0) {
             console.warn("use-template:...; "+snapshot,
-            "This feature is still in alpha")
+            " alpha implementation")
             /** disabling this for now **/
             if (tmp.fragment) {
            /*  
@@ -1508,11 +1521,11 @@
             } else {
               tmp.fragment = document.createElement("x-fragment");
               tmp.fragment.appendChild(tmp.cloneNode(true));
-              __core__.XJSXCompiler(tmp.fragment, eval);
+              __core__.XJSXCompiler(tmp.fragment, exec);
             }
               node.putChild(tmp.fragment);
           } else {
-            node.putChild(__core__.XJSXCompiler(tmp.cloneNode(true), eval));
+            node.putChild(__core__.XJSXCompiler(tmp.cloneNode(true), exec));
           }
         } catch (err) {
           // console.log(err);
@@ -1528,9 +1541,9 @@
     {
       keyword: "eval",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         try {
-          eval(e.trim().replace(/^"([^]+)"$/g, "$1"));
+          exec(e.trim().replace(/^"([^]+)"$/g, "$1"));
         } catch (err) {
           console.error("eval:", e, err.toString());
         }
@@ -1545,13 +1558,13 @@
     {
       keyword: "console-log",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         e = e.trim();
         if (!e) {
           return;
         }
         try {
-          eval("console.log(" + e + ")");
+          exec("console.log(" + e + ")");
         } catch (err) {
           console.error("console-log:", e, err.toString());
         }
@@ -1566,13 +1579,13 @@
     {
       keyword: "data",
       _trusted: true,
-      callback: function (e, node, eval) {
+      callback: function (e, node, exec) {
         try {
-          e = eval("[" + e + "][0]");
+          e = exec("[" + e + "][0]");
 
           __core__.addEventListener("data/" + e, function (ev) {
             node.isVisible()&&
-              node.putChild(ev.detail)||
+              !node.putChild(ev.detail)||
               removeEventListener("data/" + e, arguments.callee);
             
           });
@@ -1602,15 +1615,21 @@
         } catch (e) {
           return console.error(this.parentParams.join(':'), e);
         }
+        
+        http.open(opt&&opt.method||"get", url);
+        
         opt&&
         (
         opt.type&&(http.responseType=opt.type)
         ,
         opt.withCredentials&&(http.withCredentials=opt.withCredentials)
         );
-        
-        http.open(opt&&opt.method||"get", url);
-        http.send();
+        if (opt&&opt.headers) {
+          for (var header in opt.headers) {
+            http.setRequestHeader(header,opt.headers[header])
+          }
+        }
+        http.send(opt&&opt.body);
       },
       type: FUNCTION,
     },
@@ -1945,7 +1964,7 @@ this.eval=function() {
 !document.documentElement.attributes.xjsx&&
   ({
     //  id: true,
-    timeStamp: performance.now(),
+  //  timeStamp: performance.now(),
     eval: __core__._eval(exec),
     onboardProcesses: [],
     document: document,
@@ -1964,12 +1983,12 @@ this.eval=function() {
       emit: __core__.dispatchEvent,
       on: __core__.addEventListener,
     },
-    parseElement: function (node, eval) {
+    parseElement: function (node, exec) {
       node instanceof Node&&
-        __core__.XJSXCompiler(node, window.eval === eval&&!(
+        __core__.XJSXCompiler(node, window.eval === exec&&!(
           console.warn("parseElement","second argument is not a valid instance"),
-          eval = void 0
-        )||eval)
+          exec = void 0
+        )||exec)
       ||
         console.error("XJSX/parse", "invalid argument", node);
       
@@ -2019,7 +2038,10 @@ this.eval=function() {
         },
       };
     },
+  //  __createModule__:__core__.createModule
   };
+ 
+  
 })(function () {
   
   return !arguments[1] && "string" === typeof arguments[0]&&
@@ -2036,5 +2058,6 @@ this.eval=function() {
     [
       eval(arguments[0], (arguments[0] = arguments[1] = void 0)),
       eval("(" + arguments.callee + ")"),
-    ];
+    ]
 });
+
