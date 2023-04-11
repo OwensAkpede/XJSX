@@ -6,6 +6,14 @@
     <title>xjsx</title>
   </head>
   <body>
+     
+    <?if: !window.XJSX?>
+       <h1>Oops, Error</h1>
+       <p>looks like XJSX was not loaded...</p>
+    <?end?>
+
+    
     <?print: "Hello Word !"?>
+    
   </body>
 </html>
