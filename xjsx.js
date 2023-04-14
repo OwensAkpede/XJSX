@@ -276,7 +276,22 @@
           if (!this.isKeyWord(module[i].keyword)) {
             delete this.modules[module[0].keyword];
             return console.error("createModule","invalid module name",module[i].keyword);
-          }
+          }else if (
+          this.modules[module[i].keyword] ||
+          this.signedKeywords[module[i].keyword]
+        ) {
+        //  console.warn("createModule");
+        // delete this.modules[module[0].keyword];
+       //   return 
+          console.warn(
+            "createElement",
+           // this.error_meassages.IMC,
+            "keyword already taken",
+            module[i].keyword,
+            module
+          );
+        }
+
          /* module[i].keyword = module[i].keyword.toLowerCase();*/
           this.modules[module[0].keyword].keywords[module[i].keyword] = i;
           this.signedKeywords[module[i].keyword] = module[0].keyword;
@@ -1136,7 +1151,7 @@
             } catch (e) {}
           }*/
           
-        e.process.eval =
+        e.process.eval = 
           (type === KEYWORD &&
             ((currentProcess && currentProcess.eval) || this.eval)) ||
           (FKEYWORD === type &&
@@ -1970,7 +1985,7 @@ this.eval=function() {
     document: document,
     __proto__: __core__,
   }._observer());
-
+//alert(88)
   window.XJSX = {
     FUNCTION: 2,
     METHOD: 1,
