@@ -28,7 +28,6 @@
 <h1>List of all keys at window</h1>
 
 <?on: "xload"; event?>
-
   <?eval: var _dt=event.detail, _val=event.detail.val,_key=event.detail.key?>
   <?if: _dt.parent?>
      <a href="#" onclick="back(this.textContent)">
@@ -36,22 +35,16 @@
      </a>
      <br>
   <?end?>
-  
   <?if: "object"=== typeof _val && _val?>
-    
     <?for-each: _val; val, key?>
        <a onclick="foo(this.textContent)" href="#">
         <?print: _key+"/"+key?>
        </a>
        <br>
     <?end?>
-    
-  <?else?>
-  
+  <?else?> 
     <mark><?print: _val?></mark>
-    
   <?end?>
-  
 <?end?>
 
 <script>
