@@ -1,17 +1,16 @@
-XJSX.createModule(
-     "print",
-     XJSX.METHOD,
-     {
-    callback: function (e, node, eval) {
-      // e = e.trim();
-      if (e != 0) {
+  /** print √ **/
+  XJSX.__createModule__([
+    {
+      keyword: "print",
+      _trusted: true,
+      callback: function (e, node, exec) {
         try {
-         // console.log(node);
-          node.putChild(eval("(" + e + ")"));
+          node.putChild(exec("[" + e + "][0]"));
         } catch (err) {
           console.error("print:", e, err + "");
           e = "";
         }
-      }
-     }
-   });
+      },
+      type: "method",
+    },
+  ]);

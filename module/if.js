@@ -1,76 +1,55 @@
-XJSX.createModule(
-     "if",
-     XJSX.KEYWORD,
-     {
-    onload: function (q) {
-      try {
-        q = this.global.q = this.eval(q) ? true: false;
-      } catch (e) {
-        return console.error("if:", q, e);
-      }
-      if (!q) {
-        this.killProcess();
-      }
-    },
-    onprogress: function (q) {
-      q = this.global.q;
-
-      if (q) {
-        return;
-      }
-      this.delete();
-    },
-    callback: function (q) {
-      q = this.global.q;
-      if (!q) {
-        this.remove();
-      } else {
-        this.global.done = true;
-      }
-    },
    
-  })
-  .append(
-     "else-if",
-     {
-      onload: function (_q) {
-        _q = _q.trim();
-        var q = this.global.q;
-        if (q || this.global.done) {
+  /** if **/
+  XJSX.__createModule__([
+    {
+      keyword: "if",
+      type:  "keyword",
+      onload: function (q) {
+        try {
+          !(this.global.q = this.eval("(" + q + ")") ? true : false) &&
+            this.killProcess();
+        } catch (e) {
+          return console.error("if:", q, e + "");
+        }
+      },
+      onprogress: function () {
+        !this.global.q && this.delete();
+      },
+      callback: function () {
+        if (this.global.q) {
+          this.global.done = true;
+        }
+        //this.remove();
+        //  console.log(this);
+      },
+    },
+    {
+      keyword: "else-if",
+      onload: function (q) {
+        if (this.global.q || this.global.done) {
           this.global.q = false;
           this.killProcess();
           return;
         }
-        if (this.global.done) {}
         try {
-          q = this.global.q = _q && this.eval("(" + _q + ")") ? true: false;
+          !(this.global.q = this.eval("(" + q + ")") ? true : false) &&
+            this.killProcess();
         } catch (e) {
-          return console.error("if,else-if", _q, e);
-        }
-        if (!q) {
-          this.killProcess();
+          return console.error("if,else-if", q, e + "");
         }
       },
-      onprogress: function (q) {
-        q = this.global.q;
-        if (q) {
-          return;
-        }
-        this.delete();
+      onprogress: function () {
+        !this.global.q && this.delete();
       },
-      callback: function (q) {
-        q = this.global.q;
-        if (!q) {
-          this.remove();
-        } else {
+      callback: function () {
+        if (this.global.q) {
           this.global.done = true;
         }
       },
-    })
-  .append(
-    "else",
+    },
     {
-      onload: function (q) {
+      keyword: "else",
+      onload: function () {
         if (this.global.done) {
           this.global.q = false;
           this.killProcess();
@@ -78,19 +57,12 @@ XJSX.createModule(
           this.global.q = true;
         }
       },
-      onprogress: function (q) {
-        q = this.global.q;
-        if (q) {
-          return;
-        }
-        this.delete();
+      onprogress: function () {
+        !this.global.q && this.delete();
       },
-      callback: function (q) {
+      callback: function () {
         this.terminate();
-        q = this.global.q;
-        if (!q) {
-          this.remove();
-        }
+        // !this.global.q && this.remove();
       },
-    })
-  .end();
+    },
+  ]);
