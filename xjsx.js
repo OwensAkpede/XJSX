@@ -479,11 +479,52 @@
         },
         global: process.global,
       };
+      /*
+      (_this.addChild = function (child, sub) {
+            var pp = process;
 
+            if (!sub) {
+              while (pp.parentProcess) {
+                pp = pp.parentProcess;
+              }
+            }
+
+            pp = pp.nodes;
+
+            if (child instanceof NodeList) {
+              var _p = pp.me();
+              while (child.length) {
+                child[0].fromXJSXCore = true;
+                pp.push(child[0]);
+                _p.parentNode.insertBefore(child[0], _p);
+              }
+              return;
+            } else if (child instanceof DocumentFragment) {
+              for (var i = 0; i < child.childNodes.length; i++) {
+                child.childNodes[i].fromXJSXCore = true;
+                pp.push(child.childNodes[i]);
+              }
+            } else if (child instanceof Node) {
+              //  node.parentNode && (node = node.cloneNode(true));
+              pp.push(child);
+            } else {
+              pp.push((child = document.createTextNode(child)));
+            }
+            pp = pp.me();
+            child.fromXJSXCore = true;
+            pp.parentNode.insertBefore(child, pp);
+          });
+        */
       (opt === "onprogress" &&
         ((_this.appendTo = function (doc) {
+     //    if(t) node.remove(),doc.appendChild(node),node.removed=node.fromXJSXCore=true;
+        //  if(!t) 
+        // doc.appendChild(r&&node||node.cloneNode(true));
           doc.appendChild(node.cloneNode(true));
         }),
+       /* (_this.moveNodeTo=function(doc) {
+          console.warn("moveNodeTo:","not fully implemented!")
+        }),*/
         (_this.disable = function () {
           (!process.closed && (node.remove(), (node._removed = true))) ||
             console.error("process has ended ");
@@ -592,8 +633,7 @@
             }
             pp = pp.me();
             child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);
-          }),
+            pp.parentNode.insertBefore(child, pp);}),
           (_this.terminate = function () {
             (!process.closed && process.isterminated) ||
               (core.onboardProcesses.pop(),
@@ -1326,6 +1366,44 @@
     },
   ]);
 
+  /** html-element **/
+  __core__.createModule([
+    {
+      keyword:"html-element",
+      type:KEYWORD,
+      onload: function(arg) {
+        var elm;
+        var e = __core__.parseParameter(arg, this.eval);
+        var params=e.parameter;
+        
+        var _arg=[this.global.elm=elm=document.createElement(params[0])]
+        
+        if ("object"===typeof params[1]) {
+        for (var att in params[1]) {
+          var v=params[1][att]
+          if (elm.hasOwnProperty(att)) {
+            elm[att]=v
+          }else{
+            elm.setAttribute(att,v)
+          }
+        }
+        }
+        
+       // this.addChild(elm)
+        for (var i = 0; i < e.arguments.length; i++) {
+          this.eval(_arg[i], e.arguments[i]);
+        }
+      },
+      onprogress: function() {
+       // this.appendTo(this.global.elm,true)
+      },
+      callback: function (){
+    this.appendAllTo(this.global.elm)
+    this.putChild(this.global.elm)
+      }
+    }
+    ])
+  
   /** if **/
   __core__.createModule([
     {
