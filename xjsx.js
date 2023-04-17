@@ -1381,7 +1381,7 @@
         if ("object"===typeof params[1]) {
         for (var att in params[1]) {
           var v=params[1][att]
-          if (elm[att]!==void 0/*elm.hasOwnProperty(att)*/) {
+          if (v instanceof Object/*elm[att]!==void 0*//*elm.hasOwnProperty(att)*/) {
             elm[att]=v
           }else{
             elm.setAttribute(att,v)
