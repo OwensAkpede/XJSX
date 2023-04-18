@@ -1,7 +1,7 @@
 /***
- * @use-template fragment tmp.performance
- * @aviod element.innerHTML+=<value>
- * for-each error
+ *
+ * 
+ * 
  */
 
 (function (exec) {

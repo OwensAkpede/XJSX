@@ -1,7 +1,10 @@
 /***
- * @use-template fragment tmp.performance
- * @aviod element.innerHTML+=<value>
- * for-each error
+ * 
+ * 
+ * XJSX 0.5.0
+ * @XJSX {v0.5.0}
+ * 
+ * 
  */
 
 (function (exec) {
