@@ -2,6 +2,15 @@
 <html>
 
 <head>
+  <style>
+    a{
+      display: inline-block;
+      xmargin-bottom: 12px;
+      color: purple;
+      outline: 1px solid blue;
+      margin-bottom: 5px ;
+    }
+  </style>
   <script src="xjsx.0.1.0.js"></script>
   
   <!-- Modules -->
@@ -18,6 +27,8 @@
   <script src="for-each.js"></script>
   <script src="parse-json.js"></script>
   <script src="use-template.js"></script>
+  <script src=" html-element.js"></script>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title></title>
@@ -28,18 +39,20 @@
 <h1>List of all keys at window</h1>
 
 <?on: "xload"; event?>
-  <?eval: var _dt=event.detail, _val=event.detail.val,_key=event.detail.key?>
-  <?if: _dt.parent?>
-     <a href="#" onclick="back(this.textContent)">
-       ...<?print: _dt.parent?>
-     </a>
+  <?eval: var _dt=event.detail, _pt=_dt.path, _pk=_dt.parentKey, _pv=_dt.parentVal, _val=event.detail.val, _key=event.detail.key?>
+  <?if: _pk?>
+    <?html-element:"a", {onclick:back}; node?>
+      <?eval: node.key=_pk, node.val=_pv, node.path=_pt?>
+      <??print: _key?> (go back)
+    <?end?>
      <br>
   <?end?>
   <?if: "object"=== typeof _val && _val?>
     <?for-each: _val; val, key?>
-       <a onclick="foo(this.textContent)" href="#">
-        <?print: _key+"/"+key?>
-       </a>
+       <?html-element:"a", {onclick:foo}; node?>
+         <?eval: node.key=key, node.val=val,node.path=_pt, node.parentKey=_key, node.parentVal=_val?>
+         <?print: key?>
+       <?end?>
        <br>
     <?end?>
   <?else?> 
@@ -64,21 +77,24 @@ function prt(e){
   return e
 }
 
-function back(_e){
-  _e=_e.replace("...","")
-  var e=parse(_e)
-  
-    var val=eval(e)
-    XJSX.event.emit("xload", { val: val, key: _e, parent: prt(_e) }) 
+function back(){
+  var pt=this.path
+  pt=pt[pt.length-2]||[]
+  this.path.pop()
+  XJSX.event.emit("xload", {path:this.path, val: this.val, key: this.key, parentVal: pt[0], parentKey: pt[1]}) 
   }
   
-  function foo(_e){
-   var e=parse(_e);
-    var val=eval(e)
-    XJSX.event.emit("xload", { val: val, key: _e, parent: prt(_e) }) 
+  function foo(){
+   XJSX.event.emit("xload", {
+     val: this.val,
+     key:this.key,
+     path:this.path?this.path.push([this.parentVal,this.parentKey])&&this.path:[[this.parentVal,this.parentKey]], 
+     parentKey: this.parentKey,
+     parentVal: this.parentVal
+     }) 
   }
   
-  XJSX.event.emit("xload",{val: window,key:"window"})
+  XJSX.event.emit("xload",{val: window, key:"window", path:[]})
 </script>
 </body>
 

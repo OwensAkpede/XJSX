@@ -1,10 +1,7 @@
+/*! XJSX v 0.6.0 - 21-04-2023 */
+
 /***
- * 
- * 
- * XJSX 0.5.0
- * @XJSX {v0.5.0}
- * 
- * 
+ * for-each eval bug fixed
  */
 
 (function (exec) {
@@ -1896,6 +1893,7 @@
         try {
           //  console.log(this);
           var self = this;
+          var exec=this.eval()
           var p = this.global.p;
           var data = p.parameter[0];
 
@@ -1903,22 +1901,22 @@
 
           var foo = function () {
             for (var i = 0; i < p.arguments.length; i++) {
-              self.eval(arguments[i], p.arguments[i]);
+              exec(arguments[i], p.arguments[i]);
             }
-
             //  console.log(self.global.callback);
             //  console.log(670);
             for (var i = 0; i < self.global.callback.length; i++) {
               self.global.callback[i].addChild(
                 __core__.XJSXCompiler(
                   self.global.callback[i].d.cloneNode(true),
-                  self.eval
+                  exec
                 ),
                 true
               );
               /**self.global.callback[i]();**/
             }
           };
+
 
           if (data && "object" !== typeof data) {
             throw "not an Object.";

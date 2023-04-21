@@ -1,5 +1,5 @@
   /** for-each √ **/
-  XJSX.__createModule__([
+  XJSX.__createModule__([ 
     {
       keyword: "for-each",
       type:  "function-keyword",
@@ -21,26 +21,37 @@
           var self = this;
           var p = this.global.p;
           var data = p.parameter[0];
-
+           var ct=0;
           //  console.log("5",data);
 
           var foo = function () {
+          //  ct++;
+            var exec =self.eval()
             for (var i = 0; i < p.arguments.length; i++) {
-              self.eval(arguments[i], p.arguments[i]);
+              exec(arguments[i], p.arguments[i]);
             }
-
+            function f() {
+              if (!self.isVisible()) {
+                return 
+                }
             //  console.log(self.global.callback);
             //  console.log(670);
             for (var i = 0; i < self.global.callback.length; i++) {
               self.global.callback[i].addChild(
                 XJSX.parseElement(
                   self.global.callback[i].d.cloneNode(true),
-                  self.eval
+                  exec
                 ),
                 true
               );
               /**self.global.callback[i]();**/
             }
+            }
+            f();
+           // setTimeout(f,500*ct++)
+            
+          // requestAnimationFrame(f)
+            
           };
 
           if (data && "object" !== typeof data) {
