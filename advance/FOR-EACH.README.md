@@ -11,6 +11,16 @@
 <p>Value: 3, Index: 2</p>
 ```
 
+# **for-each Delay**
+```xml
+ <?for-each: [1, 2, 3], 500; value, index?>
+   <p>Value: <?print: value?>, Index: <?print: index?></p>
+<?end?>
+```
+the above code would be rendered gradually with a `500` milliseconds delay time
+. this is really convenient for rendering a large data and would increase page speed
+
+
 # **for-each and break**
 ```xml
 <?for-each: [1, 2, 3]; value, index?>
