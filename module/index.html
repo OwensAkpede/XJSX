@@ -3,12 +3,24 @@
 
 <head>
   <style>
+  h1{
+    font-weight: 300;
+    font-family: sans-serif
+  }
+  .back{
+    font-weight: 600;
+    background: black;
+    color: white ;
+    
+  }
     a{
       display: inline-block;
       xmargin-bottom: 12px;
       color: purple;
       outline: 1px solid blue;
       margin-bottom: 5px ;
+      border-radius: 60px;
+      padding: 6px;
     }
   </style>
  
@@ -33,18 +45,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title></title>
+  
 </head>
 
 <body>
   
-<h1>List of all keys at window</h1>
+<?html-element: "h1"?>
+List of all keys at window 
+<?end?>
+
 
 <?on: "xload"; event?>
   <?eval: var _dt=event.detail, _pt=_dt.path, _pk=_dt.parentKey, _pv=_dt.parentVal, _val=event.detail.val, _key=event.detail.key?>
   <?if: _pk?>
-    <?html-element:"a", {onclick:back}; node?>
+    <?html-element:"a", {onclick:back, class: "back"}; node?>
       <?eval: node.key=_pk, node.val=_pv, node.path=_pt?>
-      <??print: _key?> (go back)
+      <?print: _pk?> (go back)
     <?end?>
      <br>
   <?end?>
