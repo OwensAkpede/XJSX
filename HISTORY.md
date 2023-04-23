@@ -2,7 +2,7 @@
 ==================
 
   * keyword updated `for-each:` (now takes 2 argument,
-   `1: value`|`2: delay time in milliseconds`).
+   `1: value`|`2: delay time (in milliseconds)`).
    see it [here](advance/FOR-EACH.README.md)
 
 0.5 (LLS) / 2023-04-18
