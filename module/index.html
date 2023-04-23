@@ -11,7 +11,8 @@
       margin-bottom: 5px ;
     }
   </style>
-  <script src="xjsx.0.1.0.js"></script>
+ 
+  <script src="xjsx.0.1.1.js"></script>
   
   <!-- Modules -->
   <script src="fetch.js"></script>
@@ -48,7 +49,7 @@
      <br>
   <?end?>
   <?if: "object"=== typeof _val && _val?>
-    <?for-each: _val; val, key?>
+    <?for-each: _val, 10; val, key?>
        <?html-element:"a", {onclick:foo}; node?>
          <?eval: node.key=key, node.val=val,node.path=_pt, node.parentKey=_key, node.parentVal=_val?>
          <?print: key?>

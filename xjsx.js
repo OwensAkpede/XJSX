@@ -4,7 +4,7 @@
  * for-each eval bug fixed
  */
 
-(function (exec) {
+(function(exec) {
   var KEYWORD = "keyword";
   var MICRO = "micro";
   var MKEYWORD = "micro-keyword";
@@ -12,23 +12,80 @@
   var FKEYWORD = "function-keyword";
   var METHOD = "method";
   var time = 0;
+  var loop = function(v, foo, dly, node) {
+    var self = this;
+    var i = 0
+
+    var _keys = function(e) {
+      var k = [];
+      for (var p in e) {
+        k.push(p)
+      }
+      return k
+    }
+
+
+    this.nm = function(s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v) {
+        if (i === 0 || !s) {
+          foo(i), i++, self.nm(true);
+        } else {
+          setTimeout(self.nm, dly)
+        }
+      }
+    }
+
+    this.arr = function(s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v.length) {
+        if (i === 0 || !s) {
+          foo(v[i], i), i++, self.arr(true);
+        } else {
+          setTimeout(self.arr, dly)
+        }
+      }
+    }
+
+    this.obj = function() {
+      var keys = _keys(v);
+      var key;
+      var loop = function(s) {
+        if (!node.isVisible()) {
+          return
+        }
+        if (i < keys.length) {
+          key = keys[i]
+          if (i === 0 || !s) {
+            foo(v[key], key), i++, loop(true);
+          } else {
+            setTimeout(loop, dly)
+          }
+        }
+      }
+      loop()
+    }
+  };
   var __core__ = {
-    _observer:
-      (window.MutationObserver &&
-        function () {
+    _observer: (window.MutationObserver &&
+        function() {
           var lastChild;
           var lastDoc;
           var cn;
           var core = this;
           var n;
           var lc;
-          var obs = new window.MutationObserver(function (e) {
+          var obs = new window.MutationObserver(function(e) {
             document.readyState === "complete" &&
               (obs.disconnect(), core.XJSXLastProcessCallback());
 
             (lastDoc && (lc = lastDoc)) ||
-              ((lc = document.body) && (lastDoc = lc)) ||
-              (lc = document.head || document.documentElement);
+            ((lc = document.body) && (lastDoc = lc)) ||
+            (lc = document.head || document.documentElement);
 
             while (lc.lastChild) {
               lc = lc.lastChild;
@@ -74,51 +131,51 @@
             childList: true,
             subtree: true,
           });
-          addEventListener("load", function () {
+          addEventListener("load", function() {
             !core.resolved &&
               (obs.disconnect(), core.XJSXLastProcessCallback());
           });
           //  return (elm = void 0), obs;
         }) ||
-      function () {
+      function() {
         console.warn("MutationObserver unavailable in this browser...");
         console.warn(
           'will now manually parse this document with the "onload" event.'
         );
-        addEventListener("load", function () {
+        addEventListener("load", function() {
           __core__.XJSXCompiler(document);
         });
       },
     animation: {},
-    createAnimation: function (n, f) {
+    createAnimation: function(n, f) {
       "function" === typeof f && (__core__.animation[n] = f);
     },
     events: {},
-    addEventListener: function (name, foo) {
+    addEventListener: function(name, foo) {
       __core__.events[name] && foo(__core__.events[name]);
       window.addEventListener(name, foo);
     },
-    dispatchEvent: function (name, data) {
+    dispatchEvent: function(name, data) {
       var evt = __core__.events[name];
       !evt &&
         (__core__.events[name] = evt = document.createEvent("CustomEvent"));
       evt.initCustomEvent(name, false, false, data);
       window.dispatchEvent(evt);
     },
-    dispatcher: function (win, name) {
+    dispatcher: function(win, name) {
       !__core__.dispatcher_init &&
         (__core__.dispatcher_init = document.createEvent("Event"));
       __core__.dispatcher_init.initEvent(name);
       win.dispatchEvent(__core__.dispatcher_init);
     },
-    stage: function (e) {
+    stage: function(e) {
       var currentProcess = this.getOnboardProcess();
       // var mode = this.XJSXSyntax(e);
 
       (e instanceof Comment &&
         e.data.search(/^\?[^\?][^]+[^\?]\?$/) === 0 &&
         !this.XJSXProcessor(e, currentProcess)) ||
-        (currentProcess && currentProcess.nodes.append(e /*, false*/));
+      (currentProcess && currentProcess.nodes.append(e /*, false*/ ));
       /***
           * if (currentProcess.module.operations[0].type === KEYWORD) {
 
@@ -135,7 +192,7 @@
         }
         */
     },
-    _XJSXSyntax: function (e) {
+    _XJSXSyntax: function(e) {
       // if (e instanceof Comment) {
       /*  if (e.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
           return this.mode[0];
@@ -144,7 +201,7 @@
 
       //  }
     },
-    XJSXSyntax: function (e) {
+    XJSXSyntax: function(e) {
       /*  if (e.data.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
             return this.mode[0];
           } else */
@@ -163,7 +220,7 @@
           : false;
           */
     },
-    isKeyWord: function (e) {
+    isKeyWord: function(e) {
       return (
         "string" === typeof e &&
         //    e.trim() &&
@@ -178,7 +235,7 @@
           e.match(/^[a-z_$]*([a-z_$])?$/i)
         ;
       },*/
-    parseKeyWord: function (e) {
+    parseKeyWord: function(e) {
       e = e.trim();
       while (e[0] === "?") {
         e = e.substring(1);
@@ -196,19 +253,19 @@
       }
       e[0] === ":" && (e = e.substring(1));
 
-      return [keyword.trim() /*.toLowerCase()*/, e];
+      return [keyword.trim() /*.toLowerCase()*/ , e];
     },
-    parseParameter: function (_e, exec) {
+    parseParameter: function(_e, exec) {
       _e = _e.split(";");
       (2 > _e.length && _e.push([])) ||
-        (_e[_e.length - 1] = _e[_e.length - 1].split(","));
+      (_e[_e.length - 1] = _e[_e.length - 1].split(","));
 
       return {
         arguments: _e.pop(),
         parameter: (exec && exec("[" + _e + "]")) || _e,
       };
     },
-    domParser: function () {
+    domParser: function() {
       var d = __core__.domParser_node || document.createElement("span");
       d.innerHTML = arguments[0];
       return d;
@@ -221,7 +278,7 @@
       }
       },**/
     mode: ["embedded", "defined"],
-    createModule: function (module) {
+    createModule: function(module) {
       if (module instanceof Array && 1 > module.length) {
         return console.error(
           "createModule",
@@ -306,11 +363,11 @@
     /*  getModule: function (key) {
         return this.modules[key];
       },*/
-    _eval: function (exec) {
+    _eval: function(exec) {
       /***
        * use strict inside eval to avoid "arguments"
        */
-      return function () {
+      return function() {
         var r = exec(arguments[0], arguments[1]);
         exec = r[1];
         return (
@@ -332,13 +389,13 @@
     moduleType: [KEYWORD, METHOD, FUNCTION],
     signedKeywords: {},
     moduleLength: 0,
-    hasOnboardProcess: function () {
+    hasOnboardProcess: function() {
       return this.onboardProcesses.length > 0;
     },
-    getOnboardProcess: function () {
+    getOnboardProcess: function() {
       return this.onboardProcesses[this.onboardProcesses.length - 1] || null;
     },
-    terminateCurrentProcess: function () {
+    terminateCurrentProcess: function() {
       var cP = this.onboardProcesses[this.onboardProcesses.length - 1];
       cP && ((cP.isterminated = true), this.onboardProcesses.pop());
     },
@@ -353,7 +410,7 @@
         }
         return;
       },*/
-    getNextNode: function (node) {
+    getNextNode: function(node) {
       return (
         node &&
         (node.firstChild ||
@@ -373,14 +430,14 @@
           return;
         }*/
     },
-    createElement: function (name, trusted) {
+    createElement: function(name, trusted) {
       ("string" === typeof name && (name = document.createElement(name))) ||
-        ((trusted = name),
+      ((trusted = name),
         (name = document.createTextNode("")),
         (name.process = {}),
         (name.process.nodes = this.XJSXNodeList(name)),
         (name._remove = name.remove),
-        (name.remove = function () {
+        (name.remove = function() {
           name.process.nodes.remove();
 
           name._remove();
@@ -389,7 +446,7 @@
       name.fromXJSXCore = trusted;
       return name;
     },
-    execCallback: function (crt, opt, node) {
+    execCallback: function(crt, opt, node) {
       /*** check ***/
       if (crt.isDeadProcess && opt !== "onprogress") {
         //  console.log(opt);
@@ -429,13 +486,13 @@
         crt.params[1],
         (o.f = void 0),
         opt === "callback" &&
-          crt.micro_callback &&
-          crt.micro_callback(crt.micro_parameter, o)
+        crt.micro_callback &&
+        crt.micro_callback(crt.micro_parameter, o)
       );
 
       crt.closed = true;
     },
-    CALLBACK_PROTOTYPE: function (process, opt, node) {
+    CALLBACK_PROTOTYPE: function(process, opt, node) {
       /*****
        * use process.__proto__ to set process
        * note: this process is an instance, use .__proto__
@@ -447,7 +504,7 @@
       var _this = {
         parentParams: process.parentParams,
         isVisible: process.nodes.isVisible,
-        eval: function () {
+        eval: function() {
           return (
             (arguments.length === 0 && process.eval()) ||
             (arguments[1] && !process.eval(arguments[0], arguments[1])) ||
@@ -462,7 +519,7 @@
                 return process.eval(arguments[0]);
               }*/
         },
-        forEach: function (foo) {
+        forEach: function(foo) {
           if (process.closed) {
             return console.warn("process has ended ");
           }
@@ -471,7 +528,7 @@
           }
 
           opt === "callback" &&
-            process.nodes.forEach(function (a) {
+            process.nodes.forEach(function(a) {
               foo(core.toXJSXElement(a, process));
             });
 
@@ -516,36 +573,36 @@
           });
         */
       (opt === "onprogress" &&
-        ((_this.appendTo = function (doc) {
-     //    if(t) node.remove(),doc.appendChild(node),node.removed=node.fromXJSXCore=true;
-        //  if(!t) 
-        // doc.appendChild(r&&node||node.cloneNode(true));
-          doc.appendChild(node.cloneNode(true));
-        }),
-       /* (_this.moveNodeTo=function(doc) {
-          console.warn("moveNodeTo:","not fully implemented!")
-        }),*/
-        (_this.disable = function () {
-          (!process.closed && (node.remove(), (node._removed = true))) ||
+        ((_this.appendTo = function(doc) {
+            //    if(t) node.remove(),doc.appendChild(node),node.removed=node.fromXJSXCore=true;
+            //  if(!t) 
+            // doc.appendChild(r&&node||node.cloneNode(true));
+            doc.appendChild(node.cloneNode(true));
+          }),
+          /* (_this.moveNodeTo=function(doc) {
+             console.warn("moveNodeTo:","not fully implemented!")
+           }),*/
+          (_this.disable = function() {
+            (!process.closed && (node.remove(), (node._removed = true))) ||
             console.error("process has ended ");
-        }),
-        (_this.delete = function () {
-          (!process.closed && (node.remove(), (node.removed = true))) ||
+          }),
+          (_this.delete = function() {
+            (!process.closed && (node.remove(), (node.removed = true))) ||
             console.error("process has ended ");
-        }))) ||
-        /****check**/
+          }))) ||
+      /****check**/
 
-        (opt === "onload" &&
-          (_this.killProcess = function () {
-            process.__proto__.isDeadProcess = true;
-          })) ||
-        (opt === "callback" &&
-          ((_this.appendAllTo = function (doc, clone) {
+      (opt === "onload" &&
+        (_this.killProcess = function() {
+          process.__proto__.isDeadProcess = true;
+        })) ||
+      (opt === "callback" &&
+        ((_this.appendAllTo = function(doc, clone) {
             (clone &&
-              !process.nodes.forEach(function (node) {
+              !process.nodes.forEach(function(node) {
                 doc.appendChild(node.cloneNode(true));
               })) ||
-              process.nodes.forEach(function (node) {
+            process.nodes.forEach(function(node) {
                 doc.appendChild(node);
               }) ||
               process.nodes.flush();
@@ -553,19 +610,19 @@
           (_this.remove = process.remove),
           //_this.removeHolder = process.rh,
           (_this.removeAllNode = process.nodes.remove),
-          (_this._removeAllNode = function (foo) {
-            process.nodes.forEach(function (node) {
+          (_this._removeAllNode = function(foo) {
+            process.nodes.forEach(function(node) {
               node.remove();
               "function" === typeof foo &&
                 (foo(node),
-                console.log("deprecated argument in removeAllNode() method"));
+                  console.log("deprecated argument in removeAllNode() method"));
             });
             process.nodes.flush();
           }),
-          (_this.flush = function () {
+          (_this.flush = function() {
             process.nodes.flush();
           }),
-          (_this.addChild = function (child, sub) {
+          (_this.addChild = function(child, sub) {
             var pp = process;
 
             if (!sub) {
@@ -599,7 +656,8 @@
             child.fromXJSXCore = true;
             pp.parentNode.insertBefore(child, pp);
           }),
-          /*put*/ (_this.putChild = function (child, sub) {
+          /*put*/
+          (_this.putChild = function(child, sub) {
             var pp = process;
             if (!sub) {
               while (pp.parentProcess) {
@@ -633,70 +691,70 @@
             }
             pp = pp.me();
             child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);}),
-          (_this.terminate = function () {
-            (!process.closed && process.isterminated) ||
-              (core.onboardProcesses.pop(),
-              (process.__proto__.isterminated = true)) ||
-              console.error("process has ended ");
-          })) &&
-          process.micro_callback &&
-          (_this.x_addChild = function (child) {
-            var pp = process;
-            while (pp.parentProcess) {
-              pp = pp.parentProcess;
-            }
-            pp = pp.nodes;
-            var n = pp.cut();
-            if (child instanceof NodeList) {
-              var _p = pp.me();
-              while (child.length) {
-                child[0].fromXJSXCore = true;
-                pp.push(child[0]);
-                _p.parentNode.insertBefore(child[0], _p);
-              }
-              return;
-            } else if (child instanceof DocumentFragment) {
-              for (var i = 0; i < child.childNodes.length; i++) {
-                child.childNodes[i].fromXJSXCore = true;
-                pp.push(child.childNodes[i]);
-              }
-            } else if (child instanceof Node) {
-              //  node.parentNode && (node = node.cloneNode(true));
-              pp.push(child);
-            } else {
-              pp.push((child = document.createTextNode(child)));
-            }
-            pp = pp.me();
-            child.fromXJSXCore = true;
             pp.parentNode.insertBefore(child, pp);
-            return n;
-          }));
+          }),
+          (_this.terminate = function() {
+            (!process.closed && process.isterminated) ||
+            (core.onboardProcesses.pop(),
+              (process.__proto__.isterminated = true)) ||
+            console.error("process has ended ");
+          })) &&
+        process.micro_callback &&
+        (_this.x_addChild = function(child) {
+          var pp = process;
+          while (pp.parentProcess) {
+            pp = pp.parentProcess;
+          }
+          pp = pp.nodes;
+          var n = pp.cut();
+          if (child instanceof NodeList) {
+            var _p = pp.me();
+            while (child.length) {
+              child[0].fromXJSXCore = true;
+              pp.push(child[0]);
+              _p.parentNode.insertBefore(child[0], _p);
+            }
+            return;
+          } else if (child instanceof DocumentFragment) {
+            for (var i = 0; i < child.childNodes.length; i++) {
+              child.childNodes[i].fromXJSXCore = true;
+              pp.push(child.childNodes[i]);
+            }
+          } else if (child instanceof Node) {
+            //  node.parentNode && (node = node.cloneNode(true));
+            pp.push(child);
+          } else {
+            pp.push((child = document.createTextNode(child)));
+          }
+          pp = pp.me();
+          child.fromXJSXCore = true;
+          pp.parentNode.insertBefore(child, pp);
+          return n;
+        }));
       return _this;
     },
-    toXJSXElement: function (node, process) {
+    toXJSXElement: function(node, process) {
       return {
-        appendTo: function (doc, clone) {
+        appendTo: function(doc, clone) {
           if (clone) {
             doc.appendChild(node.cloneNode(true));
           } else {
             doc.appendChild(node);
           }
         },
-        remove: function () {
+        remove: function() {
           if (process.closed) {
             return console.error("process has ended ");
           }
           node.remove();
         },
-        getAllTextContent: function () {
+        getAllTextContent: function() {
           var txt = node.textContent;
           if (node.process) {
-            node.process.nodes.forEach(function (e) {
+            node.process.nodes.forEach(function(e) {
               txt += e.textContent;
             });
-          } else {
-          }
+          } else {}
           return txt;
         },
 
@@ -707,14 +765,14 @@
         */
       };
     },
-    XJSXNodeList: function (node) {
+    XJSXNodeList: function(node) {
       var process = node.process;
 
       var nodes = [];
       var currentNodeParent;
       var foo; /**this would be a bug in the future**/
       var core = this;
-      var forEach = function (a) {
+      var forEach = function(a) {
         if (a instanceof Array) {
           a.forEach(forEach);
           return;
@@ -741,20 +799,20 @@
         //  }
       };
       var self = {
-        isVisible: function () {
+        isVisible: function() {
           return core.document.contains(node);
         },
-        me: function () {
+        me: function() {
           //console.trace("5")
           return node;
         },
-        flush: function (a) {
+        flush: function(a) {
           nodes = [];
         },
-        cut: function () {
+        cut: function() {
           var n = nodes;
           nodes = [];
-          return function () {
+          return function() {
             for (var i = 0; i < n.length; i++) {
               var a = n[i];
               if (a instanceof Array) {
@@ -774,10 +832,10 @@
             n = [];
           };
         },
-        push: function (e) {
+        push: function(e) {
           nodes.push(e);
         },
-        append: function (e) {
+        append: function(e) {
           /*** this will prevent dublicate*/
           /**   if (process._isDeadProcess) {
          if (self.removed) {
@@ -815,7 +873,7 @@
 
           e.removed || (self.removed && !e.remove()) || nodes.push(e);
         },
-        forEach: function (f) {
+        forEach: function(f) {
           foo = f;
           if (process.closed) {
             console.error("process has ended ");
@@ -829,7 +887,7 @@
             forEach(nodes[i]);
           }
         },
-        remove: function () {
+        remove: function() {
           if (process.closed) {
             return console.error("process has ended ");
           }
@@ -852,7 +910,7 @@
           }
           nodes = [];
         },
-        pop: function () {
+        pop: function() {
           nodes.pop();
         },
 
@@ -866,13 +924,14 @@
       };
       return self;
     },
-    XJSXMethodKeyword: function (e) {
+    XJSXMethodKeyword: function(e) {
       var process = e.process.nodes;
 
       return {
         remove: e.remove,
         isVisible: process.isVisible,
-        /*put*/ putChild: function (node) {
+        /*put*/
+        putChild: function(node) {
           process.remove();
           if (node instanceof NodeList) {
             while (node.length) {
@@ -891,13 +950,12 @@
             process.push(node);
           } else {
             process.push((node = document.createTextNode(node)));
-          }
-          !node.fromXJSXCore && (node.fromXJSXCore = true);
+          }!node.fromXJSXCore && (node.fromXJSXCore = true);
           e.parentNode.insertBefore(node, e);
         },
       };
     },
-    XJSXLastProcessCallback: function () {
+    XJSXLastProcessCallback: function() {
       this.resolved = true;
       /** here should be a loop that loops through all onboardProcesses - really convenient*/
       this.onboardProcesses.length &&
@@ -911,7 +969,7 @@
       this.timeStamp &&
         console.log(`onload: ${performance.now() - this.timeStamp}ms`);
     },
-    XJSXProcessor: function (e, currentProcess) {
+    XJSXProcessor: function(e, currentProcess) {
       var params = this.parseKeyWord(e.data);
       var isNewProcess;
       var type;
@@ -921,7 +979,7 @@
       (currentProcess &&
         currentProcess.module.keywords[params[0]] &&
         !(module = false)) ||
-        (module = this.modules[params[0]]) /*getModule(params[0])*/;
+      (module = this.modules[params[0]]) /*getModule(params[0])*/ ;
 
       /*     var module=
         currentProcess &&
@@ -951,9 +1009,9 @@
 
       module &&
         ((type = module.operations[0].type),
-        //  isNewProcess = type === MKEYWORD || type === MICRO ? false : true
-        (isNewProcess = !(type === MKEYWORD || type === MICRO)));
-        // isNewProcess = type !== MKEYWORD || type !== MICRO && true ||  false;
+          //  isNewProcess = type === MKEYWORD || type === MICRO ? false : true
+          (isNewProcess = !(type === MKEYWORD || type === MICRO)));
+      // isNewProcess = type !== MKEYWORD || type !== MICRO && true ||  false;
 
       if (type === MICRO) {
         // e.remove();
@@ -1009,7 +1067,7 @@
       //   currentProcess &&
       if (module === false) {
         if (!shouldProcess) {
-          currentProcess.nodes.append(e /*, shouldProcess*/);
+          currentProcess.nodes.append(e /*, shouldProcess*/ );
           return;
         }
         /** is next in line?**/
@@ -1035,7 +1093,7 @@
         //console.log(module.keywords,previousKeyword);
 
         (currentProcess.name === module.name && !(nextInLineProcess = 0)) ||
-          (nextInLineProcess = module.keywords[currentProcess.name]);
+        (nextInLineProcess = module.keywords[currentProcess.name]);
 
         //  nextInLineProcess = previousKeyword;
 
@@ -1046,7 +1104,7 @@
           params[0] +
           "'.\n" +
           ((nextInLineProcess >= 1 &&
-            "( " + currentProcess.parentParams.join(":") + " )...") ||
+              "( " + currentProcess.parentParams.join(":") + " )...") ||
             "") +
           "( " +
           currentProcess.params.join(":") +
@@ -1106,7 +1164,7 @@
       currentProcess &&
         !(shouldProcess && isChildProcess) &&
         !(shouldProcess && type === MKEYWORD) &&
-        currentProcess.nodes.append(e /*, shouldProcess*/);
+        currentProcess.nodes.append(e /*, shouldProcess*/ );
 
       if (!module) {
         console.error(
@@ -1196,10 +1254,8 @@
         remove: e.remove,
         isterminated: void 0,
 
-        isDeadProcess:
-          (currentProcess && currentProcess.isDeadProcess) || void 0,
-        _isDeadProcess:
-          (currentProcess && currentProcess.isDeadProcess) || void 0,
+        isDeadProcess: (currentProcess && currentProcess.isDeadProcess) || void 0,
+        _isDeadProcess: (currentProcess && currentProcess.isDeadProcess) || void 0,
         parentProcess: (!isNewProcess && currentProcess) || void 0,
         parentParams: (isNewProcess && params) || currentProcess.parentParams,
         global: (isNewProcess && {}) || currentProcess.global,
@@ -1211,8 +1267,7 @@
         // eval:_eval,
         module: module,
         type: module.operations[0].type,
-        callback:
-          module.operations[module.keywords[params[0]]] || module.operations[0],
+        callback: module.operations[module.keywords[params[0]]] || module.operations[0],
       };
 
       shouldProcess && this.execCallback(e.process, "onload");
@@ -1220,7 +1275,7 @@
       this.onboardProcesses.push(e.process);
     },
     /**  XJSXCompilerCS: function () {},**/
-    XJSXCompiler: function (element, _exec) {
+    XJSXCompiler: function(element, _exec) {
       var core = {
         // id: true,
         //   timeStamp:performance.now(),
@@ -1234,13 +1289,13 @@
       // return element
       /*   if(element.childElementCount>0){*/
       var node = document
-        .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function (n) {
+        .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function(n) {
           return __core__._XJSXSyntax(n.data) && true;
         })
         .nextNode();
 
       var last = document
-        .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function (n) {
+        .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function(n) {
           return __core__._XJSXSyntax(n.data) && true;
         })
         .lastChild();
@@ -1312,7 +1367,7 @@
   __core__.createModule([
     {
       keyword: "end",
-      callback: function (e, currentProcess, core) {
+      callback: function(e, currentProcess, core) {
         /* if (currentProcess&&currentProcess.isDeadProcess) {
                     !currentProcess.isterminated &&
             core.terminateCurrentProcess()
@@ -1324,8 +1379,8 @@
             currentProcess.module.operations[0].onend &&
             (currentProcess.callback = currentProcess.module.operations[0]) &&
             core.execCallback(currentProcess, "onend"),
-          !(!currentProcess.isterminated && core.terminateCurrentProcess()))) ||
-          console.error("Unexpected token 'end'");
+            !(!currentProcess.isterminated && core.terminateCurrentProcess()))) ||
+        console.error("Unexpected token 'end'");
       },
       type: MKEYWORD,
     },
@@ -1335,14 +1390,14 @@
   __core__.createModule([
     {
       keyword: "animate",
-      callback: function (arg, node) {
+      callback: function(arg, node) {
         try {
           arg = this.eval("[" + arg + "]");
           var param = arg[0];
           if (node) {
             var put = node.putChild;
             var doc;
-            node.putChild = function (n) {
+            node.putChild = function(n) {
               doc = document.createElement("x-fragment");
               if (n instanceof NodeList) {
                 while (n[0]) {
@@ -1369,58 +1424,58 @@
   /** html-element **/
   __core__.createModule([
     {
-      keyword:"html-element",
-      type:KEYWORD,
+      keyword: "html-element",
+      type: KEYWORD,
       onload: function(arg) {
         var elm;
         var e = __core__.parseParameter(arg, this.eval);
-        var params=e.parameter;
-        
-        var _arg=[this.global.elm=elm=document.createElement(params[0])]
-        
-        if ("object"===typeof params[1]) {
-        for (var att in params[1]) {
-          var v=params[1][att]
-          if (v instanceof Object/*elm[att]!==void 0*//*elm.hasOwnProperty(att)*/) {
-            elm[att]=v
-          }else{
-            elm.setAttribute(att,v)
+        var params = e.parameter;
+
+        var _arg = [this.global.elm = elm = document.createElement(params[0])]
+
+        if ("object" === typeof params[1]) {
+          for (var att in params[1]) {
+            var v = params[1][att]
+            if (v instanceof Object /*elm[att]!==void 0*/ /*elm.hasOwnProperty(att)*/ ) {
+              elm[att] = v
+            } else {
+              elm.setAttribute(att, v)
+            }
           }
         }
-        }
-        
-       // this.addChild(elm)
+
+        // this.addChild(elm)
         for (var i = 0; i < e.arguments.length; i++) {
           this.eval(_arg[i], e.arguments[i]);
         }
       },
       onprogress: function() {
-       // this.appendTo(this.global.elm,true)
+        // this.appendTo(this.global.elm,true)
       },
-      callback: function (){
-    this.appendAllTo(this.global.elm)
-    this.putChild(this.global.elm)
+      callback: function() {
+        this.appendAllTo(this.global.elm)
+        this.putChild(this.global.elm)
       }
     }
     ])
-  
+
   /** if **/
   __core__.createModule([
     {
       keyword: "if",
       type: KEYWORD,
-      onload: function (q) {
+      onload: function(q) {
         try {
           !(this.global.q = this.eval("(" + q + ")") ? true : false) &&
-            this.killProcess();
+          this.killProcess();
         } catch (e) {
           return console.error("if:", q, e + "");
         }
       },
-      onprogress: function () {
+      onprogress: function() {
         !this.global.q && this.delete();
       },
-      callback: function () {
+      callback: function() {
         if (this.global.q) {
           this.global.done = true;
         }
@@ -1430,7 +1485,7 @@
     },
     {
       keyword: "else-if",
-      onload: function (q) {
+      onload: function(q) {
         if (this.global.q || this.global.done) {
           this.global.q = false;
           this.killProcess();
@@ -1438,15 +1493,15 @@
         }
         try {
           !(this.global.q = this.eval("(" + q + ")") ? true : false) &&
-            this.killProcess();
+          this.killProcess();
         } catch (e) {
           return console.error("if,else-if", q, e + "");
         }
       },
-      onprogress: function () {
+      onprogress: function() {
         !this.global.q && this.delete();
       },
-      callback: function () {
+      callback: function() {
         if (this.global.q) {
           this.global.done = true;
         }
@@ -1454,7 +1509,7 @@
     },
     {
       keyword: "else",
-      onload: function () {
+      onload: function() {
         if (this.global.done) {
           this.global.q = false;
           this.killProcess();
@@ -1462,10 +1517,10 @@
           this.global.q = true;
         }
       },
-      onprogress: function () {
+      onprogress: function() {
         !this.global.q && this.delete();
       },
-      callback: function () {
+      callback: function() {
         this.terminate();
         // !this.global.q && this.remove();
       },
@@ -1477,7 +1532,7 @@
     {
       keyword: "print",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         try {
           node.putChild(exec("[" + e + "][0]"));
         } catch (err) {
@@ -1494,7 +1549,7 @@
     {
       keyword: "print-html",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         if (e != 0) {
           try {
             var tmp =
@@ -1516,7 +1571,7 @@
     {
       keyword: "parse-json",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         if (e != 0) {
           try {
             exec("(" + e + ")=JSON.parse(" + e + ")", "");
@@ -1535,7 +1590,7 @@
     {
       keyword: "use-template",
       _trusted: true,
-      callback: function (tmp, node, exec) {
+      callback: function(tmp, node, exec) {
         var e = tmp;
         var snapshot;
 
@@ -1612,7 +1667,7 @@
     {
       keyword: "eval",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         try {
           exec(e.trim().replace(/^"([^]+)"$/g, "$1"));
         } catch (err) {
@@ -1629,7 +1684,7 @@
     {
       keyword: "console-log",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         e = e.trim();
         if (!e) {
           return;
@@ -1650,13 +1705,13 @@
     {
       keyword: "data",
       _trusted: true,
-      callback: function (e, node, exec) {
+      callback: function(e, node, exec) {
         try {
           e = exec("[" + e + "][0]");
 
-          __core__.addEventListener("data/" + e, function (ev) {
+          __core__.addEventListener("data/" + e, function(ev) {
             (node.isVisible() && !node.putChild(ev.detail)) ||
-              removeEventListener("data/" + e, arguments.callee);
+            removeEventListener("data/" + e, arguments.callee);
           });
         } catch (err) {
           console.error("data:", e, err + "");
@@ -1670,7 +1725,7 @@
   __core__.createModule([
     {
       keyword: "fetch",
-      onload: function (arg) {
+      onload: function(arg) {
         var opt;
         var url;
         var http = new XMLHttpRequest();
@@ -1689,7 +1744,7 @@
 
         opt &&
           (opt.type && (http.responseType = opt.type),
-          opt.withCredentials && (http.withCredentials = opt.withCredentials));
+            opt.withCredentials && (http.withCredentials = opt.withCredentials));
         if (opt && opt.headers) {
           for (var header in opt.headers) {
             http.setRequestHeader(header, opt.headers[header]);
@@ -1701,19 +1756,19 @@
     },
     {
       keyword: "then",
-      onload: function () {
+      onload: function() {
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable();
       },
-      callback: function (p) {
+      callback: function(p) {
         var self = this;
         var http = this.global.http;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
 
-        http.addEventListener("load", function () {
+        http.addEventListener("load", function() {
           p = p.split(",");
           //    console.log(http);
           var argument;
@@ -1726,22 +1781,22 @@
                 get response() {
                   console.warn(
                     self.parentParams.join(":") +
-                      "\nthen:" +
-                      p[0] +
-                      ".response this function is now deprecated"
+                    "\nthen:" +
+                    p[0] +
+                    ".response this function is now deprecated"
                   );
                   return (!http.readyState && argument[0]) || http.response;
                 },
                 responseType: http.responseType,
               }),
             ];
-          } catch(e){
+          } catch (e) {
             argument = [http.response];
             console.error(
               self.parentParams.join(":") +
-                "\nresponse could not be converted to " +
-                http.responseType +
-                " type"
+              "\nresponse could not be converted to " +
+              http.responseType +
+              " type"
             );
           }
           http.abort();
@@ -1765,19 +1820,19 @@
     },
     {
       keyword: "catch",
-      onload: function () {
+      onload: function() {
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable();
       },
-      callback: function (p) {
+      callback: function(p) {
         var self = this;
         var http = this.global.http;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
 
-        http.addEventListener("error", function () {
+        http.addEventListener("error", function() {
           //   console.error(arguments[0]);
           p = p.split(",");
 
@@ -1805,7 +1860,7 @@
   __core__.createModule([
     {
       keyword: "include",
-      callback: function (url) {
+      callback: function(url) {
         var url;
         try {
           if (!(url = this.eval("[" + url + "][0]"))) {
@@ -1820,7 +1875,7 @@
 
           var http = new XMLHttpRequest();
           self.global.http = http;
-          http.addEventListener("load", function () {
+          http.addEventListener("load", function() {
             /*if (!http.response) {
             __core__.dispatcher(http,"error")
             console.error(url+"\npath could not be included"+"\nmake sure the provided url is a valid html file")
@@ -1846,13 +1901,13 @@
     },
     {
       keyword: "catch",
-      onload: function () {
+      onload: function() {
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable();
       },
-      callback: function () {
+      callback: function() {
         var self = this;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
@@ -1862,7 +1917,7 @@
           console.error(self.parentParams.join(":"), "uncaught error");
           return;
         }
-        self.global.http.addEventListener("error", function () {
+        self.global.http.addEventListener("error", function() {
           //    console.error(arguments[0]);
           self.putChild(__core__.XJSXCompiler(doc, self.eval));
           this.abort();
@@ -1877,7 +1932,7 @@
     {
       keyword: "for-each",
       type: FKEYWORD,
-      onload: function (p) {
+      onload: function(p) {
         this.global.callback = [];
         //console.log(this);
         this.global.p = __core__.parseParameter(p, this.eval);
@@ -1885,21 +1940,21 @@
         //  this.global.doc=document.createDocumentFragment()
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable(); //(this.global.doc);
       },
-      onend: function () {
+      onend: function() {
         //   console.log(600);
         try {
           //  console.log(this);
           var self = this;
-          var exec=this.eval()
+          var exec = this.eval()
           var p = this.global.p;
           var data = p.parameter[0];
-
+          var useDelay = p.parameter[1];
           //  console.log("5",data);
 
-          var foo = function () {
+          var foo = function() {
             for (var i = 0; i < p.arguments.length; i++) {
               exec(arguments[i], p.arguments[i]);
             }
@@ -1918,17 +1973,37 @@
           };
 
 
-          if (data && "object" !== typeof data) {
-            throw "not an Object.";
-          }
-
-          if (data instanceof Array) {
-            for (var i = 0; i < data.length; i++) {
-              foo(data[i], i);
+          /*  if (data && "object" !== typeof data) {
+                        throw "not an Object.";
+                      }
+                      
+            */
+          if (!useDelay) {
+            if ("number" === typeof data) {
+              for (var i = 0; i < data; i++) {
+                foo(i);
+              }
+            } else if (data instanceof Array) {
+              for (var i = 0; i < data.length; i++) {
+                foo(data[i], i);
+              }
+            } else if (data instanceof Object) {
+              for (var prop in data) {
+                foo(data[prop], prop);
+              }
+            } else {
+              throw "not an Object.";
             }
           } else {
-            for (var prop in data) {
-              foo(data[prop], prop);
+            var lp = new loop(data, foo, useDelay, self);
+            if ("number" === typeof data) {
+              lp.nm()
+            } else if (data instanceof Array) {
+              lp.arr()
+            } else if (data instanceof Object) {
+              lp.obj()
+            } else {
+              throw "not an Object.";
             }
           }
         } catch (err) {
@@ -1942,7 +2017,7 @@
           self.remove();
         }
       },
-      callback: function () {
+      callback: function() {
         //   console.log("callback for-each",this.global.p.parameter);
         var self = this;
         //   p = this.global.p;
@@ -1966,13 +2041,13 @@
     },
     {
       keyword: "continue",
-      onload: function (p) {
+      onload: function(p) {
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable();
       },
-      callback: function () {
+      callback: function() {
         var self = this;
         this.appendAllTo((self.d = document.createDocumentFragment()));
         //   console.log(self.d);
@@ -1993,13 +2068,13 @@
     {
       keyword: "on",
       type: FUNCTION,
-      onload: function () {
+      onload: function() {
         this.killProcess();
       },
-      onprogress: function () {
+      onprogress: function() {
         this.disable();
       },
-      callback: function (a) {
+      callback: function(a) {
         try {
           var e = __core__.parseParameter(a, this.eval);
           var param = e.parameter[0];
@@ -2015,7 +2090,7 @@
             _doc;
           self.appendAllTo(doc);
 
-          __core__.addEventListener(param, function () {
+          __core__.addEventListener(param, function() {
             if (self.isVisible()) {
               for (var i = 0; i < e.arguments.length; i++) {
                 self.eval(arguments[i], e.arguments[i]);
@@ -2034,7 +2109,7 @@
       },
     },
   ]);
-  
+
 
   /** animatesss **/
 
@@ -2053,14 +2128,14 @@ this.eval=function() {
   */
 
   !document.documentElement.attributes.xjsx &&
-    {
-      //  id: true,
-      //  timeStamp: performance.now(),
-      eval: __core__._eval(exec),
-      onboardProcesses: [],
-      document: document,
-      __proto__: __core__,
-    }._observer();
+  {
+    //  id: true,
+    //  timeStamp: performance.now(),
+    eval: __core__._eval(exec),
+    onboardProcesses: [],
+    document: document,
+    __proto__: __core__,
+  }._observer();
 
   window.XJSX = {
     FUNCTION: 2,
@@ -2074,21 +2149,21 @@ this.eval=function() {
       emit: __core__.dispatchEvent,
       on: __core__.addEventListener,
     },
-    parseElement: function (node, exec) {
+    parseElement: function(node, exec) {
       (node instanceof Node &&
         __core__.XJSXCompiler(
           node,
           (window.eval === exec &&
             !(console.warn(
-              "parseElement",
-              "second argument is not a valid instance"
-            ),
-            (exec = void 0))) ||
-            exec
+                "parseElement",
+                "second argument is not a valid instance"
+              ),
+              (exec = void 0))) ||
+          exec
         )) ||
-        console.error("XJSX/parse", "invalid argument", node);
+      console.error("XJSX/parse", "invalid argument", node);
     },
-    createModule: function (name, type, obj) {
+    createModule: function(name, type, obj) {
       if (!__core__.moduleType[type]) {
         return console.error("invalid value...");
       }
@@ -2104,7 +2179,7 @@ this.eval=function() {
 
       type === 1 && (__core__.createModule(module), (module = void 0));
       return {
-        append: function (name, obj) {
+        append: function(name, obj) {
           if (!module) {
             return console.warn(
               "no need to panic...this is not an error",
@@ -2119,12 +2194,12 @@ this.eval=function() {
           });
           return this;
         },
-        end: function () {
+        end: function() {
           (module && !__core__.createModule(module)) ||
-            console.warn(
-              "no need to panic...this is not an error",
-              "module initialized already."
-            );
+          console.warn(
+            "no need to panic...this is not an error",
+            "module initialized already."
+          );
         },
       };
     },
@@ -2132,7 +2207,7 @@ this.eval=function() {
       __core__.createModule(arguments[0])
     }
   };
-})(function () {
+})(function() {
   return (
     (!arguments[1] &&
       "string" === typeof arguments[0] && [

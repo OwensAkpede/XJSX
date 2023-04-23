@@ -12,6 +12,67 @@
   var FKEYWORD = "function-keyword";
   var METHOD = "method";
   var time = 0;
+  var loop = function(v, foo, dly, node) {
+    var self = this;
+    var i = 0
+    
+    var _keys=function(e) {
+     var k=[];
+     for(var p in e){
+       k.push(p)
+     }
+     return k
+    }
+    
+    
+    this.nm = function(s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v) {
+        if (i === 0||!s) {
+          foo(i), i++, self.nm(true);
+        } else {
+          setTimeout(self.nm, dly)
+        }
+      }
+    }
+
+    this.arr = function(s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v.length) {
+        if (i === 0||!s) {
+          foo(v[i], i), i++, self.arr(true);
+        } else {
+          setTimeout(self.arr, dly)
+        }
+      }
+    }
+
+    this.obj = function() {
+      var keys = _keys(v);
+      var key;
+      var loop = function(s) {
+      if (!node.isVisible()) {
+        return
+      }
+        if (i < keys.length) {
+          key = keys[i]
+          if (i === 0||!s) {
+            foo(v[key], key), i++, loop(true);
+          } else {
+            setTimeout(loop, dly)
+          }
+        }
+      }
+      loop()
+    }
+    // this.i=0
+  };
+
+
   var __core__ = {
     _observer:
       (window.MutationObserver &&

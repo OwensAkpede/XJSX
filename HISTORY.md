@@ -3,6 +3,11 @@
 
   * New keyword added `html-element:`
 
+0.5 (LLS) / 2023-04-18
+==================
+
+  * New keyword added `html-element:`
+
 0.1 (LLS) / 2023-04-14
 ==================
 
