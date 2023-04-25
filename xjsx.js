@@ -410,13 +410,17 @@
         }
         return;
       },*/
-    getNextNode: function(node) {
+    getPNextNode: function (p){
+        return p&&(p.nextSibling||p.parentNode&&this.getPNextNode(p.parentNode));
+      },
+    getNextNode: function (node) {
       return (
         node &&
         (node.firstChild ||
           node.nextSibling ||
-          (node.parentNode && node.parentNode.nextSibling))
+          node.parentNode && this.getPNextNode(node.parentNode))
       );
+      
       /*
         if (!node) {
           return;
