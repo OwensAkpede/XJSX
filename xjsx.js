@@ -1,4 +1,4 @@
-/*! XJSX v 1.0.0 - 23-04-2023 */
+/*! XJSX v 1.5.0 - 03-05-2023 */
 
 /***
  * for-each eval bug fixed
@@ -142,8 +142,9 @@
         console.warn(
           'will now manually parse this document with the "onload" event.'
         );
-        addEventListener("load", function() {
-          __core__.XJSXCompiler(document);
+        var doc=this.document;
+      addEventListener("load", function() {
+          __core__.XJSXCompiler(doc);
         });
       },
     animation: {},
@@ -485,10 +486,10 @@
         node
       );
 
-      o.f = foo;
-      o.f(
+      o.__callback__ = foo;
+      o.__callback__(
         crt.params[1],
-        (o.f = void 0),
+        // (o.f = void 0),
         opt === "callback" &&
         crt.micro_callback &&
         crt.micro_callback(crt.micro_parameter, o)
@@ -804,7 +805,8 @@
       };
       var self = {
         isVisible: function() {
-          return core.document.contains(node);
+          // console.log([core.document.contains && core.document.contains(node.parentElement || node),node.parentNode,core.document]);
+          return core.document.contains && core.document.contains(node.parentElement ||node); /*core.document.documentElement*/
         },
         me: function() {
 
@@ -864,8 +866,7 @@
               currentNodeParent = e;
             }
             */
-
-          if (currentNodeParent && currentNodeParent.contains(e)) {
+          if (currentNodeParent && currentNodeParent.contains && currentNodeParent.contains(e)) {
             return;
           }
           currentNodeParent = e;
@@ -971,7 +972,7 @@
         );
 
       this.timeStamp &&
-        console.log(`onload: ${performance.now() - this.timeStamp}ms`);
+        console.log("onload: %dms", window.performance&& performance.now() - this.timeStamp);
     },
     XJSXProcessor: function(e, currentProcess) {
       var params = this.parseKeyWord(e.data);
@@ -1754,7 +1755,14 @@
             http.setRequestHeader(header, opt.headers[header]);
           }
         }
-        http.send(opt && opt.body);
+
+        try {
+          http.send(opt && opt.body);
+        } catch (error) {
+          setTimeout(function(){
+            __core__.dispatcher(http, "error")
+          }, 0);
+        }
       },
       type: FUNCTION,
     },
@@ -1778,24 +1786,19 @@
           var argument;
           try {
             argument = [
-              Object.assign(http.response, {
+              {
                 responseURL: http.responseURL,
                 status: http.status,
                 statusText: http.statusText,
-                get response() {
-                  console.warn(
-                    self.parentParams.join(":") +
-                    "\nthen:" +
-                    p[0] +
-                    ".response this function is now deprecated"
-                  );
-                  return (!http.readyState && argument[0]) || http.response;
-                },
+                response: http.response||"",
                 responseType: http.responseType,
-              }),
+                toString:function(){
+                  return this.response+""
+                }
+              }
             ];
           } catch (e) {
-            argument = [http.response];
+            argument = [http.response||""];
             console.error(
               self.parentParams.join(":") +
               "\nresponse could not be converted to " +
@@ -1803,7 +1806,7 @@
               " type"
             );
           }
-          http.abort();
+        http.abort();
           http = delete self.global.http;
 
           try {
@@ -1835,9 +1838,7 @@
         var http = this.global.http;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
-
         http.addEventListener("error", function() {
-
           p = p.split(",");
 
           try {
@@ -1982,6 +1983,10 @@
                       }
                       
             */
+           if (!self.isVisible()) {
+           // self.terminate();
+            return;
+           }
           if (!useDelay) {
             if ("number" === typeof data) {
               for (var i = 0; i < data; i++) {
@@ -2211,6 +2216,25 @@ this.eval=function() {
       __core__.createModule(arguments[0])
     }
   };
+
+  !Node.prototype.remove && (Node.prototype.remove=function(){
+    // console.dir(this);
+  this.parentNode.removeChild(this)
+})
+  
+  !Document.prototype.contains && (Node.prototype.contains = function (nd) {
+    for (var i = 0; i < this.childNodes.length; i++) {
+      if(this.childNodes[i].contains && this.childNodes[i].contains(nd)){return true}
+    }
+    return false
+  })
+
+  !XMLHttpRequest.prototype.hasOwnProperty("response") && Object.defineProperty(XMLHttpRequest.prototype,'response',{
+    get:function(){
+      return this.responseText||this.responseXML||""
+    }
+  })
+
 })(function() {
   return (
     (!arguments[1] &&
@@ -2219,7 +2243,7 @@ this.eval=function() {
         eval("(" + arguments.callee + ")"),
       ]) ||
     ("string" === typeof arguments[1] && [
-      eval(`var ${arguments[1]}=arguments[0]`),
+      eval("var "+arguments[1]+"=arguments[0]"),
       eval("(" + arguments.callee + ")"),
       (arguments[0] = arguments[1] = void 0),
     ]) || [
