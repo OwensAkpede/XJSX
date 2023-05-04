@@ -1,3 +1,8 @@
+1.5 (LLS) / 2023-05-04
+==================
+
+  * fixed the following keywords `for-each` `fetch`
+
 1.0 (LLS) / 2023-04-25
 ==================
 
