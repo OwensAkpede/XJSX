@@ -1,4 +1,4 @@
-/*! XJSX v 1.5.0 - 03-05-2023 */
+/*! XJSX v 1.5.0 - 04-05-2023 */
 
 /***
  * for-each eval bug fixed
@@ -369,8 +369,13 @@
        * use strict inside eval to avoid "arguments"
        */
       return function () {
-        var r = exec(arguments[0], arguments[1]);
+        var r = exec(arguments[0], arguments[1])
         exec = r[1];
+
+        // if (arguments.length===0) {
+        // }else{
+        // }
+
         return (
           (arguments.length === 0 && __core__._eval(exec)) ||
           (arguments.length === 1 && "string" === typeof arguments[0] && r[0])
@@ -585,7 +590,7 @@
                 node.remove();
                 "function" === typeof foo &&
                   (foo(node),
-                    console.log("deprecated argument in removeAllNode() method"));
+                    console.error("deprecated argument at removeAllNode() method", foo));
               });
               process.nodes.flush();
             }),
@@ -1913,18 +1918,18 @@
       onprogress: function () {
         this.disable();
       },
-      onend: function () {
-
+      onend: function (arg) {
         try {
 
           var self = this;
-          var exec = this.eval()
+          // var exec = this.eval()
           var p = this.global.p;
           var data = p.parameter[0];
           var useDelay = p.parameter[1];
 
 
           var foo = function () {
+            var exec = self.eval()
             for (var i = 0; i < p.arguments.length; i++) {
               exec(arguments[i], p.arguments[i]);
             }
@@ -1933,7 +1938,7 @@
             for (var i = 0; i < self.global.callback.length; i++) {
               self.global.callback[i].addChild(
                 __core__.XJSXCompiler(
-                  self.global.callback[i].d.cloneNode(true),
+                  self.global.callback[i].e.cloneNode(true),
                   exec
                 ),
                 true
@@ -1966,26 +1971,26 @@
                 foo(data[prop], prop);
               }
             } else {
-              throw "not an Object.";
+              throw data + " has no properties.";
             }
           } else {
             var lp = new loop(data, foo, useDelay, self);
-            if ("number" === typeof data) {
-              lp.nm()
-            } else if (data instanceof Array) {
-              lp.arr()
-            } else if (data instanceof Object) {
-              lp.obj()
-            } else {
-              throw "not an Object.";
-            }
+
+            "number" === typeof data && !lp.nm()
+              ||
+              data instanceof Array && !lp.arr()
+              ||
+              data instanceof Object && !lp.obj()
+              || (function () {
+                //has no properties
+                throw data + " has no properties."
+              })()
           }
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           console.error(
             "for-each:",
-            p.parameter.join(","),
-            p.arguments.join(","),
+            arg,
             err + ""
           );
           self.remove();
@@ -1995,7 +2000,7 @@
 
         var self = this;
 
-        this.appendAllTo((self.d = document.createDocumentFragment()));
+        this.appendAllTo((self.e = document.createDocumentFragment()));
         /*  if (1 > self.d.childNodes.length) {
           return;
         }*/
@@ -2023,7 +2028,7 @@
       },
       callback: function () {
         var self = this;
-        this.appendAllTo((self.d = document.createDocumentFragment()));
+        this.appendAllTo((self.e = document.createDocumentFragment()));
 
         self.global.callback.push(self);
         /*   return 
@@ -2078,7 +2083,7 @@
           });
         } catch (err) {
 
-          console.log("on:", a, err + "");
+          console.error("on:", a, err + "");
         }
       },
     },
