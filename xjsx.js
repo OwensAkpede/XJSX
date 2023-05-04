@@ -541,42 +541,7 @@
         },
         global: process.global,
       };
-      /*
-      (_this.addChild = function (child, sub) {
-            var pp = process;
-
-            if (!sub) {
-              while (pp.parentProcess) {
-                pp = pp.parentProcess;
-              }
-            }
-
-            pp = pp.nodes;
-
-            if (child instanceof NodeList) {
-              var _p = pp.me();
-              while (child.length) {
-                child[0].fromXJSXCore = true;
-                pp.push(child[0]);
-                _p.parentNode.insertBefore(child[0], _p);
-              }
-              return;
-            } else if (child instanceof DocumentFragment) {
-              for (var i = 0; i < child.childNodes.length; i++) {
-                child.childNodes[i].fromXJSXCore = true;
-                pp.push(child.childNodes[i]);
-              }
-            } else if (child instanceof Node) {
-
-              pp.push(child);
-            } else {
-              pp.push((child = document.createTextNode(child)));
-            }
-            pp = pp.me();
-            child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);
-          });
-        */
+    
       (opt === "onprogress" &&
         ((_this.appendTo = function(doc) {
 
