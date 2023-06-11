@@ -2,7 +2,7 @@
 ==================
 
   * fixed the following keywords `for-each` `fetch`
-  * fixed legacy support
+  * fixed legacy support 
 
 1.0 (LLS) / 2023-04-25
 ==================
