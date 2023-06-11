@@ -1,4 +1,4 @@
-/*! XJSX v 1.5.0 - 04-05-2023 */
+/*! XJSX v 1.5.0 - 04-05-2023  --*/
 
 /***
  * for-each eval bug fixed
