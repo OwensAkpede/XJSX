@@ -1,4 +1,4 @@
-/*! XJSX v 1.5.0 - 04-05-2023  --*/
+/*! XJSX v 1.5.5 - 24-06-2023  */
 
 /***
  * for-each eval bug fixed
@@ -2090,7 +2090,7 @@
 
 
 
-  !document.documentElement.attributes.xjsx &&
+  (window.DISABLE_XJSX||!document.documentElement.attributes.xjsx) &&
     {
 
 
