@@ -2090,10 +2090,8 @@
 
 
 
-  (window.DISABLE_XJSX||!document.documentElement.attributes.xjsx) &&
+  !window.DISABLE_XJSX/*||!document.documentElement.attributes.xjsx*/ &&
     {
-
-
       eval: __core__._eval(exec),
       onboardProcesses: [],
       document: document,
