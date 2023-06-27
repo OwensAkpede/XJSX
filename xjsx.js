@@ -1454,7 +1454,7 @@
             this.killProcess();
         } catch (e) {
           return console.error("if:", q, e + "");
-        }
+        } 
       },
       onprogress: function () {
         !this.global.q && this.delete();
