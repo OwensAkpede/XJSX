@@ -1,32 +1,37 @@
-1.5 (LLS) / 2023-05-04
+2.0 / 2023-07-03
+==================
+
+  * Performance Optimization
+
+1.5 / 2023-05-04
 ==================
 
   * fixed the following keywords `for-each` `fetch`
   * fixed legacy support 
 
-1.0 (LLS) / 2023-04-25
+1.0 23-04-25
 ==================
 
   * XJSX.parseElement bug fixed
 
-1.0 (LLS) / 2023-04-23
+1.0  / 2023-04-23
 ==================
 
   * keyword updated `for-each:` (now takes 2 argument,
    `1: value`|`2: delay time (in milliseconds)`).
    see it [here](advance/FOR-EACH.README.md)
 
-0.5 (LLS) / 2023-04-18
+0.5  / 2023-04-18
 ==================
 
   * New keyword added `html-element:`
 
-0.1 (LLS) / 2023-04-14
+0.1  / 2023-04-14
 ==================
 
   * Optimization
 
-  0.1 (LLS) / 2023-04-09
+  0.1  / 2023-04-09
 ==================
 
   * Fixed existing bugs
