@@ -1,75 +1,20 @@
-/*! XJSX v 1.5.5 - 24-06-2023  */
+/*! XJSX v 2.0.0 - 03-07-2023  */
 
 /***
  * for-each eval bug fixed
  */
 
-(function (exec) {
+(function (window,exec) {
   var KEYWORD = "keyword";
-  var MICRO = "micro";
-  var MKEYWORD = "micro-keyword";
   var FUNCTION = "function";
-  var FKEYWORD = "function-keyword";
+  var MICRO = "micro";
   var METHOD = "method";
+  var MKEYWORD = "micro-keyword";
+  var FKEYWORD = "function-keyword";
   var time = 0;
-  var loop = function (v, foo, dly, node) {
-    var self = this;
-    var i = 0
-
-    var _keys = function (e) {
-      var k = [];
-      for (var p in e) {
-        k.push(p)
-      }
-      return k
-    }
-
-
-    this.nm = function (s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v) {
-        if (i === 0 || !s) {
-          foo(i), i++, self.nm(true);
-        } else {
-          setTimeout(self.nm, dly)
-        }
-      }
-    }
-
-    this.arr = function (s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v.length) {
-        if (i === 0 || !s) {
-          foo(v[i], i), i++, self.arr(true);
-        } else {
-          setTimeout(self.arr, dly)
-        }
-      }
-    }
-
-    this.obj = function () {
-      var keys = _keys(v);
-      var key;
-      var loop = function (s) {
-        if (!node.isVisible()) {
-          return
-        }
-        if (i < keys.length) {
-          key = keys[i]
-          if (i === 0 || !s) {
-            foo(v[key], key), i++, loop(true);
-          } else {
-            setTimeout(loop, dly)
-          }
-        }
-      }
-      loop()
-    }
-  };
+  
+  var loop;
+  
   var __core__ = {
     _observer: (window.MutationObserver &&
       function () {
@@ -119,7 +64,7 @@
               !n.parentNode ||
                 n.fromXJSXCore ||
                 n.parentNode.removed ||
-                n.parentNode._removed ||
+                n.parentNode.disabled ||
                 (n.parentNode.fromXJSXCore && (n.fromXJSXCore = true)) ||
                 core.stage(n);
             }
@@ -149,9 +94,9 @@
           removeEventListener('load', arguments.callee);
         });
       },
-    animation: {},
-    createAnimation: function (n, f) {
-      "function" === typeof f && (__core__.animation[n] = f);
+    effect: {},
+    createEffect: function (n, f) {
+      "function" === typeof f && (__core__.effect[n] = f);
     },
     events: {},
     addEventListener: function (name, foo) {
@@ -543,7 +488,7 @@
 
           opt === "callback" &&
             process.nodes.forEach(function (a) {
-              foo(core.toXJSXElement(a, process));
+              foo(core.XJSXElement(a, process));
             });
 
           console.warn("this .forEach() method is deprecated");
@@ -552,17 +497,14 @@
       };
 
       (opt === "onprogress" &&
-        ((_this.appendTo = function (doc) {
-
-
-
-          doc.appendChild(node.cloneNode(true));
+        ((_this.appendTo = function (element) {
+          element.appendChild(node.cloneNode(true));
         }),
           /* (_this.moveNodeTo=function(doc) {
              console.warn("moveNodeTo:","not fully implemented!")
            }),*/
           (_this.disable = function () {
-            (!process.closed && (node.remove(), (node._removed = true))) ||
+            (!process.closed && (node.remove(), (node.disabled = true))) ||
               console.error("process has ended ");
           }),
           (_this.delete = function () {
@@ -712,7 +654,7 @@
           }));
       return _this;
     },
-    toXJSXElement: function (node, process) {
+    XJSXElement: function (node, process) {
       return {
         appendTo: function (doc, clone) {
           if (clone) {
@@ -744,6 +686,22 @@
         */
       };
     },
+    XJSXTokenError: function (o){
+      o.node.remove();
+     return   "Unexpected token '" +
+          o.params[0] +
+          "'.\n" +
+          ((o.nextInLineProcess >= 1 &&
+            "( " + o.currentProcess.parentParams.join(":") + " )...") ||
+            "") +
+          "( " +
+          o.currentProcess.params.join(":") +
+          " )..." +
+          "( " +
+          o.params.join(":") +
+          " ) " +
+          "... " ;
+    },
     XJSXNodeList: function (node) {
       var process = node.process;
 
@@ -770,11 +728,11 @@
           a.process.nodes.forEach(forEach);
 
         /** commented for performance pp**/
-        /***foo(core.toXJSXElement(a, process))***/
+        /***foo(core.XJSXElement(a, process))***/
 
 
         /** commented for performance pp**/
-        /***  foo(core.toXJSXElement(a, process)); **/
+        /***  foo(core.XJSXElement(a, process)); **/
 
       };
       var self = {
@@ -994,6 +952,8 @@
 
       if (type === MICRO) {
 
+        e.remove();
+        
         if (
           !currentProcess ||
           currentProcess._isDeadProcess ||
@@ -1003,14 +963,10 @@
           /* !(shouldProcess && isChildProcess) &&
           !(shouldProcess && type === MKEYWORD) &&*/
 
-
+           console.error("MICRO_ERROR",params.join(":"))
 
           return;
         }
-
-        e.remove();
-
-
 
         currentProcess.micro_parameter = params[1];
         currentProcess.micro_callback = module.operations[0].callback;
@@ -1078,7 +1034,7 @@
 
         currentInLineProcess = module.keywords[params[0]];
 
-        var err_msg =
+     /*   var err_msg =
           "Unexpected token '" +
           params[0] +
           "'.\n" +
@@ -1091,7 +1047,7 @@
           "( " +
           params.join(":") +
           " ) " +
-          "... ";
+          "... ";*/
 
         if (
           (type === KEYWORD &&
@@ -1100,14 +1056,16 @@
           (type === FUNCTION && nextInLineProcess + 1 !== currentInLineProcess)
         ) {
 
-          return console.error(err_msg);
+          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
         }
 
         this.execCallback(currentProcess);
         if (currentProcess.isterminated) {
           this.terminateCurrentProcess();
           /*** check **/
-          return console.error(err_msg);
+         // return console.error(err_msg);
+          //return console.error(this.XJSXTokenError({params, nextInLineProcess, currentProcess}));
+          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
         } else {
           this.terminateCurrentProcess();
         }
@@ -1146,6 +1104,7 @@
         currentProcess.nodes.append(e /*, shouldProcess*/);
 
       if (!module) {
+     //   e.remove()
         console.error(
           "Unexpected token '%s' (%s:%s)",
           params[0],
@@ -1370,16 +1329,18 @@
     },
   ]);
 
-  /** animate √ **/
+  /** use-effect √ **/
   __core__.createModule([
     {
-      keyword: "animate",
+      /*keyword: "animate",*/
+      keyword: "use-effect",
       callback: function (arg, node) {
         try {
           arg = this.eval("[" + arg + "]");
           var param = arg[0];
           if (node) {
             var put = node.putChild;
+            var id=Date.now()+"-"+Math.random();
             var doc;
             node.putChild = function (n) {
               doc = document.createElement("x-fragment");
@@ -1390,9 +1351,22 @@
               } else {
                 doc.appendChild(n);
               }
-              var r = node.x_addChild(doc);
-              __core__.animation[param] &&
-                __core__.animation[param](doc, r, arg);
+              doc.XJSXEffectId=id
+             // console.log(node.id);
+              var obj={previousElement:void 0}
+              obj.resolve = node.x_addChild(doc);
+              obj.newElement = doc
+
+              var pr=doc.previousSibling;
+              if (pr&&(pr=pr.XJSXEffectId)) {
+              obj.previousElement= doc.previousSibling
+              }
+              
+              obj.arguments =arg
+
+              __core__.effect[param] &&
+              //  __core__.effect[param](doc, r, arg);
+                __core__.effect[param](obj);
             };
           } else {
             throw "Unexpected token 'animate'";
@@ -1454,7 +1428,7 @@
             this.killProcess();
         } catch (e) {
           return console.error("if:", q, e + "");
-        } 
+        }
       },
       onprogress: function () {
         !this.global.q && this.delete();
@@ -1608,7 +1582,7 @@
             if (tmp.fragment) {
               /*  
               console.log(tmp);
-             delete tmp._removed
+             delete tmp.disabled
              delete tmp.fromXJSXCore
              console.log(tmp.fragment.parentNode);
            tmp.fragment.remove()
@@ -1972,7 +1946,66 @@
               throw data + " has no properties.";
             }
           } else {
-            var lp = new loop(data, foo, useDelay, self);
+            !loop&&(loop = function (v, foo, dly, node) {
+    var self = {};
+    var i = 0
+
+    var _keys = function (e) {
+      var k = [];
+      for (var p in e) {
+        k.push(p)
+      }
+      return k
+    }
+
+
+    self.nm = function (s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v) {
+        if (i === 0 || !s) {
+          foo(i), i++, self.nm(true);
+        } else {
+          setTimeout(self.nm, dly)
+        }
+      }
+    }
+
+    self.arr = function (s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v.length) {
+        if (i === 0 || !s) {
+          foo(v[i], i), i++, self.arr(true);
+        } else {
+          setTimeout(self.arr, dly)
+        }
+      }
+    }
+
+    self.obj = function () {
+      var keys = _keys(v);
+      var key;
+      var loop = function (s) {
+        if (!node.isVisible()) {
+          return
+        }
+        if (i < keys.length) {
+          key = keys[i]
+          if (i === 0 || !s) {
+            foo(v[key], key), i++, loop(true);
+          } else {
+            setTimeout(loop, dly)
+          }
+        }
+      }
+      loop()
+    }
+    return self
+  });
+            var lp = loop(data, foo, useDelay, self);
 
             "number" === typeof data && !lp.nm()
               ||
@@ -2102,7 +2135,7 @@
     FUNCTION: 2,
     METHOD: 1,
     KEYWORD: 0,
-    createAnimation: __core__.createAnimation,
+    createEffect: __core__.createEffect,
     parseXJSXParameter: __core__.parseParameter,
     createTemplate: function (name, val) {
       var cust = __core__.customTemplates
@@ -2233,7 +2266,7 @@
     }
   })
 
-})(function () {
+})(this, function () {
   return (
     (!arguments[1] &&
       "string" === typeof arguments[0] && [
