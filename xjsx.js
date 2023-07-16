@@ -1,6 +1,7 @@
 /*! XJSX v 2.0.1 - 16-07-2023  */
 
 /***
+ * please refer to the direction @github:Owens94819 /XJSX/release/beta/
  * 
  */
 
