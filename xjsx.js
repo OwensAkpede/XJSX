@@ -1,7 +1,7 @@
-/*! XJSX v 2.0.0 - 03-07-2023  */
+/*! XJSX v 2.0.1 - 16-07-2023  */
 
 /***
- * for-each eval bug fixed
+ * 
  */
 
 (function (window,exec) {
@@ -254,7 +254,7 @@
         this.signedKeywords[module[0].keyword]
       ) {
         return console.error(
-          "createElement",
+          "createModule",
 
           "keyword already taken",
           module[0].keyword,
@@ -299,7 +299,7 @@
           );
         this.modules[module[i].keyword] &&
           console.warn(
-            "createElement",
+            "createModule",
 
             "keyword already taken",
             module[i].keyword,
@@ -671,11 +671,11 @@
         },
         getAllTextContent: function () {
           var txt = node.textContent;
-          if (node.process) {
-            node.process.nodes.forEach(function (e) {
+      //    if (node.process) {
+           node.process && node.process.nodes.forEach(function (e) {
               txt += e.textContent;
             });
-          } else { }
+      //    } else { }
           return txt;
         },
 
