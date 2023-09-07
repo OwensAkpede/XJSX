@@ -1,9 +1,8 @@
-/*! XJSX v ?.?.? - 2-09-2023*  */
+/* XJSX v 2.5.0 - 2-09-2023  */
 
 /***
- * updated
- * fix property name convention between (_remove & removed) @core.CALLBACK_PROTOTYPE & @core._observer & @core.XJSXNodeList>append...
- * for-each eval bug fixed
+ * 
+ * 
  */
 
 (function (window,exec) {
