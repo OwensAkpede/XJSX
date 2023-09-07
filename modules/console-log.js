@@ -1,8 +1,10 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var METHOD = 0xB;
   /** console-log √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "console-log",
-      _trusted: true,
       callback: function (e, node, exec) {
         e = e.trim();
         if (!e) {
@@ -15,6 +17,7 @@
         }
         node.remove();
       },
-      type:  "method",
+      type: METHOD,
     },
   ]);
+})()

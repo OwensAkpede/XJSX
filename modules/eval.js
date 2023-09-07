@@ -1,8 +1,11 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var METHOD = 0xB;
+
   /** eval √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "eval",
-      _trusted: true,
       callback: function (e, node, exec) {
         try {
           exec(e.trim().replace(/^"([^]+)"$/g, "$1"));
@@ -11,6 +14,8 @@
         }
         node.remove();
       },
-      type:  "method",
+      type: METHOD,
     },
   ]);
+
+})()

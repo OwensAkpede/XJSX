@@ -1,8 +1,11 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var METHOD = 0xB;
+
   /** print √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "print",
-      _trusted: true,
       callback: function (e, node, exec) {
         try {
           node.putChild(exec("[" + e + "][0]"));
@@ -11,6 +14,7 @@
           e = "";
         }
       },
-      type: "method",
+      type: METHOD,
     },
   ]);
+})()

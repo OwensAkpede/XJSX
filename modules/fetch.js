@@ -1,15 +1,8 @@
-
-var dispatcher_init;
-var dispatcher=function (win, name) {
-      !dispatcher_init &&
-        (dispatcher_init = document.createEvent("Event"));
-          dispatcher_init.initEvent(name);
-      win.dispatchEvent(dispatcher_init);
-    }
-    
-
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+  var FUNCTION = 0xD;
   /** fetch √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "fetch",
       onload: function (arg) {
@@ -31,15 +24,22 @@ var dispatcher=function (win, name) {
 
         opt &&
           (opt.type && (http.responseType = opt.type),
-          opt.withCredentials && (http.withCredentials = opt.withCredentials));
+            opt.withCredentials && (http.withCredentials = opt.withCredentials));
         if (opt && opt.headers) {
           for (var header in opt.headers) {
             http.setRequestHeader(header, opt.headers[header]);
           }
         }
-        http.send(opt && opt.body);
+
+        try {
+          http.send(opt && opt.body);
+        } catch (error) {
+          setTimeout(function () {
+            __core__.dispatcher(http, "error")
+          }, 0);
+        }
       },
-      type: "function",
+      type: FUNCTION,
     },
     {
       keyword: "then",
@@ -57,33 +57,28 @@ var dispatcher=function (win, name) {
 
         http.addEventListener("load", function () {
           p = p.split(",");
-          //    console.log(http);
+
           var argument;
           try {
             argument = [
-              Object.assign(http.response, {
+              {
                 responseURL: http.responseURL,
                 status: http.status,
                 statusText: http.statusText,
-                get response() {
-                  console.warn(
-                    self.parentParams.join(":") +
-                      "\nthen:" +
-                      p[0] +
-                      ".response this function is now deprecated"
-                  );
-                  return (!http.readyState && argument[0]) || http.response;
-                },
-                responsetype: http.responseType,
-              }),
+                response: http.response || "",
+                responseType: http.responseType,
+                toString: function () {
+                  return this.response + ""
+                }
+              }
             ];
-          } catch(e){
-            argument = [http.response];
+          } catch (e) {
+            argument = [http.response || ""];
             console.error(
               self.parentParams.join(":") +
-                "\nresponse could not be converted to " +
-                http.responseType +
-                " type"
+              "\nresponse could not be converted to " +
+              http.responseType +
+              " type"
             );
           }
           http.abort();
@@ -101,7 +96,7 @@ var dispatcher=function (win, name) {
               err + ""
             );
           }
-          self.putChild(XJSX.parseElement(doc, self.eval));
+          self.putChild(__core__.XJSXCompiler(doc, self.eval));
         });
       },
     },
@@ -118,9 +113,7 @@ var dispatcher=function (win, name) {
         var http = this.global.http;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
-
         http.addEventListener("error", function () {
-          //   console.error(arguments[0]);
           p = p.split(",");
 
           try {
@@ -136,9 +129,10 @@ var dispatcher=function (win, name) {
           }
           http = delete self.global.http;
 
-          self.putChild(XJSX.parseElement(doc, self.eval));
+          self.putChild(__core__.XJSXCompiler(doc, self.eval));
         });
-        !http.readyState && dispatcher(http, "error");
+        !http.readyState && __core__.dispatcher(http, "error");
       },
     },
   ]);
+})()

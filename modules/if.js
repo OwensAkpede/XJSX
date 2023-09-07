@@ -1,9 +1,11 @@
-   
+(function() {
+   var __core__=XJSX.__XJSXCORE__();
+   var KEYWORD = 0xC;
   /** if **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "if",
-      type:  "keyword",
+      type: KEYWORD,
       onload: function (q) {
         try {
           !(this.global.q = this.eval("(" + q + ")") ? true : false) &&
@@ -19,8 +21,8 @@
         if (this.global.q) {
           this.global.done = true;
         }
-        //this.remove();
-        //  console.log(this);
+
+
       },
     },
     {
@@ -62,7 +64,8 @@
       },
       callback: function () {
         this.terminate();
-        // !this.global.q && this.remove();
+
       },
     },
   ]);
+})()

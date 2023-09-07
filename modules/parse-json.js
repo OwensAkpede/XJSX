@@ -1,9 +1,11 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var METHOD = 0xB;
   /** parse-json **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "parse-json",
-      _trusted: true,
-      callback: function(e, node, exec) {
+      callback: function (e, node, exec) {
         if (e != 0) {
           try {
             exec("(" + e + ")=JSON.parse(" + e + ")", "");
@@ -13,6 +15,8 @@
         }
         node.remove();
       },
-      type: "method",
+      type: METHOD,
     },
   ]);
+
+})()

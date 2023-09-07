@@ -1,3 +1,13 @@
+2.5 / 2023-09-08
+==================
+
+  * Performance and code Optimization
+  
+2.2 / 2023-09-07
+==================
+
+  * Performance Optimization
+
 2.1 / 2023-07-03
 ==================
 

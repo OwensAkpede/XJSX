@@ -1,13 +1,14 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var METHOD = 0xB;
   /** data √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "data",
-      _trusted: true,
       callback: function (e, node, exec) {
         try {
           e = exec("[" + e + "][0]");
-
-          XJSX.event.on("data/" + e, function (ev) {
+          __core__.addEventListener("data/" + e, function (ev) {
             (node.isVisible() && !node.putChild(ev.detail)) ||
               removeEventListener("data/" + e, arguments.callee);
           });
@@ -15,6 +16,7 @@
           console.error("data:", e, err + "");
         }
       },
-      type:  "method",
+      type: METHOD,
     },
   ]);
+})()

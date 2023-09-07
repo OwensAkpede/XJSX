@@ -1,158 +1,104 @@
+/*! XJSX v ?.?.? - 2-09-2023*  */
+
 /***
- *
- * 
- * 
+ * updated
+ * fix property name convention between (_remove & removed) @core.CALLBACK_PROTOTYPE & @core._observer & @core.XJSXNodeList>append...
+ * for-each eval bug fixed
  */
 
-(function (exec) {
-  var KEYWORD = "keyword";
-  var MICRO = "micro";
-  var MKEYWORD = "micro-keyword";
-  var FUNCTION = "function";
-  var FKEYWORD = "function-keyword";
-  var METHOD = "method";
+(function (window,exec) {
+  var MICRO = 0xA;
+  var METHOD = 0xB;
+  var KEYWORD = 0xC;
+  var FUNCTION = 0xD;
+  var FKEYWORD = 0xE;
+  var MKEYWORD = 0xF;
   var time = 0;
-  var loop = function(v, foo, dly, node) {
-    var self = this;
-    var i = 0
-    
-    var _keys=function(e) {
-     var k=[];
-     for(var p in e){
-       k.push(p)
-     }
-     return k
-    }
-    
-    
-    this.nm = function(s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v) {
-        if (i === 0||!s) {
-          foo(i), i++, self.nm(true);
-        } else {
-          setTimeout(self.nm, dly)
-        }
-      }
-    }
-
-    this.arr = function(s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v.length) {
-        if (i === 0||!s) {
-          foo(v[i], i), i++, self.arr(true);
-        } else {
-          setTimeout(self.arr, dly)
-        }
-      }
-    }
-
-    this.obj = function() {
-      var keys = _keys(v);
-      var key;
-      var loop = function(s) {
-      if (!node.isVisible()) {
-        return
-      }
-        if (i < keys.length) {
-          key = keys[i]
-          if (i === 0||!s) {
-            foo(v[key], key), i++, loop(true);
-          } else {
-            setTimeout(loop, dly)
-          }
-        }
-      }
-      loop()
-    }
-    // this.i=0
-  };
-
-
+  
+  
+  
   var __core__ = {
-    _observer:
-      (window.MutationObserver &&
-        function () {
-          var lastChild;
-          var lastDoc;
-          var cn;
-          var core = this;
-          var n;
-          var lc;
-          var obs = new window.MutationObserver(function (e) {
-            document.readyState === "complete" &&
-              (obs.disconnect(), core.XJSXLastProcessCallback());
+    _observer: (window.MutationObserver &&
+      function () {
+        var lastChild;
+        var lastDoc;
+        var cn;
+        var core = this;
+        var n;
+        var lc;
+        var obs = new window.MutationObserver(function (e) {
+          document.readyState === "complete" &&
+            (obs.disconnect(), core.XJSXLastProcessCallback());
 
-            (lastDoc && (lc = lastDoc)) ||
-              ((lc = document.body) && (lastDoc = lc)) ||
-              (lc = document.head || document.documentElement);
+          (lastDoc && (lc = lastDoc)) ||
+            ((lc = document.body) && (lastDoc = lc)) ||
+            (lc = document.head || document.documentElement);
 
-            while (lc.lastChild) {
-              lc = lc.lastChild;
+          while (lc.lastChild) {
+            lc = lc.lastChild;
+          }
+          /*****/
+
+          if (lastChild && lastChild === lc) {
+            return;
+          }
+          lastChild = lc;
+          /****/
+          /***
+      if ((cn=e[e.length-1])&&(cn=cn.addedNodes[0])) {
+      while (cn.lastChild) {
+      cn=cn.lastChild
+      }
+      if (cn!==lc) {
+      return;
+      }
+      }else{
+      return
+      }
+      ***/
+
+          for (var i = 0; i < e.length; i++) {
+            var record = e[i];
+
+            for (var _i = 0; _i < record.addedNodes.length; _i++) {
+              n = record.addedNodes[_i];
+
+              !n.parentNode ||
+                n.fromXJSXCore ||
+                n.parentNode.removed ||
+                n.parentNode.disabled ||
+                (n.parentNode.fromXJSXCore && (n.fromXJSXCore = true)) ||
+                core.stage(n);
             }
-            /*****/
+          }
 
-            if (lastChild && lastChild === lc) {
-              return;
-            }
-            lastChild = lc;
-            /****/
-            /***
-        if ((cn=e[e.length-1])&&(cn=cn.addedNodes[0])) {
-        while (cn.lastChild) {
-        cn=cn.lastChild
-        }
-        if (cn!==lc) {
-        return;
-        }
-        }else{
-        return
-        }
-        ***/
 
-            for (var i = 0; i < e.length; i++) {
-              var record = e[i];
+        });
+        obs.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+        addEventListener("load", function () {
+          !core.resolved &&
+            (obs.disconnect(), core.XJSXLastProcessCallback());
+          removeEventListener('load', arguments.callee);
+        });
 
-              for (var _i = 0; _i < record.addedNodes.length; _i++) {
-                n = record.addedNodes[_i];
-
-                !n.parentNode ||
-                  n.fromXJSXCore ||
-                  n.parentNode.removed ||
-                  n.parentNode._removed ||
-                  (n.parentNode.fromXJSXCore && (n.fromXJSXCore = true)) ||
-                  core.stage(n);
-              }
-            }
-
-            // return (n = e = i = void 0);
-          });
-          obs.observe(document, {
-            childList: true,
-            subtree: true,
-          });
-          addEventListener("load", function () {
-            !core.resolved &&
-              (obs.disconnect(), core.XJSXLastProcessCallback());
-          });
-          //  return (elm = void 0), obs;
-        }) ||
+      }) ||
       function () {
         console.warn("MutationObserver unavailable in this browser...");
         console.warn(
           'will now manually parse this document with the "onload" event.'
         );
+        var doc = this.document;
         addEventListener("load", function () {
-          __core__.XJSXCompiler(document);
+          __core__.XJSXCompiler(doc);
+          removeEventListener('load', arguments.callee);
         });
       },
-    animation: {},
-    createAnimation: function (n, f) {
-      "function" === typeof f && (__core__.animation[n] = f);
+    effect: {},
+    createEffect: function (n, f) {
+      "function" === typeof f && (__core__.effect[n] = f);
     },
     events: {},
     addEventListener: function (name, foo) {
@@ -172,9 +118,74 @@
       __core__.dispatcher_init.initEvent(name);
       win.dispatchEvent(__core__.dispatcher_init);
     },
+    loop:function(v, foo, dly, node) {
+   //"use strict";
+    var self = {};
+    var _setTimeout;
+    (typeof dly!=="number")&&Number(dly);
+    if(dly<50||!dly){
+      _setTimeout=requestAnimationFrame
+    }else{
+      _setTimeout=setTimeout
+    }
+    var i = 0
+
+    var _keys = function (e) {
+      var k = [];
+      for (var p in e) {
+        k.push(p)
+      }
+      return k
+    }
+
+    self.nm = function (s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v) {
+        if (i === 0 || s!==true) {
+          foo(i), i++, self.nm(true);
+        } else {
+          _setTimeout(self.nm, dly)
+        }
+      }
+    }
+
+    self.arr = function (s) {
+      if (!node.isVisible) {
+        return
+      }
+      if (i < v.length) {
+        if (i === 0 || s!==true) {
+          foo(v[i], i), i++, self.arr(true);
+        } else {
+          _setTimeout(self.arr, dly)
+        }
+      }
+    }
+
+    self.obj = function () {
+      var keys = _keys(v);
+      var key;
+      var loop = function (s) {
+        if (!node.isVisible()) {
+          return
+        }
+        if (i < keys.length) {
+          key = keys[i]
+          if (i === 0 || s!==true) {
+            foo(v[key], key), i++, loop(true);
+          } else {
+            _setTimeout(loop, dly)
+          }
+        }
+      }
+      loop()
+    }
+    return self
+  },
     stage: function (e) {
       var currentProcess = this.getOnboardProcess();
-      // var mode = this.XJSXSyntax(e);
 
       (e instanceof Comment &&
         e.data.search(/^\?[^\?][^]+[^\?]\?$/) === 0 &&
@@ -197,13 +208,13 @@
         */
     },
     _XJSXSyntax: function (e) {
-      // if (e instanceof Comment) {
+
       /*  if (e.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
           return this.mode[0];
         } else*/
       return e.search(/^\?[^\?][^]+[^\?]\?$/) === 0 && this.mode[1];
 
-      //  }
+
     },
     XJSXSyntax: function (e) {
       /*  if (e.data.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
@@ -227,9 +238,7 @@
     isKeyWord: function (e) {
       return (
         "string" === typeof e &&
-        //    e.trim() &&
-        //  e.length > 1 &&
-        e.match(/^[a-z0-9]+([^]+[a-z0-9])?$/)
+        e.search(/^[a-z0-9]+([^]+[a-z0-9])?$/)===0
       );
     },
     /* isVariable: function (e) {
@@ -270,7 +279,8 @@
       };
     },
     domParser: function () {
-      var d = __core__.domParser_node || (__core__.domParser_node =document.createElement("span"));
+      var d = __core__.domParser_node
+      d = d && d.cloneNode(true) || document.createElement("span");
       d.innerHTML = arguments[0];
       return d;
     },
@@ -287,7 +297,7 @@
         return console.error(
           "createModule",
           "module could not be created",
-          //this.error_meassages.IMC,
+
           module
         );
       }
@@ -295,7 +305,7 @@
       if (!this.isKeyWord(module[0].keyword)) {
         return console.error(
           "createModule",
-          // this.error_meassages.IMC,
+
           "invalid keyword",
           module[0].keyword,
           module
@@ -309,8 +319,8 @@
         this.signedKeywords[module[0].keyword]
       ) {
         return console.error(
-          "createElement",
-          // this.error_meassages.IMC,
+          "createModule",
+
           "keyword already taken",
           module[0].keyword,
           module
@@ -333,11 +343,11 @@
 
         /*else if (
           this.modules[module[i].keyword] 
-        //  this.signedKeywords[module[i].keyword]
+
         ) {
-        //  console.warn("createModule");
-        // delete this.modules[module[0].keyword];
-       //   return 
+
+
+
         }*/
 
         /* module[i].keyword = module[i].keyword.toLowerCase();*/
@@ -354,13 +364,13 @@
           );
         this.modules[module[i].keyword] &&
           console.warn(
-            "createElement",
-            // this.error_meassages.IMC,
+            "createModule",
+
             "keyword already taken",
             module[i].keyword,
             module
-            // module=[delete this.modules[module[0].keyword]]
-            //module=[]
+
+
           );
       }
     },
@@ -372,8 +382,13 @@
        * use strict inside eval to avoid "arguments"
        */
       return function () {
-        var r = exec(arguments[0], arguments[1]);
+        var r = exec(arguments[0], arguments[1])
         exec = r[1];
+
+        // if (arguments.length===0) {
+        // }else{
+        // }
+
         return (
           (arguments.length === 0 && __core__._eval(exec)) ||
           (arguments.length === 1 && "string" === typeof arguments[0] && r[0])
@@ -391,6 +406,7 @@
       },*/
     modules: {},
     moduleType: [KEYWORD, METHOD, FUNCTION],
+    customTemplates: {},
     signedKeywords: {},
     moduleLength: 0,
     hasOnboardProcess: function () {
@@ -414,13 +430,17 @@
         }
         return;
       },*/
+    getPNextNode: function (p) {
+      return p && (p.nextSibling || p.parentNode && this.getPNextNode(p.parentNode));
+    },
     getNextNode: function (node) {
       return (
         node &&
         (node.firstChild ||
           node.nextSibling ||
-          (node.parentNode && node.parentNode.nextSibling))
+          node.parentNode && this.getPNextNode(node.parentNode))
       );
+
       /*
         if (!node) {
           return;
@@ -437,15 +457,15 @@
     createElement: function (name, trusted) {
       ("string" === typeof name && (name = document.createElement(name))) ||
         ((trusted = name),
-        (name = document.createTextNode("")),
-        (name.process = {}),
-        (name.process.nodes = this.XJSXNodeList(name)),
-        (name._remove = name.remove),
-        (name.remove = function () {
-          name.process.nodes.remove();
+          (name = document.createTextNode("")),
+          (name.process = {}),
+          (name.process.nodes = this.XJSXNodeList(name)),
+          (name._remove = name.remove),
+          (name.remove = function () {
+            name.process.nodes.remove();
 
-          name._remove();
-        }));
+            name._remove();
+          }));
 
       name.fromXJSXCore = trusted;
       return name;
@@ -453,22 +473,22 @@
     execCallback: function (crt, opt, node) {
       /*** check ***/
       if (crt.isDeadProcess && opt !== "onprogress") {
-        //  console.log(opt);
+
         return;
       }
-      //   var foo = crt.callback;
-      //console.log(crt);
+
+
       !opt && (opt = "callback");
 
       var foo = crt.callback[opt];
-      //   console.log(opt,crt);
+
       if ("function" !== typeof foo) {
         return;
       }
 
-      // "onend"===opt&&(opt="callback");
 
-      //  console.log(opt);
+
+
 
       crt = {
         __proto__: crt,
@@ -485,13 +505,13 @@
         node
       );
 
-      o.f = foo;
-      o.f(
+      o.__callback__ = foo;
+      o.__callback__(
         crt.params[1],
-        (o.f = void 0),
+        // (o.f = void 0),
         opt === "callback" &&
-          crt.micro_callback &&
-          crt.micro_callback(crt.micro_parameter, o)
+        crt.micro_callback &&
+        crt.micro_callback(crt.micro_parameter, o)
       );
 
       crt.closed = true;
@@ -533,7 +553,7 @@
 
           opt === "callback" &&
             process.nodes.forEach(function (a) {
-              foo(core.toXJSXElement(a, process));
+              foo(core.XJSXElement(a, process));
             });
 
           console.warn("this .forEach() method is deprecated");
@@ -542,17 +562,20 @@
       };
 
       (opt === "onprogress" &&
-        ((_this.appendTo = function (doc) {
-          doc.appendChild(node.cloneNode(true));
+        ((_this.appendTo = function (element) {
+          element.appendChild(node.cloneNode(true));
         }),
-        (_this.disable = function () {
-          (!process.closed && (node.remove(), (node._removed = true))) ||
-            console.error("process has ended ");
-        }),
-        (_this.delete = function () {
-          (!process.closed && (node.remove(), (node.removed = true))) ||
-            console.error("process has ended ");
-        }))) ||
+          /* (_this.moveNodeTo=function(doc) {
+             console.warn("moveNodeTo:","not fully implemented!")
+           }),*/
+          (_this.disable = function () {
+            (!process.closed && (node.remove(), (node.disabled = true))) ||
+              console.error("process has ended ");
+          }),
+          (_this.delete = function () {
+            (!process.closed && (node.remove(), (node.removed = true))) ||
+              console.error("process has ended ");
+          }))) ||
         /****check**/
 
         (opt === "onload" &&
@@ -560,8 +583,8 @@
             process.__proto__.isDeadProcess = true;
           })) ||
         (opt === "callback" &&
-          ((_this.appendAllTo = function (doc, clone) {
-            (clone &&
+          ((_this.appendAllTo = function (doc, cloned) {
+            (cloned &&
               !process.nodes.forEach(function (node) {
                 doc.appendChild(node.cloneNode(true));
               })) ||
@@ -570,99 +593,100 @@
               }) ||
               process.nodes.flush();
           }),
-          (_this.remove = process.remove),
-          //_this.removeHolder = process.rh,
-          (_this.removeAllNode = process.nodes.remove),
-          (_this._removeAllNode = function (foo) {
-            process.nodes.forEach(function (node) {
-              node.remove();
-              "function" === typeof foo &&
-                (foo(node),
-                console.log("deprecated argument in removeAllNode() method"));
-            });
-            process.nodes.flush();
-          }),
-          (_this.flush = function () {
-            process.nodes.flush();
-          }),
-          (_this.addChild = function (child, sub) {
-            var pp = process;
+            (_this.remove = process.remove),
 
-            if (!sub) {
-              while (pp.parentProcess) {
-                pp = pp.parentProcess;
-              }
-            }
+            (_this.removeAllNode = process.nodes.remove),
+            (_this._removeAllNode = function (foo) {
+              process.nodes.forEach(function (node) {
+                node.remove();
+                "function" === typeof foo &&
+                  (foo(node),
+                    console.error("deprecated argument at removeAllNode() method", foo));
+              });
+              process.nodes.flush();
+            }),
+            (_this.flush = function () {
+              process.nodes.flush();
+            }),
+            (_this.addChild = function (child, sub) {
+              var pp = process;
 
-            pp = pp.nodes;
+              if (!sub) {
+                while (pp.parentProcess) {
+                  pp = pp.parentProcess;
+                }
+              }
 
-            if (child instanceof NodeList) {
-              var _p = pp.me();
-              while (child.length) {
-                child[0].fromXJSXCore = true;
-                pp.push(child[0]);
-                _p.parentNode.insertBefore(child[0], _p);
-              }
-              return;
-            } else if (child instanceof DocumentFragment) {
-              for (var i = 0; i < child.childNodes.length; i++) {
-                child.childNodes[i].fromXJSXCore = true;
-                pp.push(child.childNodes[i]);
-              }
-            } else if (child instanceof Node) {
-              //  node.parentNode && (node = node.cloneNode(true));
-              pp.push(child);
-            } else {
-              pp.push((child = document.createTextNode(child)));
-            }
-            pp = pp.me();
-            child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);
-          }),
-          /*put*/ (_this.putChild = function (child, sub) {
-            var pp = process;
-            if (!sub) {
-              while (pp.parentProcess) {
-                pp = pp.parentProcess;
-              }
-            }
-            //  console.log(pp,pp.removed);
-            pp = pp.nodes;
+              pp = pp.nodes;
 
-            pp.remove();
-            // console.log(child);
-            pp.flush();
-            if (child instanceof NodeList) {
-              var _p = pp.me();
-              while (child.length) {
-                child[0].fromXJSXCore = true;
-                pp.push(child[0]);
-                _p.parentNode.insertBefore(child[0], _p);
+              if (child instanceof NodeList) {
+                var _p = pp.me();
+                while (child.length) {
+                  child[0].fromXJSXCore = true;
+                  pp.push(child[0]);
+                  _p.parentNode.insertBefore(child[0], _p);
+                }
+                return;
+              } else if (child instanceof DocumentFragment) {
+                for (var i = 0; i < child.childNodes.length; i++) {
+                  child.childNodes[i].fromXJSXCore = true;
+                  pp.push(child.childNodes[i]);
+                }
+              } else if (child instanceof Node) {
+
+                pp.push(child);
+              } else {
+                pp.push((child = document.createTextNode(child)));
               }
-              return;
-            } else if (child instanceof DocumentFragment) {
-              for (var i = 0; i < child.childNodes.length; i++) {
-                child.childNodes[i].fromXJSXCore = true;
-                pp.push(child.childNodes[i]);
+              pp = pp.me();
+              child.fromXJSXCore = true;
+              pp.parentNode.insertBefore(child, pp);
+            }),
+            /*put*/
+            (_this.putChild = function (child, sub) {
+              var pp = process;
+              if (!sub) {
+                while (pp.parentProcess) {
+                  pp = pp.parentProcess;
+                }
               }
-            } else if (child instanceof Node) {
-              //  node.parentNode && (node = node.cloneNode(true));
-              pp.push(child);
-            } else {
-              pp.push((child = document.createTextNode(child)));
-            }
-            pp = pp.me();
-            child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);
-          }),
-          (_this.terminate = function () {
-            (!process.closed && process.isterminated) ||
-              (core.onboardProcesses.pop(),
-              (process.__proto__.isterminated = true)) ||
-              console.error("process has ended ");
-          })) &&
+
+              pp = pp.nodes;
+
+              pp.remove();
+
+              pp.flush();
+              if (child instanceof NodeList) {
+                var _p = pp.me();
+                while (child.length) {
+                  child[0].fromXJSXCore = true;
+                  pp.push(child[0]);
+                  _p.parentNode.insertBefore(child[0], _p);
+                }
+                return;
+              } else if (child instanceof DocumentFragment) {
+                for (var i = 0; i < child.childNodes.length; i++) {
+                  child.childNodes[i].fromXJSXCore = true;
+                  pp.push(child.childNodes[i]);
+                }
+              } else if (child instanceof Node) {
+
+                pp.push(child);
+              } else {
+                pp.push((child = document.createTextNode(child)));
+              }
+              pp = pp.me();
+              child.fromXJSXCore = true;
+              pp.parentNode.insertBefore(child, pp);
+            }),
+            (_this.terminate = function () {
+              (!process.closed && process.isterminated) ||
+                (core.onboardProcesses.pop(),
+                  (process.__proto__.isterminated = true)) ||
+                console.error("process has ended ");
+            })) &&
           process.micro_callback &&
-          (_this.x_addChild = function (child) {
+          (_this.x_addChild= function (child) {
             var pp = process;
             while (pp.parentProcess) {
               pp = pp.parentProcess;
@@ -683,7 +707,7 @@
                 pp.push(child.childNodes[i]);
               }
             } else if (child instanceof Node) {
-              //  node.parentNode && (node = node.cloneNode(true));
+
               pp.push(child);
             } else {
               pp.push((child = document.createTextNode(child)));
@@ -695,10 +719,10 @@
           }));
       return _this;
     },
-    toXJSXElement: function (node, process) {
+    XJSXElement: function (node, process) {
       return {
-        appendTo: function (doc, clone) {
-          if (clone) {
+        appendTo: function (doc, cloned) {
+          if (cloned) {
             doc.appendChild(node.cloneNode(true));
           } else {
             doc.appendChild(node);
@@ -712,12 +736,11 @@
         },
         getAllTextContent: function () {
           var txt = node.textContent;
-          if (node.process) {
-            node.process.nodes.forEach(function (e) {
+      //    if (node.process) {
+           node.process && node.process.nodes.forEach(function (e) {
               txt += e.textContent;
             });
-          } else {
-          }
+      //    } else { }
           return txt;
         },
 
@@ -727,6 +750,22 @@
         }
         */
       };
+    },
+    XJSXTokenError: function (o){
+      o.node.remove();
+     return   "Unexpected token '" +
+          o.params[0] +
+          "'.\n" +
+          ((o.nextInLineProcess >= 1 &&
+            "( " + o.currentProcess.parentParams.join(":") + " )...") ||
+            "") +
+          "( " +
+          o.currentProcess.params.join(":") +
+          " )..." +
+          "( " +
+          o.params.join(":") +
+          " ) " +
+          "... " ;
     },
     XJSXNodeList: function (node) {
       var process = node.process;
@@ -752,21 +791,21 @@
         a.process &&
           a.process.nodes.forEach &&
           a.process.nodes.forEach(forEach);
-        // if (a.process&&a.process.nodes.forEach) {
+
         /** commented for performance pp**/
-        /***foo(core.toXJSXElement(a, process))***/
-        //  } //else {
-        //foo(a);
+        /***foo(core.XJSXElement(a, process))***/
+
+
         /** commented for performance pp**/
-        /***  foo(core.toXJSXElement(a, process)); **/
-        //  }
+        /***  foo(core.XJSXElement(a, process)); **/
+
       };
       var self = {
         isVisible: function () {
-          return core.document.contains(node);
+          // console.log([core.document.contains && core.document.contains(node.parentElement || node),node.parentNode,core.document]);
+          return core.document.contains && core.document.contains(node.parentElement || node); /*core.document.documentElement*/
         },
         me: function () {
-          //console.trace("5")
           return node;
         },
         flush: function (a) {
@@ -823,8 +862,12 @@
               currentNodeParent = e;
             }
             */
-
-          if (currentNodeParent && currentNodeParent.contains(e)) {
+            
+            /***
+             * 
+             * this block needs an exception 
+            */
+          if (currentNodeParent && currentNodeParent.contains && currentNodeParent.contains(e)) {
             return;
           }
           currentNodeParent = e;
@@ -893,7 +936,8 @@
       return {
         remove: e.remove,
         isVisible: process.isVisible,
-        /*put*/ putChild: function (node) {
+        /*put*/
+        putChild: function (node) {
           process.remove();
           if (node instanceof NodeList) {
             while (node.length) {
@@ -908,12 +952,11 @@
               process.push(node.childNodes[i]);
             }
           } else if (node instanceof Node) {
-            //  node.parentNode && (node = node.cloneNode(true));
+
             process.push(node);
           } else {
             process.push((node = document.createTextNode(node)));
-          }
-          !node.fromXJSXCore && (node.fromXJSXCore = true);
+          } !node.fromXJSXCore && (node.fromXJSXCore = true);
           e.parentNode.insertBefore(node, e);
         },
       };
@@ -930,7 +973,7 @@
         );
 
       this.timeStamp &&
-        console.log(`onload: ${performance.now() - this.timeStamp}ms`);
+        console.log("onload: %dms", window.performance && performance.now() - this.timeStamp);
     },
     XJSXProcessor: function (e, currentProcess) {
       var params = this.parseKeyWord(e.data);
@@ -972,30 +1015,28 @@
 
       module &&
         ((type = module.operations[0].type),
-        //  isNewProcess = type === MKEYWORD || type === MICRO ? false : true
-        (isNewProcess = !(type === MKEYWORD || type === MICRO)));
-        // isNewProcess = type !== MKEYWORD || type !== MICRO && true ||  false;
+
+          (isNewProcess = !(type === MKEYWORD || type === MICRO)));
+
 
       if (type === MICRO) {
-        // e.remove();
+
+        e.remove();
+        
         if (
           !currentProcess ||
           currentProcess._isDeadProcess ||
           currentProcess.type !== "function"
         ) {
-          //    currentProcess &&
+
           /* !(shouldProcess && isChildProcess) &&
           !(shouldProcess && type === MKEYWORD) &&*/
-          // currentProcess.nodes.append(e /*, shouldProcess*/);
 
-          //  console.log(currentProcess);
+           console.error("MICRO_ERROR",params.join(":"))
+
           return;
         }
 
-        e.remove();
-        //   e._removed=true
-        //  e.data=""
-        //module.operations[0].callback(currentProcess)
         currentProcess.micro_parameter = params[1];
         currentProcess.micro_callback = module.operations[0].callback;
         return;
@@ -1007,7 +1048,7 @@
 
       var shouldProcess =
         (!currentProcess && 1) || (!currentProcess.isDeadProcess && 1) || 0;
-      //  && currentProcess.isDeadProcess ? 0 : 1;
+
 
       /***
        * comment code
@@ -1026,8 +1067,8 @@
       }
       ***/
 
-      // currentProcess.module.keywords.hasOwnProperty(params[0])
-      //   currentProcess &&
+
+
       if (module === false) {
         if (!shouldProcess) {
           currentProcess.nodes.append(e /*, shouldProcess*/);
@@ -1042,7 +1083,7 @@
         type = currentProcess.type;
         /*
           var previousKeyword = currentProcess.name;
-         // console.log(previousKeyword === module.name);
+
           if (previousKeyword === module.name) {
           previousKeyword =0
           }else{
@@ -1053,16 +1094,16 @@
             previousKeyword === module.name
               && 0
               || module.keywords[previousKeyword];*/
-        //console.log(module.keywords,previousKeyword);
+
 
         (currentProcess.name === module.name && !(nextInLineProcess = 0)) ||
           (nextInLineProcess = module.keywords[currentProcess.name]);
 
-        //  nextInLineProcess = previousKeyword;
+
 
         currentInLineProcess = module.keywords[params[0]];
 
-        var err_msg =
+     /*   var err_msg =
           "Unexpected token '" +
           params[0] +
           "'.\n" +
@@ -1075,23 +1116,25 @@
           "( " +
           params.join(":") +
           " ) " +
-          "... ";
+          "... ";*/
 
         if (
           (type === KEYWORD &&
-            // !module.operations[0].escape &&
+
             nextInLineProcess > currentInLineProcess) ||
           (type === FUNCTION && nextInLineProcess + 1 !== currentInLineProcess)
         ) {
-          //   console.log(currentInLineProcess,nextInLineProcess);
-          return console.error(err_msg);
+
+          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
         }
 
         this.execCallback(currentProcess);
         if (currentProcess.isterminated) {
           this.terminateCurrentProcess();
           /*** check **/
-          return console.error(err_msg);
+         // return console.error(err_msg);
+          //return console.error(this.XJSXTokenError({params, nextInLineProcess, currentProcess}));
+          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
         } else {
           this.terminateCurrentProcess();
         }
@@ -1108,15 +1151,15 @@
      
       }
         ***/
-      // var newNode;
+
       if (shouldProcess) {
         var newNode = this.createElement(true);
         e.parentNode.insertBefore(newNode, e);
         e.remove();
-        //  console.log(e);
+
         e = newNode;
       } else {
-        //   e.process = {nodes:{append:currentProcess.nodes.append}};
+
         e.process = {};
         e.process.nodes = {};
         e.process.nodes.append = currentProcess.nodes.append;
@@ -1130,8 +1173,9 @@
         currentProcess.nodes.append(e /*, shouldProcess*/);
 
       if (!module) {
+     //   e.remove()
         console.error(
-          "Unexpected token '%s' (%s:%s)",
+          "Unexpected, missing or misspelled token '%s' (%s:%s)",
           params[0],
           params[0],
           params[1]
@@ -1151,7 +1195,7 @@
           module.operations[0].callback &&
           module.operations[0].callback(
             /*var trusted = module[0].trusted;*/
-            //  if (module) {
+
             params[1],
             this.XJSXMethodKeyword(e),
             /*  trusted ? e : this.XJSXMethodKeyword(e),*/
@@ -1163,7 +1207,7 @@
                 }
               }*/
           );
-        // }
+
 
         return;
       }
@@ -1173,8 +1217,8 @@
       )||
         ((currentProcess && alert(7))|| alert(9));
       */
-      // var _eval
-      //console.log(module.operations[0].escape);
+
+
 
       /* else if(type===FKEYWORD){
         _eval=currentProcess ? isChildProcess?currentProcess.eval:currentProcess.eval() : this.eval();
@@ -1209,7 +1253,7 @@
       ||
         currentProcess && 3|| 4*/
 
-      //  console.log(r);
+
 
       e.process.__proto__ = {
         name: params[0],
@@ -1217,10 +1261,8 @@
         remove: e.remove,
         isterminated: void 0,
 
-        isDeadProcess:
-          (currentProcess && currentProcess.isDeadProcess) || void 0,
-        _isDeadProcess:
-          (currentProcess && currentProcess.isDeadProcess) || void 0,
+        isDeadProcess: (currentProcess && currentProcess.isDeadProcess) || void 0,
+        _isDeadProcess: (currentProcess && currentProcess.isDeadProcess) || void 0,
         parentProcess: (!isNewProcess && currentProcess) || void 0,
         parentParams: (isNewProcess && params) || currentProcess.parentParams,
         global: (isNewProcess && {}) || currentProcess.global,
@@ -1229,11 +1271,10 @@
       ||
         currentProcess && currentProcess.eval() || this.eval()
       ,*/
-        // eval:_eval,
+
         module: module,
         type: module.operations[0].type,
-        callback:
-          module.operations[module.keywords[params[0]]] || module.operations[0],
+        callback: module.operations[module.keywords[params[0]]] || module.operations[0],
       };
 
       shouldProcess && this.execCallback(e.process, "onload");
@@ -1243,16 +1284,16 @@
     /**  XJSXCompilerCS: function () {},**/
     XJSXCompiler: function (element, _exec) {
       var core = {
-        // id: true,
-        //   timeStamp:performance.now(),
+
+
         document: element,
         onboardProcesses: [],
         eval: ("function" === typeof _exec && _exec) || __core__._eval(exec),
         __proto__: __core__,
       };
 
-      //  console.log(element.childElementCount, element);
-      // return element
+
+
       /*   if(element.childElementCount>0){*/
       var node = document
         .createTreeWalker(element, NodeFilter.SHOW_COMMENT, function (n) {
@@ -1266,14 +1307,15 @@
         })
         .lastChild();
       /*  }else{
-           // console.log(element);
+
           var node=element.firstChild;
           var last;
           }*/
       var _n = node && (node.nextSibling || node.parentNode);
 
-      // console.log(node, element);
-      // return
+      // console.log(_n);
+      // var o=Math.random()
+
       while (node) {
         if (node === last) {
           core.stage(node);
@@ -1285,9 +1327,13 @@
         if (node.parentNode) {
           node = core.getNextNode(node);
           _n = core.getNextNode(node);
+          // console.log("_n",o,_n);
         } else {
           node = _n;
-          _n = node.nextSibling;
+          // node&&
+          // console.log(node.parentNode,o);
+          _n = node.nextSibling || (node.parentNode && node.parentNode.nextSibling);
+          // o=2
         }
         /*
        (node === last)&&!(core.stage(node),node=void 0)||(
@@ -1345,7 +1391,7 @@
             currentProcess.module.operations[0].onend &&
             (currentProcess.callback = currentProcess.module.operations[0]) &&
             core.execCallback(currentProcess, "onend"),
-          !(!currentProcess.isterminated && core.terminateCurrentProcess()))) ||
+            !(!currentProcess.isterminated && core.terminateCurrentProcess()))) ||
           console.error("Unexpected token 'end'");
       },
       type: MKEYWORD,
@@ -1353,26 +1399,8 @@
   ]);
 
 
-  /** animatesss **/
-
-  /*
-  var ev=function() {
-    var _ev=_eval;
-this.eval=function() {
-    _ev=_ev(arguments[0],arguments[1],true)
-    return eval("(" + arguments.callee.toString().
-    replace("var ev=_eval;","")
-
-    + ")");
-
-}
-  }
-  */
-
-  !document.documentElement.attributes.xjsx &&
+  !window.DISABLE_XJSX/*||!document.documentElement.attributes.xjsx*/ &&
     {
-      //  id: true,
-      //  timeStamp: performance.now(),
       eval: __core__._eval(exec),
       onboardProcesses: [],
       document: document,
@@ -1383,13 +1411,65 @@ this.eval=function() {
     FUNCTION: 2,
     METHOD: 1,
     KEYWORD: 0,
-    createAnimation: __core__.createAnimation,
+    createEffect: __core__.createEffect,
     parseXJSXParameter: __core__.parseParameter,
-    customTemplates: {},
+    createTemplate: function (name, val) {
+      var cust = __core__.customTemplates
+      return new Promise(function (res, rej) {
+        function check() {
+          _i++
+          // console.log(_i, i);
+          if (done && _i >= i) {
+            res()
+          }
+        }
+        var obj = {};
+        if ("object" === typeof name) {
+          obj = name
+        } else {
+          obj[name] = val;
+        }
+        var i = 0
+        var _i = 0;
+        var done
+        for (var key in obj) {
+          i++
+          val = obj[key]
+          delete obj[key]
+          if (val instanceof Promise) {
+            (function (key) {
+              val.then(function (e) {
+                cust[key] = e;
+                check()
+              })
+              val.catch(function () {
+                cust[key] = "";
+                check()
+              })
+            })(key)
+          } else {
+            cust[key] = val;
+            _i++;
+          }
+        }
+        done = true
+        i++
+        check()
+      })
+    },
+    customTemplates: __core__.customTemplates,
+    getEffect:function(n){
+      return __core__.effect[n]
+    },
     eval: __core__._eval(exec),
+      domParser: __core__.domParser,
+      dispatcher: __core__.dispatcher,
     event: {
       emit: __core__.dispatchEvent,
       on: __core__.addEventListener,
+      emitData: function (name, data) {
+        __core__.dispatchEvent('data/' + name, data)
+      },
     },
     parseElement: function (node, exec) {
       (node instanceof Node &&
@@ -1400,11 +1480,10 @@ this.eval=function() {
               "parseElement",
               "second argument is not a valid instance"
             ),
-            (exec = void 0))) ||
-            exec
+              (exec = void 0))) ||
+          exec
         )) ||
         console.error("XJSX/parse", "invalid argument", node);
-        return node
     },
     createModule: function (name, type, obj) {
       if (!__core__.moduleType[type]) {
@@ -1446,11 +1525,32 @@ this.eval=function() {
         },
       };
     },
-    __createModule__: function() {
+    __createModule__: function () {
       __core__.createModule(arguments[0])
+    },
+    __XJSXCORE__:function(){
+      return __core__;
     }
   };
-})(function () {
+
+  !Node.prototype.remove && (Node.prototype.remove = function () {
+    this.parentNode && this.parentNode.removeChild(this)
+  })
+
+  !Document.prototype.contains && (Node.prototype.contains = function (nd) {
+    for (var i = 0; i < this.childNodes.length; i++) {
+      if (this.childNodes[i].contains && this.childNodes[i].contains(nd)) { return true }
+    }
+    return false
+  })
+
+  !XMLHttpRequest.prototype.hasOwnProperty("response") && Object.defineProperty(XMLHttpRequest.prototype, 'response', {
+    get: function () {
+      return this.responseText || this.responseXML || ""
+    }
+  })
+
+})(this||self, function () {
   return (
     (!arguments[1] &&
       "string" === typeof arguments[0] && [
@@ -1458,7 +1558,7 @@ this.eval=function() {
         eval("(" + arguments.callee + ")"),
       ]) ||
     ("string" === typeof arguments[1] && [
-      eval(`var ${arguments[1]}=arguments[0]`),
+      eval("var " + arguments[1] + "=arguments[0]"),
       eval("(" + arguments.callee + ")"),
       (arguments[0] = arguments[1] = void 0),
     ]) || [

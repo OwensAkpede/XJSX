@@ -1,8 +1,12 @@
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var FUNCTION = 0xD;
+
   /** on √ **/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "on",
-      type: "function",
+      type: FUNCTION,
       onload: function () {
         this.killProcess();
       },
@@ -11,7 +15,8 @@
       },
       callback: function (a) {
         try {
-          var e = XJSX.parseXJSXParameter(a, this.eval);
+          var e = __core__.parseParameter(a, this.eval);
+          // console.log(e);
           var param = e.parameter[0];
           e.parameter = void 0;
           if (!param) {
@@ -25,23 +30,23 @@
             _doc;
           self.appendAllTo(doc);
 
-          XJSX.event.on(param, function () {
+          __core__.addEventListener(param, function () {
             if (self.isVisible()) {
               for (var i = 0; i < e.arguments.length; i++) {
                 self.eval(arguments[i], e.arguments[i]);
               }
               self.putChild(
-                XJSX.parseElement(doc.cloneNode(true), self.eval)
+                __core__.XJSXCompiler(doc.cloneNode(true), self.eval)
               );
             } else {
               removeEventListener(param, arguments.callee);
             }
           });
         } catch (err) {
-          //    console.log(err);
-          console.log("on:", a, err + "");
+
+          console.error("on:", a, err + "");
         }
       },
     },
   ]);
-  
+})()

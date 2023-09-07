@@ -1,17 +1,11 @@
-
-var domParser_node;
-var domParser= function() {
-   var d = domParser_node || (domParser_node=document.createElement("span"));
-   d.innerHTML = arguments[0];
-   return d;
- }
- 
-
+(function() {
+var __core__=XJSX.__XJSXCORE__();
+var FUNCTION = 0xD;
   /** include**/
-  XJSX.__createModule__([
+  __core__.createModule([
     {
       keyword: "include",
-      callback: function(url) {
+      callback: function (url) {
         var url;
         try {
           if (!(url = this.eval("[" + url + "][0]"))) {
@@ -21,59 +15,61 @@ var domParser= function() {
           var self = this;
           /*XRequest(url,function() {
           
-          self.putChild(XJSX.parseElement(domParser(arguments[0]),self.eval).childNodes)
+          self.putChild(__core__.XJSXCompiler(__core__.domParser(arguments[0]),self.eval).childNodes)
         },true)*/
 
           var http = new XMLHttpRequest();
           self.global.http = http;
-          http.addEventListener("load", function() {
+          http.addEventListener("load", function () {
             /*if (!http.response) {
-            dispatcher(http,"error")
+            __core__.dispatcher(http,"error")
             console.error(url+"\npath could not be included"+"\nmake sure the provided url is a valid html file")
             return 
           }
           */
 
             self.putChild(
-              XJSX.parseElement(
-                domParser(http.response, http.abort()),
+              __core__.XJSXCompiler(
+                __core__.domParser(http.response, http.abort()),
                 self.eval
               ).childNodes
             );
           });
-          //http.responseType="text"
+
           http.open("get", url);
           http.send();
         } catch (e) {
           console.error("include:", url, e);
         }
       },
-      type: "function",
+      type: FUNCTION,
     },
     {
       keyword: "catch",
-      onload: function() {
+      onload: function () {
         this.killProcess();
       },
-      onprogress: function() {
+      onprogress: function () {
         this.disable();
       },
-      callback: function() {
+      callback: function () {
         var self = this;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
 
         if (!self.global.http) {
-          self.putChild(XJSX.parseElement(doc, self.eval));
+          self.putChild(__core__.XJSXCompiler(doc, self.eval));
           console.error(self.parentParams.join(":"), "uncaught error");
           return;
         }
-        self.global.http.addEventListener("error", function() {
-          //    console.error(arguments[0]);
-          self.putChild(XJSX.parseElement(doc, self.eval));
+        self.global.http.addEventListener("error", function () {
+
+          self.putChild(__core__.XJSXCompiler(doc, self.eval));
           this.abort();
           delete self.global.http;
         });
       },
     },
   ]);
+
+})()
