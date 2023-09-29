@@ -7,10 +7,13 @@
       keyword: "update",
       callback: function(e, node, exec) {
         try {
-          setInterval(()=>{
-                      node.putChild(exec("[" + e + "][0]"));
+function update(){
+                        node.putChild(exec("[" + e + "][0]"));
+requestAnimationFrame(update)
 
-          },0)
+}
+
+update()
         } catch (err) {
           console.error("print:", e, err + "");
           e = "";
