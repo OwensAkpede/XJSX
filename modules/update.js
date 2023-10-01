@@ -7,15 +7,42 @@
       keyword: "update",
       callback: function(e, node, exec) {
         try {
-function update(){
-                        node.putChild(exec("[" + e + "][0]"));
-requestAnimationFrame(update)
+const oldValue = {
+  myVariable: exec("["+e+"][0]"),
+};
+      node.putChild(oldValue.myVariable);
 
+const handler = {
+  set(obj, prop, value) {
+    if (obj[prop] !== value) {
+
+      console.log(`${prop} changed from ${obj[prop]} to ${value}`);
+
+      node.putChild(value);
+          obj[prop] = value;
+
+    } else {
+    console.log(`${prop} : ${obj[prop]} == ${value}`);
+
+    }
+
+    return true;
+  },
+};
+
+function update(){
+  
+
+const proxiedObject = new Proxy(oldValue, handler);
+proxiedObject.myVariable = exec("[" + e + "][0]");
+
+
+  return requestAnimationFrame(update);
 }
 
 update()
         } catch (err) {
-          console.error("print:", e, err + "");
+          console.error("update:", e, err + "");
           e = "";
         }
       },
