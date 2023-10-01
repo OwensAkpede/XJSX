@@ -16,13 +16,13 @@ const handler = {
   set(obj, prop, value) {
     if (obj[prop] !== value) {
 
-      console.log(`${prop} changed from ${obj[prop]} to ${value}`);
+  //    console.log(`${prop} changed from ${obj[prop]} to ${value}`);
 
       node.putChild(value);
           obj[prop] = value;
 
     } else {
-    console.log(`${prop} : ${obj[prop]} == ${value}`);
+    //console.log(`${prop} : ${obj[prop]} == ${value}`);
 
     }
 
