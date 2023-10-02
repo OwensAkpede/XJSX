@@ -8,32 +8,35 @@
             callback: function (e, node, exec) {
                 var param = __core__.parseParameter(e).parameter[0];
                 try {
-
-                    var name = "";
+                    var arg = "";
                     for (var i = 0; i < param.length; i++) {
                         if (param[i]===",") {
                             break
                         }
-                        name += param[i]
+                        arg += param[i]
                     }
 
                     param = param.substring(i+1)
-                    name=exec(name)
+                    arg=exec(arg)
+                    
                     param = exec("["+param+"]")
-                    var foo = window[name]
+                    var foo = window[arg]
 
-                    name=""
+                    arg=""
+
                     if (typeof foo === "function") {
                         for (var i = 0; i < param.length; i++) {
-                            name+="param["+i+"]";
-                            !(i+1===param.length)&&(name+=", ")
+                            arg+="param["+i+"]";
+                            !(i+1===param.length)&&(arg+=", ")
                         }
-                        name = eval("foo(exec, "+name+")")
+                        arg = eval("foo(exec, "+arg+")")
                     }
-                    if (name) {
-                        node.putChild(name)
+                    if (arg) {
+                        node.putChild(arg)
                     }
-                    name=void 0;
+
+                    arg=void 0;
+
                 } catch (err) {
                     console.error("function:", e, err + "");
                 }

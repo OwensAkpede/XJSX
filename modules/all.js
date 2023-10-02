@@ -5,8 +5,8 @@
   var KEYWORD = 0xC;
   var FUNCTION = 0xD;
   var FKEYWORD = 0xE;
-  var MKEYWORD = 0xF;
-
+  var MMETHOD = 0x16;
+  
   /** use-effect √ **/
   __core__.createModule([
     {
@@ -738,18 +738,19 @@
       callback: function (param, currentProcess, core) {
         var exec = currentProcess && currentProcess.eval || core.eval
         param = __core__.parseParameter(param).parameter[0].trim();
-        param = param.split(/(^[a-zA-Z ]+\=)/);
+        param = param.split(/(^[a-zA-Z ]+)\=/);
         param.shift()
         if (param[0]) {
           try {
-            exec("var " + param[0] + "(" + param[1] + ")")
+            exec("var " + param[0] + "=(" + param[1] + ")")
+            // exec(exec(param[1]), param[0])
           } catch (err) {
             console.error("var:", param.join(""), err + "");
           }
         }
         param = void 0;
       },
-      type: MKEYWORD,
+      type: MMETHOD,
     },
   ]);
 
@@ -761,36 +762,64 @@
         var param = __core__.parseParameter(e).parameter[0];
         try {
 
-          var name = "";
+          var arg = "";
           for (var i = 0; i < param.length; i++) {
             if (param[i] === ",") {
               break
             }
-            name += param[i]
+            arg += param[i]
           }
 
           param = param.substring(i + 1)
-          name = exec(name)
-          param = exec("[" + param + "]")
-          var foo = window[name]
+          arg = exec(arg)
 
-          name = ""
+          param = exec("[" + param + "]")
+          var foo = window[arg]
+
+          arg = ""
+
           if (typeof foo === "function") {
             for (var i = 0; i < param.length; i++) {
-              name += "param[" + i + "]";
-              !(i + 1 === param.length) && (name += ", ")
+              arg += "param[" + i + "]";
+              !(i + 1 === param.length) && (arg += ", ")
             }
-            name = eval("foo(exec, " + name + ")")
+            arg = eval("foo(exec, " + arg + ")")
           }
-          if (name) {
-            node.putChild(name)
+          if (arg) {
+            node.putChild(arg)
           }
-          name = void 0;
+
+          arg = void 0;
+
         } catch (err) {
           console.error("function:", e, err + "");
         }
         e = void 0;
         param = void 0;
+      },
+      type: METHOD,
+    },
+  ]);
+
+  /** update √ **/
+  __core__.createModule([
+    {
+      keyword: "update",
+      callback: function (arg, node, exec) {
+        try {
+          var e = "";
+          function update() {
+            var _e = exec(arg);
+            if (_e !== e) {
+              node.putChild(_e);
+              e = _e;
+            }
+            return node.isVisible() && requestAnimationFrame(update);
+          }
+          update();
+        } catch (err) {
+          console.error("Update:", arg, err + "");
+        }
       },
       type: METHOD,
     },
