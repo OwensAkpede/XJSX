@@ -795,4 +795,50 @@
       type: METHOD,
     },
   ]);
+  /** update **/
+    __core__.createModule([
+      {
+        keyword: "update",
+        callback: function(e, node, exec) {
+          try {
+            const oldValue = {
+              myVariable: exec("[" + e + "][0]"),
+            };
+            node.putChild(oldValue.myVariable);
+  
+            const handler = {
+              set(obj, prop, value) {
+                if (obj[prop] !== value) {
+  
+  
+                  node.putChild(value);
+                  obj[prop] = value;
+  
+                } else {
+  
+                }
+  
+                return true;
+              },
+            };
+            const proxiedObject = new Proxy(oldValue, handler);
+  
+            function update() {
+  
+  
+              proxiedObject.myVariable = exec("[" + e + "][0]");
+  
+  
+              return requestAnimationFrame(update);
+            }
+  
+            update()
+          } catch (err) {
+            console.error("update:", e, err + "");
+            e = "";
+          }
+        },
+        type: METHOD,
+      },
+    ]);
 })()
