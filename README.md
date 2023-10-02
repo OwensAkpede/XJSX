@@ -1,4 +1,3 @@
-
 # XJSX: Expressed JavaScript XHTML
 
 
@@ -66,13 +65,13 @@ XJSX includes a range of powerful keywords that enable you to take your web deve
 - `fetch`, `then`, `catch`, and `end` – access and manipulate data using the Fetch API
 - `for-each` and `end` – loop through elements as in JavaScript's forEach() method
 - `on` and `end` - Bind event listeners to the XJSX document
+- `update` - This is triggered any time a variable value change.
 - `use-template` – easily import and use HTML templates
 - `console-log` - Output messages to the console for debugging and troubleshooting purposes
 - `parse-json` – quickly parse JSON data
 - `print` – render dynamic content to the page
 - `eval` - Evaluate a string of code at runtime and execute it within the current XJSX script
 - `data` - Rerender the XJSX document in response to a specified event
-
 <!--
 Additional keywords coming soon include:
 
@@ -98,6 +97,45 @@ Use the `print` keyword to output dynamic content in your HTML. For example:
 <h1>
   Hello World
 </h1>
+```
+### **Update:** 
+
+Use the `update` keyword to update the variable value anything variable is changed by any event.
+```xml
+<script>
+  let variable = "Hello World";
+  let button = document.querySelector("button");
+  button.onclick = function (){
+  if(variable == "Hello World"){
+  
+  variable = "Changed";
+  }else{
+  variable = "Hello World";
+  
+  }
+  }
+</script>
+
+<?update: variable ?>
+
+<button>click me to change variable value</button>
+
+```
+or 
+
+```xml
+<script>
+  let variable = "Hello World";
+  function Function(e) {
+      let input =  e;    
+
+    variable = input.value;
+
+  }
+</script>
+
+<input onkeyup="Function(this)" value="Hello World"/>
+<?update: variable ?>
 ```
 
 ### **Parse JSON:** 
