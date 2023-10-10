@@ -1,4 +1,4 @@
-2.5.1 / 2023-10-02
+2.5.1 / 2023-10-10
 ==================
 
   * Keyword update (eval-html) [See here](modules#readme)
