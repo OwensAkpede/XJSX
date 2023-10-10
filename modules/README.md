@@ -30,7 +30,9 @@ Use the `parse-json` keyword to parse a JSON string into an object that can be a
 <script>
   var jsonString = '{"name":"XJSX"}'; 
 </script>
+
 <?parse-json: jsonString?>
+
 <h1>
   Welcome to <?print: jsonString.name?>
 </h1>
@@ -65,10 +67,10 @@ Use the `use-template` keyword to insert a template element into your HTML. For 
 Use the `if`, `else-if`, `else`, and `end` keywords to conditionally render HTML based on JavaScript expressions. For example:
 
 ```xml
-<?if: x < 0 ?>
-   <h1>X is lesser than 0</h1>
-<?else-if: x === 0 ?>
-   <h1>X is equal to 0</h1>
+<?if: x % 1 === 1 ?>
+   <h1>X is probably an Odd number</h1>
+<?else-if: x % 1 === 0 ?>
+   <h1>X is probably an Even number</h1>
 <?else?>
    <h1>Neither condition was true</h1>
 <?end?>
@@ -80,6 +82,7 @@ Use the `fetch`, `then`, `catch`, and `end` keywords to make API requests and ha
 <script>
   const url = "https://jsonplaceholder.typicode.com/todos/1";
 </script>
+
 <?fetch: url ?>
    <h1>Loading...</h1>
 <?then: response?>
