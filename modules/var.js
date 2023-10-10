@@ -6,6 +6,7 @@
         {
             keyword: "var",
             callback: function (param, currentProcess, core) {
+                console.log(currentProcess,core);
                 var exec = currentProcess && currentProcess.eval || core.eval
                 param = __core__.parseParameter(param).parameter[0].trim();
                 param = param.split(/(^[a-zA-Z ]+)\=/);

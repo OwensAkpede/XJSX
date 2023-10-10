@@ -1,21 +1,22 @@
-/* XJSX v 2.5.0 - 2-09-2023  */
+/* XJSX v 2.5.1 - 2023-10-02  */
 
 /***
  * 
  * 
  */
 
-(function (window,exec) {
+(function (window, exec) {
   var MICRO = 0xA;
   var METHOD = 0xB;
   var KEYWORD = 0xC;
   var FUNCTION = 0xD;
   var FKEYWORD = 0xE;
   var MKEYWORD = 0xF;
+  var MMETHOD = 0x16;
   var time = 0;
-  
-  
-  
+
+
+
   var __core__ = {
     _observer: (window.MutationObserver &&
       function () {
@@ -117,72 +118,72 @@
       __core__.dispatcher_init.initEvent(name);
       win.dispatchEvent(__core__.dispatcher_init);
     },
-    loop:function(v, foo, dly, node) {
-   //"use strict";
-    var self = {};
-    var _setTimeout;
-    (typeof dly!=="number")&&Number(dly);
-    if(dly<50||!dly){
-      _setTimeout=requestAnimationFrame
-    }else{
-      _setTimeout=setTimeout
-    }
-    var i = 0
-
-    var _keys = function (e) {
-      var k = [];
-      for (var p in e) {
-        k.push(p)
+    loop: function (v, foo, dly, node) {
+      //"use strict";
+      var self = {};
+      var _setTimeout;
+      (typeof dly !== "number") && Number(dly);
+      if (dly < 50 || !dly) {
+        _setTimeout = requestAnimationFrame
+      } else {
+        _setTimeout = setTimeout
       }
-      return k
-    }
+      var i = 0
 
-    self.nm = function (s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v) {
-        if (i === 0 || s!==true) {
-          foo(i), i++, self.nm(true);
-        } else {
-          _setTimeout(self.nm, dly)
+      var _keys = function (e) {
+        var k = [];
+        for (var p in e) {
+          k.push(p)
         }
+        return k
       }
-    }
 
-    self.arr = function (s) {
-      if (!node.isVisible) {
-        return
-      }
-      if (i < v.length) {
-        if (i === 0 || s!==true) {
-          foo(v[i], i), i++, self.arr(true);
-        } else {
-          _setTimeout(self.arr, dly)
-        }
-      }
-    }
-
-    self.obj = function () {
-      var keys = _keys(v);
-      var key;
-      var loop = function (s) {
-        if (!node.isVisible()) {
+      self.nm = function (s) {
+        if (!node.isVisible) {
           return
         }
-        if (i < keys.length) {
-          key = keys[i]
-          if (i === 0 || s!==true) {
-            foo(v[key], key), i++, loop(true);
+        if (i < v) {
+          if (i === 0 || s !== true) {
+            foo(i), i++, self.nm(true);
           } else {
-            _setTimeout(loop, dly)
+            _setTimeout(self.nm, dly)
           }
         }
       }
-      loop()
-    }
-    return self
-  },
+
+      self.arr = function (s) {
+        if (!node.isVisible) {
+          return
+        }
+        if (i < v.length) {
+          if (i === 0 || s !== true) {
+            foo(v[i], i), i++, self.arr(true);
+          } else {
+            _setTimeout(self.arr, dly)
+          }
+        }
+      }
+
+      self.obj = function () {
+        var keys = _keys(v);
+        var key;
+        var loop = function (s) {
+          if (!node.isVisible()) {
+            return
+          }
+          if (i < keys.length) {
+            key = keys[i]
+            if (i === 0 || s !== true) {
+              foo(v[key], key), i++, loop(true);
+            } else {
+              _setTimeout(loop, dly)
+            }
+          }
+        }
+        loop()
+      }
+      return self
+    },
     stage: function (e) {
       var currentProcess = this.getOnboardProcess();
 
@@ -237,7 +238,7 @@
     isKeyWord: function (e) {
       return (
         "string" === typeof e &&
-        e.search(/^[a-z0-9]+([^]+[a-z0-9])?$/)===0
+        e.search(/^[a-z0-9]+([^]+[a-z0-9])?$/) === 0
       );
     },
     /* isVariable: function (e) {
@@ -639,7 +640,7 @@
               }
               pp = pp.me();
               child.fromXJSXCore = true;
-              pp.parentNode.insertBefore(child, pp);
+              pp.parentNode && pp.parentNode.insertBefore(child, pp);
             }),
             /*put*/
             (_this.putChild = function (child, sub) {
@@ -676,7 +677,7 @@
               }
               pp = pp.me();
               child.fromXJSXCore = true;
-              pp.parentNode.insertBefore(child, pp);
+              pp.parentNode && pp.parentNode.insertBefore(child, pp);
             }),
             (_this.terminate = function () {
               (!process.closed && process.isterminated) ||
@@ -685,7 +686,7 @@
                 console.error("process has ended ");
             })) &&
           process.micro_callback &&
-          (_this.x_addChild= function (child) {
+          (_this.x_addChild = function (child) {
             var pp = process;
             while (pp.parentProcess) {
               pp = pp.parentProcess;
@@ -713,7 +714,7 @@
             }
             pp = pp.me();
             child.fromXJSXCore = true;
-            pp.parentNode.insertBefore(child, pp);
+            pp.parentNode && pp.parentNode.insertBefore(child, pp);
             return n;
           }));
       return _this;
@@ -734,12 +735,12 @@
           node.remove();
         },
         getAllTextContent: function () {
-          var txt = node.outerHTML || node.textContent || "";
-      //    if (node.process) {
-           node.process && node.process.nodes.forEach(function (e) {
-              txt += e.textContent;
-            });
-      //    } else { }
+          var txt = node.textContent;
+          //    if (node.process) {
+          node.process && node.process.nodes.forEach(function (e) {
+            txt += e.textContent;
+          });
+          //    } else { }
           return txt;
         },
 
@@ -750,21 +751,21 @@
         */
       };
     },
-    XJSXTokenError: function (o){
+    XJSXTokenError: function (o) {
       o.node.remove();
-     return   "Unexpected token '" +
-          o.params[0] +
-          "'.\n" +
-          ((o.nextInLineProcess >= 1 &&
-            "( " + o.currentProcess.parentParams.join(":") + " )...") ||
-            "") +
-          "( " +
-          o.currentProcess.params.join(":") +
-          " )..." +
-          "( " +
-          o.params.join(":") +
-          " ) " +
-          "... " ;
+      return "Unexpected token '" +
+        o.params[0] +
+        "'.\n" +
+        ((o.nextInLineProcess >= 1 &&
+          "( " + o.currentProcess.parentParams.join(":") + " )...") ||
+          "") +
+        "( " +
+        o.currentProcess.params.join(":") +
+        " )..." +
+        "( " +
+        o.params.join(":") +
+        " ) " +
+        "... ";
     },
     XJSXNodeList: function (node) {
       var process = node.process;
@@ -861,11 +862,11 @@
               currentNodeParent = e;
             }
             */
-            
-            /***
-             * 
-             * this block needs an exception 
-            */
+
+          /***
+           * 
+           * this block needs an exception 
+          */
           if (currentNodeParent && currentNodeParent.contains && currentNodeParent.contains(e)) {
             return;
           }
@@ -929,10 +930,10 @@
       };
       return self;
     },
-    XJSXMethodKeyword: function (e) {
+    XJSXMethodKeyword: function (e,exec) {
       var process = e.process.nodes;
-
       return {
+        eval: exec,
         remove: e.remove,
         isVisible: process.isVisible,
         /*put*/
@@ -956,7 +957,7 @@
           } else {
             process.push((node = document.createTextNode(node)));
           } !node.fromXJSXCore && (node.fromXJSXCore = true);
-          e.parentNode.insertBefore(node, e);
+          e.parentNode && e.parentNode.insertBefore(node, e);
         },
       };
     },
@@ -1021,7 +1022,7 @@
       if (type === MICRO) {
 
         e.remove();
-        
+
         if (
           !currentProcess ||
           currentProcess._isDeadProcess ||
@@ -1031,7 +1032,7 @@
           /* !(shouldProcess && isChildProcess) &&
           !(shouldProcess && type === MKEYWORD) &&*/
 
-           console.error("MICRO_ERROR",params.join(":"))
+          console.error("MICRO_ERROR", params.join(":"))
 
           return;
         }
@@ -1102,20 +1103,20 @@
 
         currentInLineProcess = module.keywords[params[0]];
 
-     /*   var err_msg =
-          "Unexpected token '" +
-          params[0] +
-          "'.\n" +
-          ((nextInLineProcess >= 1 &&
-            "( " + currentProcess.parentParams.join(":") + " )...") ||
-            "") +
-          "( " +
-          currentProcess.params.join(":") +
-          " )..." +
-          "( " +
-          params.join(":") +
-          " ) " +
-          "... ";*/
+        /*   var err_msg =
+             "Unexpected token '" +
+             params[0] +
+             "'.\n" +
+             ((nextInLineProcess >= 1 &&
+               "( " + currentProcess.parentParams.join(":") + " )...") ||
+               "") +
+             "( " +
+             currentProcess.params.join(":") +
+             " )..." +
+             "( " +
+             params.join(":") +
+             " ) " +
+             "... ";*/
 
         if (
           (type === KEYWORD &&
@@ -1124,16 +1125,16 @@
           (type === FUNCTION && nextInLineProcess + 1 !== currentInLineProcess)
         ) {
 
-          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
+          return console.error(this.XJSXTokenError({ node: e, params: params, nextInLineProcess: nextInLineProcess, currentProcess: currentProcess }));
         }
 
         this.execCallback(currentProcess);
         if (currentProcess.isterminated) {
           this.terminateCurrentProcess();
           /*** check **/
-         // return console.error(err_msg);
+          // return console.error(err_msg);
           //return console.error(this.XJSXTokenError({params, nextInLineProcess, currentProcess}));
-          return console.error(this.XJSXTokenError({node:e, params:params, nextInLineProcess:nextInLineProcess, currentProcess:currentProcess}));
+          return console.error(this.XJSXTokenError({ node: e, params: params, nextInLineProcess: nextInLineProcess, currentProcess: currentProcess }));
         } else {
           this.terminateCurrentProcess();
         }
@@ -1172,7 +1173,7 @@
         currentProcess.nodes.append(e /*, shouldProcess*/);
 
       if (!module) {
-     //   e.remove()
+        //   e.remove()
         console.error(
           "Unexpected, missing or misspelled token '%s' (%s:%s)",
           params[0],
@@ -1182,31 +1183,21 @@
         return;
       }
 
-      if (type === MKEYWORD) {
+      if ((type === MMETHOD || type === METHOD) && !shouldProcess) {
+        return
+      }
+      
+      if (type === MKEYWORD || type === MMETHOD) {
+        e.remove();
         module.operations[0].callback &&
           module.operations[0].callback(params[1], currentProcess, this);
-
         /*** check ***/
 
         return;
       } else if (type === METHOD) {
-        shouldProcess &&
-          module.operations[0].callback &&
-          module.operations[0].callback(
-            /*var trusted = module[0].trusted;*/
-
-            params[1],
-            this.XJSXMethodKeyword(e),
-            /*  trusted ? e : this.XJSXMethodKeyword(e),*/
-            (currentProcess && currentProcess.eval) || this.eval
-            /* function(core) {
-                console.log(params,currentProcess);
-                if (core===__core__) {
-                  return 0
-                }
-              }*/
-          );
-
+        var exec = (currentProcess && currentProcess.eval) || this.eval;
+        module.operations[0].callback &&
+        module.operations[0].callback(params[1], this.XJSXMethodKeyword(e,exec), exec);
 
         return;
       }
@@ -1216,8 +1207,6 @@
       )||
         ((currentProcess && alert(7))|| alert(9));
       */
-
-
 
       /* else if(type===FKEYWORD){
         _eval=currentProcess ? isChildProcess?currentProcess.eval:currentProcess.eval() : this.eval();
@@ -1457,12 +1446,12 @@
       })
     },
     customTemplates: __core__.customTemplates,
-    getEffect:function(n){
+    getEffect: function (n) {
       return __core__.effect[n]
     },
     eval: __core__._eval(exec),
-      domParser: __core__.domParser,
-      dispatcher: __core__.dispatcher,
+    domParser: __core__.domParser,
+    dispatcher: __core__.dispatcher,
     event: {
       emit: __core__.dispatchEvent,
       on: __core__.addEventListener,
@@ -1527,7 +1516,7 @@
     __createModule__: function () {
       __core__.createModule(arguments[0])
     },
-    __XJSXCORE__:function(){
+    __XJSXCORE__: function () {
       return __core__;
     }
   };
@@ -1549,7 +1538,7 @@
     }
   })
 
-})(this||self, function () {
+})(this || self, function () {
   return (
     (!arguments[1] &&
       "string" === typeof arguments[0] && [
