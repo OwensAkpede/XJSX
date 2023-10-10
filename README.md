@@ -73,7 +73,7 @@ XJSX includes a range of powerful keywords that enable you to take your web deve
 - `eval` - Evaluate a string of code at runtime and execute it within the current XJSX script
 - `data` - Rerender the XJSX document in response to a specified event
 
-[Read more](modules/README.md)
+[Read more](modules#readme)
 
 <!--
 Additional keywords coming soon include:
@@ -214,7 +214,7 @@ The `eval` keyword is used to evaluate JavaScript code in an XJSX document, simi
 ```
   In the above example, we're using the `eval` keyword to create a variable x with the value of 10.
 
-[Read more](modules/README.md)
+[Read more](modules#readme)
 
 ## Proper Syntax for XJSX Usage
 When using XJSX, it's crucial to ensure that you correctly incorporate it into an HTML tag.
