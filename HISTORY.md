@@ -1,8 +1,14 @@
+2.5.1 / 2023-10-02
+==================
+
+  * New types implemented (MMETHOD)
+  * Keywords updated (var, function, update)
+
 2.5 / 2023-09-08
 ==================
 
   * Performance and code Optimization
-  
+
 2.2 / 2023-09-07
 ==================
 

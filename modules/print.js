@@ -1,7 +1,6 @@
 (function() {
 var __core__=XJSX.__XJSXCORE__();
 var METHOD = 0xB;
-
   /** print √ **/
   __core__.createModule([
     {
