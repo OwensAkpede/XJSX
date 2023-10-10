@@ -1,8 +1,13 @@
 2.5.1 / 2023-10-02
 ==================
 
+  * Keyword update (eval-html) [See here](modules#readme)
+
+2.5.1 / 2023-10-02
+==================
+
   * New types implemented (MMETHOD)
-  * Keywords updated (var, function, update)
+  * Keywords updated (var, function, update) [See here](modules#readme)
 
 2.5 / 2023-09-08
 ==================
@@ -39,13 +44,13 @@
 ==================
 
   * keyword updated `for-each:` (now takes 2 argument,
-   `1: value`|`2: delay time (in milliseconds)`).
+   `1: value`|`2: delay time (in milliseconds)`) [See here](modules#readme).
    see it [here](advance/FOR-EACH.README.md)
 
 0.5  / 2023-04-18
 ==================
 
-  * New keyword added `html-element:`
+  * New keyword added `html-element:` [See here](modules#readme)
 
 0.1  / 2023-04-14
 ==================
@@ -68,7 +73,7 @@
 0.0.8 (test) / 2023-04-02
 ==================
 
-  * New keyword added `include:`. 
+  * New keyword added `include:`. [See here](modules#readme)
   see this [example](https://Owens94819.github.io/XJSX-DEMO/include)
   and [source](https://github.com/Owens94819/XJSX-DEMO/include)
   * Performance update
@@ -77,7 +82,7 @@
 0.0.7 (test) / 2023-03-30
 ==================
 
-  * New keyword added `animation:`. 
+  * New keyword added `use-effect:`. [See here](modules#readme)
   see this [example](https://Owens94819.github.io/XJSX-DEMO/animation)
   and [source](https://github.com/Owens94819/XJSX-DEMO/animation)
   * Performance update
@@ -91,7 +96,7 @@
 0.0.4 (test) / 2023-03-24
 ==================
 
-  * New sub keywords added "break" and "continue". see it [here](advance/FOR-EACH.README.md)
+  * New sub keywords added "break" and "continue" [See here](advance/FOR-EACH.README.md)
   * Fixed existing bugs
   * Performance update
 
