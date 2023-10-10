@@ -8,10 +8,7 @@ var FKEYWORD = 0xE;
       type: FKEYWORD,
       onload: function (p) {
         this.global.callback = [];
-
         this.global.p = __core__.parseParameter(p, this.eval);
-
-
         this.killProcess();
       },
       onprogress: function () {
@@ -19,13 +16,11 @@ var FKEYWORD = 0xE;
       },
       onend: function (arg) {
         try {
-
           var self = this;
           // var exec = this.eval()
           var p = this.global.p;
           var data = p.parameter[0];
           var useDelay = p.parameter[1];
-
 
           var foo = function () {
             var exec = self.eval()
@@ -34,6 +29,8 @@ var FKEYWORD = 0xE;
             }
 
             for (var i = 0; i < self.global.callback.length; i++) {
+              
+              
               self.global.callback[i].addChild(
                 __core__.XJSXCompiler(
                   self.global.callback[i].e.cloneNode(true),

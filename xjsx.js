@@ -734,7 +734,7 @@
           node.remove();
         },
         getAllTextContent: function () {
-          var txt = node.textContent;
+          var txt = node.outerHTML || node.textContent || "";
       //    if (node.process) {
            node.process && node.process.nodes.forEach(function (e) {
               txt += e.textContent;
