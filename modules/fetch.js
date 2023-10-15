@@ -56,6 +56,11 @@ var __core__=XJSX.__XJSXCORE__();
         this.appendAllTo(doc);
 
         http.addEventListener("load", function () {
+          if (!self.isVisible()) {
+            this.removeEventListener(arguments[0].type, arguments.callee);
+            this.abort();
+            return;
+          }
           p = p.split(",");
 
           var argument;
@@ -113,7 +118,13 @@ var __core__=XJSX.__XJSXCORE__();
         var http = this.global.http;
         var doc = document.createDocumentFragment();
         this.appendAllTo(doc);
-        http.addEventListener("error", function () {
+        http.addEventListener("error", function (e) {
+          if (!self.isVisible()) {
+            this.removeEventListener(arguments[0].type, arguments.callee);
+            this.abort();
+            return;
+          }
+            
           p = p.split(",");
 
           try {

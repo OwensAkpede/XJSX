@@ -21,6 +21,11 @@ var FUNCTION = 0xD;
           var http = new XMLHttpRequest();
           self.global.http = http;
           http.addEventListener("load", function () {
+            if (!self.isVisible()) {
+              this.removeEventListener(arguments[0].type, arguments.callee);
+              this.abort();
+              return;
+            }
             /*if (!http.response) {
             __core__.dispatcher(http,"error")
             console.error(url+"\npath could not be included"+"\nmake sure the provided url is a valid html file")
@@ -63,7 +68,11 @@ var FUNCTION = 0xD;
           return;
         }
         self.global.http.addEventListener("error", function () {
-
+          if (!self.isVisible()) {
+            this.removeEventListener(arguments[0].type, arguments.callee);
+            this.abort();
+            return;
+          }
           self.putChild(__core__.XJSXCompiler(doc, self.eval));
           this.abort();
           delete self.global.http;

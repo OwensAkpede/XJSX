@@ -1,4 +1,4 @@
-/* XJSX v 2.5.0 - 2023-10-02  */
+/* XJSX v 2.5.1 - 2023-10-02  */
 
 /***
  * 
@@ -624,7 +624,7 @@
                 while (child.length) {
                   child[0].fromXJSXCore = true;
                   pp.push(child[0]);
-                  _p.parentNode.insertBefore(child[0], _p);
+                  _p.parentNode && _p.parentNode.insertBefore(child[0], _p);
                 }
                 return;
               } else if (child instanceof DocumentFragment) {
@@ -661,7 +661,7 @@
                 while (child.length) {
                   child[0].fromXJSXCore = true;
                   pp.push(child[0]);
-                  _p.parentNode.insertBefore(child[0], _p);
+                  _p.parentNode && _p.parentNode.insertBefore(child[0], _p);
                 }
                 return;
               } else if (child instanceof DocumentFragment) {
@@ -698,7 +698,7 @@
               while (child.length) {
                 child[0].fromXJSXCore = true;
                 pp.push(child[0]);
-                _p.parentNode.insertBefore(child[0], _p);
+                _p.parentNode && _p.parentNode.insertBefore(child[0], _p);
               }
               return;
             } else if (child instanceof DocumentFragment) {
@@ -943,7 +943,7 @@
             while (node.length) {
               node[0].fromXJSXCore = true;
               process.push(node[0]);
-              e.parentNode.insertBefore(node[0], e);
+              e.parentNode && e.parentNode.insertBefore(node[0], e);
             }
             return;
           } else if (node instanceof DocumentFragment) {
