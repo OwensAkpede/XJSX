@@ -188,53 +188,20 @@
       var currentProcess = this.getOnboardProcess();
 
       (e instanceof Comment &&
-        e.data.search(/^\?[^\?][^]+[^\?]\?$/) === 0 &&
+        this._XJSXSyntax(e.data) === 0 &&
         !this.XJSXProcessor(e, currentProcess)) ||
         (currentProcess && currentProcess.nodes.append(e /*, false*/));
-      /***
-          * if (currentProcess.module.operations[0].type === KEYWORD) {
 
-          } else {
-          currentProcess.documentFragment.appendChild(e);
-          }
-          ***/
-
-      /***  console.timeEnd('p') **/
-      /*
-        else if (mode === this.mode[1]) {
-        } else if (mode === "null") {
-           console.error("mode");
-        }
-        */
     },
     _XJSXSyntax: function (e) {
-
-      /*  if (e.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
-          return this.mode[0];
-        } else*/
-      return e.search(/^\?[^\?][^]+[^\?]\?$/) === 0 && this.mode[1];
-
-
+      return e.search(/^\?[^\?][^]+\?$/) === 0;
     },
-    XJSXSyntax: function (e) {
-      /*  if (e.data.search(/^\?\?[^\?][^]+[^\?]\?\?$/) === 0) {
-            return this.mode[0];
-          } else */
-      return (
-        e instanceof Comment &&
-        e.data.search(/^\?[^\?][^]+[^\?]\?$/) === 0 &&
-        this.mode[1]
-      );
-
-      /*
-          ? e.data.match(/\?\?/gim)
-            ? this.mode[0]
-            : e.data.match(/\?\?/gim)
-            ? this.mode[1]
-            : "null"
-          : false;
-          */
-    },
+    // XJSXSyntax: function (e) {
+    //   return (
+    //     e instanceof Comment &&
+    //     e.data.search(/^\?[^\?][^]+[^\?]\?$/) === 0
+    //   );
+    // },
     isKeyWord: function (e) {
       return (
         "string" === typeof e &&
@@ -258,15 +225,18 @@
       }
       var i = 0;
       var keyword = "";
-
-      while (e[0] !== ":" && e.length > 0) {
-        i++;
-        keyword += e[0];
-        e = e.substring(1);
+      var len = e.length;
+      while (e[i] !== ":" && len > i) {
+        keyword += e[i];
+        i+=1;
       }
-      e[0] === ":" && (e = e.substring(1));
+      e = e.substring(i,len);
 
-      return [keyword.trim() /*.toLowerCase()*/, e];
+      keyword=keyword.trim()
+      if(this.isKeyWord(keyword)){
+        e[0] === ":" && (e = e.substring(1));
+        return [keyword, e];
+      }
     },
     parseParameter: function (_e, exec) {
       _e = _e.split(";");
@@ -976,7 +946,11 @@
         console.log("onload: %dms", window.performance && performance.now() - this.timeStamp);
     },
     XJSXProcessor: function (e, currentProcess) {
-      var params = this.parseKeyWord(e.data);
+      var params;
+      if(!(params= this.parseKeyWord(e.data))){
+        return;
+      }
+
       var isNewProcess;
       var type;
       var isChildProcess;
