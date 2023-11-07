@@ -15,8 +15,6 @@
   var MMETHOD = 0x16;
   var time = 0;
 
-
-
   var __core__ = {
     _observer: (window.MutationObserver &&
       function () {
@@ -27,6 +25,7 @@
         var n;
         var lc;
         var obs = new window.MutationObserver(function (e) {
+
           document.readyState === "complete" &&
             (obs.disconnect(), core.XJSXLastProcessCallback());
 
@@ -188,7 +187,7 @@
       var currentProcess = this.getOnboardProcess();
 
       (e instanceof Comment &&
-        this._XJSXSyntax(e.data) === 0 &&
+        this._XJSXSyntax(e.data) &&
         !this.XJSXProcessor(e, currentProcess)) ||
         (currentProcess && currentProcess.nodes.append(e /*, false*/));
 
@@ -228,12 +227,12 @@
       var len = e.length;
       while (e[i] !== ":" && len > i) {
         keyword += e[i];
-        i+=1;
+        i += 1;
       }
-      e = e.substring(i,len);
+      e = e.substring(i, len);
 
-      keyword=keyword.trim()
-      if(this.isKeyWord(keyword)){
+      keyword = keyword.trim()
+      if (this.isKeyWord(keyword)) {
         e[0] === ":" && (e = e.substring(1));
         return [keyword, e];
       }
@@ -247,6 +246,35 @@
         arguments: _e.pop(),
         parameter: (exec && exec("[" + _e + "]")) || _e,
       };
+    },
+    _parseParameterCB: function (params) {
+      var obj = {
+        val: "",
+        "{": function (e) {
+
+        }
+      }
+      return;
+    },
+    _parseParameter: function (str, exec) {
+      var param = [];
+      var CB = _parseParameterCB();
+      var foo = null;
+      for (var i = 0; i < str.length; i++) {
+        var cr = str[i];
+        if (foo) foo(cr)
+        foo = CB[cr];
+      }
+      console.log(param);
+      // _e = _e.split(";");
+      // console.log();
+      // (2 > _e.length && _e.push([])) ||
+      //   (_e[_e.length - 1] = _e[_e.length - 1].split(","));
+
+      // return {
+      //   arguments: _e.pop(),
+      //   parameter: (exec && exec("[" + _e + "]")) || _e,
+      // };
     },
     domParser: function () {
       var d = __core__.domParser_node
@@ -900,7 +928,7 @@
       };
       return self;
     },
-    XJSXMethodKeyword: function (e,exec) {
+    XJSXMethodKeyword: function (e, exec) {
       var process = e.process.nodes;
       return {
         eval: exec,
@@ -947,7 +975,7 @@
     },
     XJSXProcessor: function (e, currentProcess) {
       var params;
-      if(!(params= this.parseKeyWord(e.data))){
+      if (!(params = this.parseKeyWord(e.data))) {
         return;
       }
 
@@ -1160,7 +1188,7 @@
       if ((type === MMETHOD || type === METHOD) && !shouldProcess) {
         return
       }
-      
+
       if (type === MKEYWORD || type === MMETHOD) {
         e.remove();
         module.operations[0].callback &&
@@ -1171,7 +1199,7 @@
       } else if (type === METHOD) {
         var exec = (currentProcess && currentProcess.eval) || this.eval;
         module.operations[0].callback &&
-        module.operations[0].callback(params[1], this.XJSXMethodKeyword(e,exec), exec);
+          module.operations[0].callback(params[1], this.XJSXMethodKeyword(e, exec), exec);
 
         return;
       }
@@ -1336,7 +1364,7 @@
       },*/
   };
 
-
+  // console.log(__core__._parseParameter("ppppp,ll,{ppp:p};opp"))
   /** end **/
   __core__.createModule([
     {
@@ -1511,6 +1539,7 @@
       return this.responseText || this.responseXML || ""
     }
   })
+
 
 })(this || self, function () {
   return (
