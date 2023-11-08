@@ -1,2 +1,5 @@
+![xjsx vscode extension](../images/xjsx-ext-rst.png)
 ![xjsx vscode extension](../images/xjsx-ext.png)
 ![xjsx vscode extension](../images/xjsx-ext-install.png)
+![xjsx vscode extension](../images/xjsx-ext-half.png)
+![xjsx vscode extension](../images/xjsx-ext-full.png)
