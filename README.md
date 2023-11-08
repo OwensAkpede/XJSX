@@ -1,6 +1,6 @@
 
 # XJSX: Expressed JavaScript XHTML
-
+`The XJSX extension is now available on VScode` [see here](advance/EXTENSION.md)
 
 ```xml
 
