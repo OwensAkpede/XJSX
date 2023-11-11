@@ -50,7 +50,7 @@ Using NPM:
 npm i owens94819-xjsx
 ```
 Or simply include the [source file or
-URL](https://owens94819.github.io/XJSX/release/beta/xjsx.2.2.0.js) in your project.
+URL](https://owens94819.github.io/XJSX/release/beta/xjsx.2.2.0.js) into your project.
 
 ```xml
 <html>
