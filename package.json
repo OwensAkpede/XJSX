@@ -1,5 +1,5 @@
 {
-  "name": "owens94819/xjsx",
+  "name": "owens94819-xjsx",
   "version": "2.5.1",
   "description": "XJSX is a JavaScript web development framework that allows developers to write JavaScript code directly within HTML. This approach simplifies web development by reducing the need to constantly switch between HTML and JavaScript.",
   "main": "xjsx-min.js",
@@ -11,9 +11,13 @@
     "url": "git+https://github.com/Owens94819/XJSX.git"
   },
   "keywords": [
-"front-end",
-"html-framework", "frontend","ui",
-"ux", "javascript-framework", "xjsx"
+    "front-end",
+    "html-framework",
+    "frontend",
+    "ui",
+    "ux",
+    "javascript-framework",
+    "xjsx"
   ],
   "author": "owens94819",
   "license": "GPL-3.0",
