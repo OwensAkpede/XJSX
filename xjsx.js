@@ -581,7 +581,15 @@
             process.__proto__.isDeadProcess = true;
           })) ||
         (opt === "callback" &&
-          ((_this.appendAllTo = function (doc, cloned) {
+          ((_this.dom = function(){
+            let Elem = [];
+            process.nodes.forEach((node)=>{
+              if(node instanceof HTMLElement){
+                Elem.push(node);
+              }
+            })
+            return Elem;
+          }),(_this.appendAllTo = function (doc, cloned) {
             (cloned &&
               !process.nodes.forEach(function (node) {
                 doc.appendChild(node.cloneNode(true));
