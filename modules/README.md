@@ -276,3 +276,39 @@ This will render as:
 <?update: variable_name ?> 
 ```
   documentation still in progress...
+
+ ### **Xjsx-router:**
+ ```<?xjsx-router: "/"?>
+<div>Home page</div>
+<div>thanks for joining us</div>
+
+<?end?>
+<?xjsx-router: "/#about"?>
+<div>About page</div>
+
+<?end?>
+
+
+
+<?xjsx-router: "/#contact"?>
+<div>Contact Page</div>
+
+<?end?>
+<!--- to check if page doesn't exist you use this -->
+<?xjsx-router: "*"?>
+<div> page not found</div>
+<a href="">Go Home</a>
+
+<?end?>
+<!-- or -->
+<?xjsx-router: ""?>
+<div> page not found</div>
+<a href="">Go Home</a>
+
+<?end?>
+<a href="#about">about</a>
+
+<a href="#detail">detail this router doea exist</a>
+<a href="#contact">contact</a>```
+The `xjsx-router` is use to create router or pages for your project.
+
