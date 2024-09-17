@@ -23,7 +23,45 @@ Use the `print` keyword to output dynamic content in your HTML. For example:
   Hello World
 </h1>
 ```
+### **Update:** 
 
+Use the `update` keyword to update the variable value anything variable is changed by any event.
+```xml
+<script>
+  let variable = "Hello World";
+  let button = document.querySelector("button");
+  button.onclick = function (){
+  if(variable == "Hello World"){
+  
+  variable = "Changed";
+  }else{
+  variable = "Hello World";
+  
+  }
+  }
+</script>
+
+<?update: variable ?>
+
+<button>click me to change variable value</button>
+
+```
+or 
+
+```xml
+<script>
+  let variable = "Hello World";
+  function Function(e) {
+      let input =  e;    
+
+    variable = input.value;
+
+  }
+</script>
+
+<input onkeyup="Function(this)" value="Hello World"/>
+<?update: variable ?>
+```
 ### **Parse JSON:** 
 Use the `parse-json` keyword to parse a JSON string into an object that can be accessed in your HTML. For example:
 ```xml
