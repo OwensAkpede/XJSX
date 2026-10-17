@@ -18,7 +18,7 @@
 
 ```
 
-Do you want to create web applications like James Bond, with maximum efficiency and minimal hassle? Look no further than XJSX! This powerful framework lets you write JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
+This framework lets you execute JavaScript directly in your HTML, making it easier to create dynamic web pages and interfaces.
 
 #### Release History
 
